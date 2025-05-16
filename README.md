@@ -1,2 +1,3 @@
-# Trading-API
-Trading system API based on 'Backtrader' python library.
+# backtrader-api
+API interface for backtrader built in Fast API 
+

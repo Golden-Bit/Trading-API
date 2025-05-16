@@ -1,0 +1,141 @@
+{
+    "name": "PyFolio",
+    "module": "backtrader.analyzers.pyfolio",
+    "doc": "This analyzer uses 4 children analyzers to collect data and transforms it\nin to a data set compatible with ``pyfolio``\n\nChildren Analyzer\n\n  - ``TimeReturn``\n\n    Used to calculate the returns of the global portfolio value\n\n  - ``PositionsValue``\n\n    Used to calculate the value of the positions per data. It sets the\n    ``headers`` and ``cash`` parameters to ``True``\n\n  - ``Transactions``\n\n    Used to record each transaction on a data (size, price, value). Sets\n    the ``headers`` parameter to ``True``\n\n  - ``GrossLeverage``\n\n    Keeps track of the gross leverage (how much the strategy is invested)\n\nParams:\n  These are passed transparently to the children\n\n  - timeframe (default: ``bt.TimeFrame.Days``)\n\n    If ``None`` then the timeframe of the 1st data of the system will be\n    used\n\n  - compression (default: `1``)\n\n    If ``None`` then the compression of the 1st data of the system will be\n    used\n\nBoth ``timeframe`` and ``compression`` are set following the default\nbehavior of ``pyfolio`` which is working with *daily* data and upsample it\nto obtaine values like yearly returns.\n\nMethods:\n\n  - get_analysis\n\n    Returns a dictionary with returns as values and the datetime points for\n    each return as keys",
+    "constructor_signature": "(self)",
+    "methods": [
+        {
+            "name": "_next",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_nextstart",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_notify_cashvalue",
+            "signature": "(self, cash, value)",
+            "doc": ""
+        },
+        {
+            "name": "_notify_fund",
+            "signature": "(self, cash, value, fundvalue, shares)",
+            "doc": ""
+        },
+        {
+            "name": "_notify_order",
+            "signature": "(self, order)",
+            "doc": ""
+        },
+        {
+            "name": "_notify_trade",
+            "signature": "(self, trade)",
+            "doc": ""
+        },
+        {
+            "name": "_prenext",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_register",
+            "signature": "(self, child)",
+            "doc": ""
+        },
+        {
+            "name": "_start",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_stop",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "create_analysis",
+            "signature": "(self)",
+            "doc": "Meant to be overriden by subclasses. Gives a chance to create the\nstructures that hold the analysis.\n\nThe default behaviour is to create a ``OrderedDict`` named ``rets``"
+        },
+        {
+            "name": "get_analysis",
+            "signature": "(self)",
+            "doc": "Returns a *dict-like* object with the results of the analysis\n\nThe keys and format of analysis results in the dictionary is\nimplementation dependent.\n\nIt is not even enforced that the result is a *dict-like object*, just\nthe convention\n\nThe default implementation returns the default OrderedDict ``rets``\ncreated by the default ``create_analysis`` method"
+        },
+        {
+            "name": "get_pf_items",
+            "signature": "(self)",
+            "doc": "Returns a tuple of 4 elements which can be used for further processing with\n  ``pyfolio``\n\n  returns, positions, transactions, gross_leverage\n\nBecause the objects are meant to be used as direct input to ``pyfolio``\nthis method makes a local import of ``pandas`` to convert the internal\n*backtrader* results to *pandas DataFrames* which is the expected input\nby, for example, ``pyfolio.create_full_tear_sheet``\n\nThe method will break if ``pandas`` is not installed"
+        },
+        {
+            "name": "next",
+            "signature": "(self)",
+            "doc": "Invoked for each next invocation of the strategy, once the minum\npreiod of the strategy has been reached"
+        },
+        {
+            "name": "nextstart",
+            "signature": "(self)",
+            "doc": "Invoked exactly once for the nextstart invocation of the strategy,\nwhen the minimum period has been first reached"
+        },
+        {
+            "name": "notify_cashvalue",
+            "signature": "(self, cash, value)",
+            "doc": "Receives the cash/value notification before each next cycle"
+        },
+        {
+            "name": "notify_fund",
+            "signature": "(self, cash, value, fundvalue, shares)",
+            "doc": "Receives the current cash, value, fundvalue and fund shares"
+        },
+        {
+            "name": "notify_order",
+            "signature": "(self, order)",
+            "doc": "Receives order notifications before each next cycle"
+        },
+        {
+            "name": "notify_trade",
+            "signature": "(self, trade)",
+            "doc": "Receives trade notifications before each next cycle"
+        },
+        {
+            "name": "pprint",
+            "signature": "(self, *args, **kwargs)",
+            "doc": "Prints the results returned by ``get_analysis`` using the pretty\nprint Python module (*pprint*)"
+        },
+        {
+            "name": "prenext",
+            "signature": "(self)",
+            "doc": "Invoked for each prenext invocation of the strategy, until the minimum\nperiod of the strategy has been reached\n\nThe default behavior for an analyzer is to invoke ``next``"
+        },
+        {
+            "name": "print",
+            "signature": "(self, *args, **kwargs)",
+            "doc": "Prints the results returned by ``get_analysis`` via a standard\n``Writerfile`` object, which defaults to writing things to standard\noutput"
+        },
+        {
+            "name": "start",
+            "signature": "(self)",
+            "doc": "Invoked to indicate the start of operations, giving the analyzer\ntime to setup up needed things"
+        },
+        {
+            "name": "stop",
+            "signature": "(self)",
+            "doc": "Invoked to indicate the end of operations, giving the analyzer\ntime to shut down needed things"
+        }
+    ],
+    "attributes": {
+        "packages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "frompackages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        }
+    },
+    "input_schema": {},
+    "params_schema": {},
+    "output_schema": {}
+}

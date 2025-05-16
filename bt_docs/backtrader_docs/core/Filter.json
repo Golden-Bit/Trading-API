@@ -1,0 +1,40 @@
+{
+    "name": "Filter",
+    "module": "backtrader.flt",
+    "doc": "",
+    "constructor_signature": "(self, data)",
+    "methods": [
+        {
+            "name": "next",
+            "signature": "(self, data)",
+            "doc": ""
+        },
+        {
+            "name": "nextstart",
+            "signature": "(self, data)",
+            "doc": ""
+        }
+    ],
+    "attributes": {
+        "_firsttime": {
+            "value": "True",
+            "doc": "bool(x) -> bool\n\nReturns True when the argument x is true, False otherwise.\nThe builtins True and False are the only two instances of the class bool.\nThe class bool is a subclass of the class int, and cannot be subclassed."
+        },
+        "packages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "frompackages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        }
+    },
+    "input_schema": {
+        "data": {
+            "default": null,
+            "annotation": "Any"
+        }
+    },
+    "params_schema": {},
+    "output_schema": {}
+}

@@ -1,0 +1,83 @@
+{
+    "name": "AutoInfoClass",
+    "module": "backtrader.metabase",
+    "doc": "",
+    "constructor_signature": "(self, /, *args, **kwargs)",
+    "methods": [
+        {
+            "name": "_get",
+            "signature": "(self, name, default=None)",
+            "doc": ""
+        },
+        {
+            "name": "_getkwargs",
+            "signature": "(self, skip_=False)",
+            "doc": ""
+        },
+        {
+            "name": "_getvalues",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "isdefault",
+            "signature": "(self, pname)",
+            "doc": ""
+        },
+        {
+            "name": "notdefault",
+            "signature": "(self, pname)",
+            "doc": ""
+        }
+    ],
+    "attributes": {
+        "_getpairsbase": {
+            "value": "<classmethod(<function AutoInfoClass.<lambda> at 0x00000256174CE680>)>",
+            "doc": ""
+        },
+        "_getpairs": {
+            "value": "<classmethod(<function AutoInfoClass.<lambda> at 0x00000256174CE710>)>",
+            "doc": ""
+        },
+        "_getrecurse": {
+            "value": "<classmethod(<function AutoInfoClass.<lambda> at 0x00000256174CE7A0>)>",
+            "doc": ""
+        },
+        "_derive": {
+            "value": "<classmethod(<function AutoInfoClass._derive at 0x00000256174CE830>)>",
+            "doc": ""
+        },
+        "_getkwargsdefault": {
+            "value": "<classmethod(<function AutoInfoClass._getkwargsdefault at 0x00000256174CEA70>)>",
+            "doc": ""
+        },
+        "_getkeys": {
+            "value": "<classmethod(<function AutoInfoClass._getkeys at 0x00000256174CEB00>)>",
+            "doc": ""
+        },
+        "_getdefaults": {
+            "value": "<classmethod(<function AutoInfoClass._getdefaults at 0x00000256174CEB90>)>",
+            "doc": ""
+        },
+        "_getitems": {
+            "value": "<classmethod(<function AutoInfoClass._getitems at 0x00000256174CEC20>)>",
+            "doc": ""
+        },
+        "_gettuple": {
+            "value": "<classmethod(<function AutoInfoClass._gettuple at 0x00000256174CECB0>)>",
+            "doc": ""
+        }
+    },
+    "input_schema": {
+        "args": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "kwargs": {
+            "default": null,
+            "annotation": "Any"
+        }
+    },
+    "params_schema": {},
+    "output_schema": {}
+}

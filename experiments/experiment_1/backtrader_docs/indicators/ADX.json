@@ -1,0 +1,284 @@
+{
+    "name": "ADX",
+    "module": "backtrader.indicators.directionalmove",
+    "doc": "Defined by J. Welles Wilder, Jr. in 1978 in his book *\"New Concepts in\nTechnical Trading Systems\"*.\n\nIntended to measure trend strength\n\nThis indicator only shows ADX:\n  - Use PlusDirectionalIndicator (PlusDI) to get +DI\n  - Use MinusDirectionalIndicator (MinusDI) to get -DI\n  - Use Directional Indicator (DI) to get +DI, -DI\n  - Use AverageDirectionalIndexRating (ADXR) to get ADX, ADXR\n  - Use DirectionalMovementIndex (DMI) to get ADX, +DI, -DI\n  - Use DirectionalMovement (DM) to get ADX, ADXR, +DI, -DI\n\nFormula:\n  - upmove = high - high(-1)\n  - downmove = low(-1) - low\n  - +dm = upmove if upmove > downmove and upmove > 0 else 0\n  - -dm = downmove if downmove > upmove and downmove > 0 else 0\n  - +di = 100 * MovingAverage(+dm, period) / atr(period)\n  - -di = 100 * MovingAverage(-dm, period) / atr(period)\n  - dx = 100 * abs(+di - -di) / (+di + -di)\n  - adx = MovingAverage(dx, period)\n\nThe moving average used is the one originally defined by Wilder,\nthe SmoothedMovingAverage\n\nSee:\n  - https://en.wikipedia.org/wiki/Average_directional_movement_index",
+    "constructor_signature": "(self)",
+    "methods": [
+        {
+            "name": "_addnotification",
+            "signature": "(self, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "_clk_update",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_getline",
+            "signature": "(self, line, minusall=False)",
+            "doc": ""
+        },
+        {
+            "name": "_makeoperation",
+            "signature": "(self, other, operation, r=False, _ownerskip=None)",
+            "doc": ""
+        },
+        {
+            "name": "_makeoperationown",
+            "signature": "(self, operation, _ownerskip=None)",
+            "doc": ""
+        },
+        {
+            "name": "_next",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_notify",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_once",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_operation",
+            "signature": "(self, other, operation, r=False, intify=False)",
+            "doc": ""
+        },
+        {
+            "name": "_operation_stage1",
+            "signature": "(self, other, operation, r=False, intify=False)",
+            "doc": "Two operands' operation. Scanning of other happens to understand\nif other must be directly an operand or rather a subitem thereof"
+        },
+        {
+            "name": "_operation_stage2",
+            "signature": "(self, other, operation, r=False)",
+            "doc": "Rich Comparison operators. Scans other and returns either an\noperation with other directly or a subitem from other"
+        },
+        {
+            "name": "_operationown",
+            "signature": "(self, operation)",
+            "doc": ""
+        },
+        {
+            "name": "_operationown_stage1",
+            "signature": "(self, operation)",
+            "doc": "Operation with single operand which is \"self\""
+        },
+        {
+            "name": "_operationown_stage2",
+            "signature": "(self, operation)",
+            "doc": ""
+        },
+        {
+            "name": "_periodrecalc",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_plotinit",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_plotlabel",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_roperation",
+            "signature": "(self, other, operation, intify=False)",
+            "doc": "Relies on self._operation to and passes \"r\" True to define a\nreverse operation"
+        },
+        {
+            "name": "_stage1",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_stage2",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "addindicator",
+            "signature": "(self, indicator)",
+            "doc": ""
+        },
+        {
+            "name": "addminperiod",
+            "signature": "(self, minperiod)",
+            "doc": "The passed minperiod is fed to the lines"
+        },
+        {
+            "name": "advance",
+            "signature": "(self, size=1)",
+            "doc": ""
+        },
+        {
+            "name": "backwards",
+            "signature": "(self, size=1, force=False)",
+            "doc": ""
+        },
+        {
+            "name": "bind2line",
+            "signature": "(self, owner=None, own=None)",
+            "doc": ""
+        },
+        {
+            "name": "bind2lines",
+            "signature": "(self, owner=None, own=None)",
+            "doc": ""
+        },
+        {
+            "name": "bindlines",
+            "signature": "(self, owner=None, own=None)",
+            "doc": ""
+        },
+        {
+            "name": "extend",
+            "signature": "(self, value=nan, size=0)",
+            "doc": ""
+        },
+        {
+            "name": "forward",
+            "signature": "(self, value=nan, size=1)",
+            "doc": ""
+        },
+        {
+            "name": "getindicators",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "getindicators_lines",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "getobservers",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "home",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "incminperiod",
+            "signature": "(self, minperiod)",
+            "doc": "The passed minperiod is fed to the lines"
+        },
+        {
+            "name": "minbuffer",
+            "signature": "(self, size)",
+            "doc": "Receive notification of how large the buffer must at least be"
+        },
+        {
+            "name": "next",
+            "signature": "(self)",
+            "doc": "This method will be called for all remaining data points when the\nminimum period for all datas/indicators have been meet."
+        },
+        {
+            "name": "nextstart",
+            "signature": "(self)",
+            "doc": "This method will be called once, exactly when the minimum period for\nall datas/indicators have been meet. The default behavior is to call\nnext"
+        },
+        {
+            "name": "once",
+            "signature": "(self, start, end)",
+            "doc": "Called to calculate values at \"once\" when the minperiod is over"
+        },
+        {
+            "name": "once_via_next",
+            "signature": "(self, start, end)",
+            "doc": ""
+        },
+        {
+            "name": "oncestart",
+            "signature": "(self, start, end)",
+            "doc": "It will be called when the minperiod phase is over for the 1st\npost-minperiod value\n\nOnly called once and defaults to automatically calling once"
+        },
+        {
+            "name": "oncestart_via_nextstart",
+            "signature": "(self, start, end)",
+            "doc": ""
+        },
+        {
+            "name": "plotlabel",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "prenext",
+            "signature": "(self)",
+            "doc": "This method will be called before the minimum period of all\ndatas/indicators have been meet for the strategy to start executing"
+        },
+        {
+            "name": "preonce",
+            "signature": "(self, start, end)",
+            "doc": "It will be called during the \"minperiod\" phase of a \"once\" iteration"
+        },
+        {
+            "name": "preonce_via_prenext",
+            "signature": "(self, start, end)",
+            "doc": ""
+        },
+        {
+            "name": "qbuffer",
+            "signature": "(self, savemem=0)",
+            "doc": "Change the lines to implement a minimum size qbuffer scheme"
+        },
+        {
+            "name": "reset",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "rewind",
+            "signature": "(self, size=1)",
+            "doc": ""
+        },
+        {
+            "name": "setminperiod",
+            "signature": "(self, minperiod)",
+            "doc": "Direct minperiod manipulation. It could be used for example\nby a strategy\nto not wait for all indicators to produce a value"
+        },
+        {
+            "name": "updateminperiod",
+            "signature": "(self, minperiod)",
+            "doc": "Update the minperiod if needed. The minperiod will have been\ncalculated elsewhere\nand has to take over if greater that self's"
+        }
+    ],
+    "attributes": {
+        "aliased": {
+            "value": "'AverageDirectionalMovementIndex'",
+            "doc": "str(object='') -> str\nstr(bytes_or_buffer[, encoding[, errors]]) -> str\n\nCreate a new string object from the given object. If encoding or\nerrors is specified, then the object must expose a data buffer\nthat will be decoded using the given encoding and error handler.\nOtherwise, returns the result of object.__str__() (if defined)\nor repr(object).\nencoding defaults to sys.getdefaultencoding().\nerrors defaults to 'strict'."
+        },
+        "alias": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "packages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "frompackages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        }
+    },
+    "input_schema": {},
+    "params_schema": {},
+    "output_schema": {
+        "lines": {
+            "model": "<class 'backtrader.lineseries.Lines_LineSeries_LineIterator_DataAccessor_IndicatorBase_Indicator__DirectionalIndicator_AverageDirectionalMovementIndex_ADX'>",
+            "doc": "Defines an \"array\" of lines which also has most of the interface of\na LineBuffer class (forward, rewind, advance...).\n\nThis interface operations are passed to the lines held by self\n\nThe class can autosubclass itself (_derive) to hold new lines keeping them\nin the defined order."
+        }
+    }
+}

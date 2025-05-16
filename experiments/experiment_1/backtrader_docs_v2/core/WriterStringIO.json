@@ -1,0 +1,76 @@
+{
+    "name": "WriterStringIO",
+    "module": "backtrader.writer",
+    "doc": "The system wide writer class.\n\nIt can be parametrized with:\n\n  - ``out`` (default: ``sys.stdout``): output stream to write to\n\n    If a string is passed a filename with the content of the parameter will\n    be used.\n\n    If you wish to run with ``sys.stdout`` while doing multiprocess optimization, leave it as ``None``, which will\n    automatically initiate ``sys.stdout`` on the child processes.\n\n  - ``close_out``  (default: ``False``)\n\n    If ``out`` is a stream whether it has to be explicitly closed by the\n    writer\n\n  - ``csv`` (default: ``False``)\n\n    If a csv stream of the data feeds, strategies, observers and indicators\n    has to be written to the stream during execution\n\n    Which objects actually go into the csv stream can be controlled with\n    the ``csv`` attribute of each object (defaults to ``True`` for ``data\n    feeds`` and ``observers`` / False for ``indicators``)\n\n  - ``csv_filternan`` (default: ``True``) whether ``nan`` values have to be\n    purged out of the csv stream (replaced by an empty field)\n\n  - ``csv_counter`` (default: ``True``) if the writer shall keep and print\n    out a counter of the lines actually output\n\n  - ``indent`` (default: ``2``) indentation spaces for each level\n\n  - ``separators`` (default: ``['=', '-', '+', '*', '.', '~', '\"', '^',\n    '#']``)\n\n    Characters used for line separators across section/sub(sub)sections\n\n  - ``seplen`` (default: ``79``)\n\n    total length of a line separator including indentation\n\n  - ``rounding`` (default: ``None``)\n\n    Number of decimal places to round floats down to. With ``None`` no\n    rounding is performed",
+    "constructor_signature": "(self)",
+    "methods": [
+        {
+            "name": "_start_output",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "addheaders",
+            "signature": "(self, headers)",
+            "doc": ""
+        },
+        {
+            "name": "addvalues",
+            "signature": "(self, values)",
+            "doc": ""
+        },
+        {
+            "name": "next",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "start",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "stop",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "writedict",
+            "signature": "(self, dct, level=0, recurse=False)",
+            "doc": ""
+        },
+        {
+            "name": "writeiterable",
+            "signature": "(self, iterable, func=None, counter='')",
+            "doc": ""
+        },
+        {
+            "name": "writeline",
+            "signature": "(self, line)",
+            "doc": ""
+        },
+        {
+            "name": "writelines",
+            "signature": "(self, lines)",
+            "doc": ""
+        },
+        {
+            "name": "writelineseparator",
+            "signature": "(self, level=0)",
+            "doc": ""
+        }
+    ],
+    "attributes": {
+        "packages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "frompackages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        }
+    },
+    "input_schema": {},
+    "params_schema": {},
+    "output_schema": {}
+}

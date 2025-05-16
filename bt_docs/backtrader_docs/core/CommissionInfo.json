@@ -1,0 +1,86 @@
+{
+    "name": "CommissionInfo",
+    "module": "backtrader.comminfo",
+    "doc": "Base Class for the actual Commission Schemes.\n\nCommInfoBase was created to keep suppor for the original, incomplete,\nsupport provided by *backtrader*. New commission schemes derive from this\nclass which subclasses ``CommInfoBase``.\n\nThe default value of ``percabs`` is also changed to ``True``\n\nParams:\n\n  - ``percabs`` (def: True): when ``commtype`` is set to COMM_PERC, whether\n    the parameter ``commission`` has to be understood as XX% or 0.XX\n\n    If this param is True: 0.XX\n    If this param is False: XX%",
+    "constructor_signature": "(self)",
+    "methods": [
+        {
+            "name": "_get_credit_interest",
+            "signature": "(self, data, size, price, days, dt0, dt1)",
+            "doc": "This method returns  the cost in terms of credit interest charged by\nthe broker.\n\nIn the case of ``size > 0`` this method will only be called if the\nparameter to the class ``interest_long`` is ``True``\n\nThe formulat for the calculation of the credit interest rate is:\n\n  The formula: ``days * price * abs(size) * (interest / 365)``\n\n\nParams:\n  - ``data``: data feed for which interest is charged\n\n  - ``size``: current position size. > 0 for long positions and < 0 for\n    short positions (this parameter will not be ``0``)\n\n  - ``price``: current position price\n\n  - ``days``: number of days elapsed since last credit calculation\n    (this is (dt0 - dt1).days)\n\n  - ``dt0``: (datetime.datetime) current datetime\n\n  - ``dt1``: (datetime.datetime) datetime of previous calculation\n\n``dt0`` and ``dt1`` are not used in the default implementation and are\nprovided as extra input for overridden methods"
+        },
+        {
+            "name": "_getcommission",
+            "signature": "(self, size, price, pseudoexec)",
+            "doc": "Calculates the commission of an operation at a given price\n\npseudoexec: if True the operation has not yet been executed"
+        },
+        {
+            "name": "cashadjust",
+            "signature": "(self, size, price, newprice)",
+            "doc": "Calculates cash adjustment for a given price difference"
+        },
+        {
+            "name": "confirmexec",
+            "signature": "(self, size, price)",
+            "doc": ""
+        },
+        {
+            "name": "get_credit_interest",
+            "signature": "(self, data, pos, dt)",
+            "doc": "Calculates the credit due for short selling or product specific"
+        },
+        {
+            "name": "get_leverage",
+            "signature": "(self)",
+            "doc": "Returns the level of leverage allowed for this comission scheme"
+        },
+        {
+            "name": "get_margin",
+            "signature": "(self, price)",
+            "doc": "Returns the actual margin/guarantees needed for a single item of the\nasset at the given price. The default implementation has this policy:\n\n  - Use param ``margin`` if param ``automargin`` evaluates to ``False``\n\n  - Use param ``mult`` * ``price`` if ``automargin < 0``\n\n  - Use param ``automargin`` * ``price`` if ``automargin > 0``"
+        },
+        {
+            "name": "getcommission",
+            "signature": "(self, size, price)",
+            "doc": "Calculates the commission of an operation at a given price\n        "
+        },
+        {
+            "name": "getoperationcost",
+            "signature": "(self, size, price)",
+            "doc": "Returns the needed amount of cash an operation would cost"
+        },
+        {
+            "name": "getsize",
+            "signature": "(self, price, cash)",
+            "doc": "Returns the needed size to meet a cash operation at a given price"
+        },
+        {
+            "name": "getvalue",
+            "signature": "(self, position, price)",
+            "doc": "Returns the value of a position given a price. For future-like\nobjects it is fixed at size * margin"
+        },
+        {
+            "name": "getvaluesize",
+            "signature": "(self, size, price)",
+            "doc": "Returns the value of size for given a price. For future-like\nobjects it is fixed at size * margin"
+        },
+        {
+            "name": "profitandloss",
+            "signature": "(self, size, price, newprice)",
+            "doc": "Return actual profit and loss a position has"
+        }
+    ],
+    "attributes": {
+        "packages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "frompackages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        }
+    },
+    "input_schema": {},
+    "params_schema": {},
+    "output_schema": {}
+}

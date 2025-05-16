@@ -1,0 +1,50 @@
+{
+    "name": "FixedSize",
+    "module": "backtrader.sizers.fixedsize",
+    "doc": "This sizer simply returns a fixed size for any operation.\nSize can be controlled by number of tranches that a system\nwishes to use to scale into trades by specifying the ``tranches``\nparameter.\n\n\nParams:\n  - ``stake`` (default: ``1``)\n  - ``tranches`` (default: ``1``)",
+    "constructor_signature": "(self, /, *args, **kwargs)",
+    "methods": [
+        {
+            "name": "_getsizing",
+            "signature": "(self, comminfo, cash, data, isbuy)",
+            "doc": "This method has to be overriden by subclasses of Sizer to provide\nthe sizing functionality\n\nParams:\n  - ``comminfo``: The CommissionInfo instance that contains\n    information about the commission for the data and allows\n    calculation of position value, operation cost, commision for the\n    operation\n\n  - ``cash``: current available cash in the *broker*\n\n  - ``data``: target of the operation\n\n  - ``isbuy``: will be ``True`` for *buy* operations and ``False``\n    for *sell* operations\n\nThe method has to return the actual size (an int) to be executed. If\n``0`` is returned nothing will be executed.\n\nThe absolute value of the returned value will be used"
+        },
+        {
+            "name": "getsizing",
+            "signature": "(self, data, isbuy)",
+            "doc": ""
+        },
+        {
+            "name": "set",
+            "signature": "(self, strategy, broker)",
+            "doc": ""
+        },
+        {
+            "name": "setsizing",
+            "signature": "(self, stake)",
+            "doc": ""
+        }
+    ],
+    "attributes": {
+        "packages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "frompackages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        }
+    },
+    "input_schema": {
+        "args": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "kwargs": {
+            "default": null,
+            "annotation": "Any"
+        }
+    },
+    "params_schema": {},
+    "output_schema": {}
+}

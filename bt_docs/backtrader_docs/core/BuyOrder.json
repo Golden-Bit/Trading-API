@@ -1,0 +1,150 @@
+{
+    "name": "BuyOrder",
+    "module": "backtrader.order",
+    "doc": "Class which holds creation/execution data and type of oder.\n\nThe order may have the following status:\n\n  - Submitted: sent to the broker and awaiting confirmation\n  - Accepted: accepted by the broker\n  - Partial: partially executed\n  - Completed: fully exexcuted\n  - Canceled/Cancelled: canceled by the user\n  - Expired: expired\n  - Margin: not enough cash to execute the order.\n  - Rejected: Rejected by the broker\n\n    This can happen during order submission (and therefore the order will\n    not reach the Accepted status) or before execution with each new bar\n    price because cash has been drawn by other sources (future-like\n    instruments may have reduced the cash or orders orders may have been\n    executed)\n\nMember Attributes:\n\n  - ref: unique order identifier\n  - created: OrderData holding creation data\n  - executed: OrderData holding execution data\n\n  - info: custom information passed over method :func:`addinfo`. It is kept\n    in the form of an OrderedDict which has been subclassed, so that keys\n    can also be specified using '.' notation\n\nUser Methods:\n\n  - isbuy(): returns bool indicating if the order buys\n  - issell(): returns bool indicating if the order sells\n  - alive(): returns bool if order is in status Partial or Accepted",
+    "constructor_signature": "(self)",
+    "methods": [
+        {
+            "name": "_getplimit",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_setplimit",
+            "signature": "(self, val)",
+            "doc": ""
+        },
+        {
+            "name": "accept",
+            "signature": "(self, broker=None)",
+            "doc": "Marks an order as accepted"
+        },
+        {
+            "name": "activate",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "active",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "addcomminfo",
+            "signature": "(self, comminfo)",
+            "doc": "Stores a CommInfo scheme associated with the asset"
+        },
+        {
+            "name": "addinfo",
+            "signature": "(self, **kwargs)",
+            "doc": "Add the keys, values of kwargs to the internal info dictionary to\nhold custom information in the order"
+        },
+        {
+            "name": "alive",
+            "signature": "(self)",
+            "doc": "Returns True if the order is in a status in which it can still be\nexecuted"
+        },
+        {
+            "name": "brokerstatus",
+            "signature": "(self)",
+            "doc": "Tries to retrieve the status from the broker in which the order is.\n\nDefaults to last known status if no broker is associated"
+        },
+        {
+            "name": "cancel",
+            "signature": "(self)",
+            "doc": "Marks an order as cancelled"
+        },
+        {
+            "name": "clone",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "completed",
+            "signature": "(self)",
+            "doc": "Marks an order as completely filled"
+        },
+        {
+            "name": "execute",
+            "signature": "(self, dt, size, price, closed, closedvalue, closedcomm, opened, openedvalue, openedcomm, margin, pnl, psize, pprice)",
+            "doc": "Receives data execution input and stores it"
+        },
+        {
+            "name": "expire",
+            "signature": "(self)",
+            "doc": "Marks an order as expired. Returns True if it worked"
+        },
+        {
+            "name": "getordername",
+            "signature": "(self, exectype=None)",
+            "doc": "Returns the name for a given exectype or the one of the order"
+        },
+        {
+            "name": "getstatusname",
+            "signature": "(self, status=None)",
+            "doc": "Returns the name for a given status or the one of the order"
+        },
+        {
+            "name": "isbuy",
+            "signature": "(self)",
+            "doc": "Returns True if the order is a Buy order"
+        },
+        {
+            "name": "issell",
+            "signature": "(self)",
+            "doc": "Returns True if the order is a Sell order"
+        },
+        {
+            "name": "margin",
+            "signature": "(self)",
+            "doc": "Marks an order as having met a margin call"
+        },
+        {
+            "name": "ordtypename",
+            "signature": "(self, ordtype=None)",
+            "doc": "Returns the name for a given ordtype or the one of the order"
+        },
+        {
+            "name": "partial",
+            "signature": "(self)",
+            "doc": "Marks an order as partially filled"
+        },
+        {
+            "name": "reject",
+            "signature": "(self, broker=None)",
+            "doc": "Marks an order as rejected"
+        },
+        {
+            "name": "setposition",
+            "signature": "(self, position)",
+            "doc": "Receives the current position for the asset and stotres it"
+        },
+        {
+            "name": "submit",
+            "signature": "(self, broker=None)",
+            "doc": "Marks an order as submitted and stores the broker to which it was\nsubmitted"
+        },
+        {
+            "name": "trailadjust",
+            "signature": "(self, price)",
+            "doc": ""
+        }
+    ],
+    "attributes": {
+        "ordtype": {
+            "value": "0",
+            "doc": "int([x]) -> integer\nint(x, base=10) -> integer\n\nConvert a number or string to an integer, or return 0 if no arguments\nare given.  If x is a number, return x.__int__().  For floating point\nnumbers, this truncates towards zero.\n\nIf x is not a number or if base is given, then x must be a string,\nbytes, or bytearray instance representing an integer literal in the\ngiven base.  The literal can be preceded by '+' or '-' and be surrounded\nby whitespace.  The base defaults to 10.  Valid bases are 0 and 2-36.\nBase 0 means to interpret the base from the string as an integer literal.\n>>> int('0b100', base=0)\n4"
+        },
+        "packages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "frompackages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        }
+    },
+    "input_schema": {},
+    "params_schema": {},
+    "output_schema": {}
+}

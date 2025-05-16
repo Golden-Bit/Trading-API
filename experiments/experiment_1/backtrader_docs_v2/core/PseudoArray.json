@@ -1,0 +1,21 @@
+{
+    "name": "PseudoArray",
+    "module": "backtrader.linebuffer",
+    "doc": "",
+    "constructor_signature": "(self, wrapped)",
+    "methods": [],
+    "attributes": {
+        "array": {
+            "value": "<property object at 0x00000256174F1F80>",
+            "doc": ""
+        }
+    },
+    "input_schema": {
+        "wrapped": {
+            "default": null,
+            "annotation": "Any"
+        }
+    },
+    "params_schema": {},
+    "output_schema": {}
+}

@@ -1,0 +1,95 @@
+Sizers Reference
+
+FixedSize
+
+class backtrader.sizers.FixedSize()
+
+This sizer simply returns a fixed size for any operation.
+Size can be controlled by number of tranches that a system
+wishes to use to scale into trades by specifying the 
+tranches
+
+parameter.
+
+Params:
+
+```
+* `stake` (default: `1`)
+
+* `tranches` (default: `1`)
+
+```
+
+FixedReverser
+
+class backtrader.sizers.FixedReverser()
+
+This sizer returns the needes fixed size to reverse an open position or
+the fixed size to open one
+
+To open a position: return the param 
+stake
+
+To reverse a position: return 2 * 
+stake
+
+Params:
+
+```
+* `stake` (default: `1`)
+
+```
+
+PercentSizer
+
+class backtrader.sizers.PercentSizer()
+
+This sizer return percents of available cash
+
+Params:
+
+```
+* `percents` (default: `20`)
+
+```
+
+AllInSizer
+
+class backtrader.sizers.AllInSizer()
+
+This sizer return all available cash of broker
+
+Params:
+
+```
+* `percents` (default: `100`)
+
+```
+
+PercentSizerInt
+
+class backtrader.sizers.PercentSizerInt()
+
+This sizer return percents of available cash in form of size truncated
+to an int
+
+Params:
+
+```
+* `percents` (default: `20`)
+
+```
+
+AllInSizerInt
+
+class backtrader.sizers.AllInSizerInt()
+
+This sizer return all available cash of broker with the
+size truncated to an int
+
+Params:
+
+```
+  * `percents` (default: `100`)
+
+```

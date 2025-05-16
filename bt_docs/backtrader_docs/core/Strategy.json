@@ -1,0 +1,575 @@
+{
+    "name": "Strategy",
+    "module": "backtrader.strategy",
+    "doc": "Base class to be subclassed for user defined strategies.",
+    "constructor_signature": "(self, *args, **kwargs)",
+    "methods": [
+        {
+            "name": "_addanalyzer",
+            "signature": "(self, ancls, *anargs, **ankwargs)",
+            "doc": ""
+        },
+        {
+            "name": "_addanalyzer_slave",
+            "signature": "(self, ancls, *anargs, **ankwargs)",
+            "doc": "Like _addanalyzer but meant for observers (or other entities) which\nrely on the output of an analyzer for the data. These analyzers have\nnot been added by the user and are kept separate from the main\nanalyzers\n\nReturns the created analyzer"
+        },
+        {
+            "name": "_addindicator",
+            "signature": "(self, indcls, *indargs, **indkwargs)",
+            "doc": ""
+        },
+        {
+            "name": "_addnotification",
+            "signature": "(self, order, quicknotify=False)",
+            "doc": ""
+        },
+        {
+            "name": "_addobserver",
+            "signature": "(self, multi, obscls, *obsargs, **obskwargs)",
+            "doc": ""
+        },
+        {
+            "name": "_addsizer",
+            "signature": "(self, sizer, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "_addwriter",
+            "signature": "(self, writer)",
+            "doc": "Unlike the other _addxxx functions this one receives an instance\nbecause the writer works at cerebro level and is only passed to the\nstrategy to simplify the logic"
+        },
+        {
+            "name": "_clk_update",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_getanalyzer_slave",
+            "signature": "(self, idx)",
+            "doc": ""
+        },
+        {
+            "name": "_getline",
+            "signature": "(self, line, minusall=False)",
+            "doc": ""
+        },
+        {
+            "name": "_getminperstatus",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_makeoperation",
+            "signature": "(self, other, operation, r=False, _ownerskip=None)",
+            "doc": ""
+        },
+        {
+            "name": "_makeoperationown",
+            "signature": "(self, operation, _ownerskip=None)",
+            "doc": ""
+        },
+        {
+            "name": "_next",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_next_analyzers",
+            "signature": "(self, minperstatus, once=False)",
+            "doc": ""
+        },
+        {
+            "name": "_next_observers",
+            "signature": "(self, minperstatus, once=False)",
+            "doc": ""
+        },
+        {
+            "name": "_next_open",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_notify",
+            "signature": "(self, qorders=[], qtrades=[])",
+            "doc": ""
+        },
+        {
+            "name": "_once",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_oncepost",
+            "signature": "(self, dt)",
+            "doc": ""
+        },
+        {
+            "name": "_oncepost_open",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_operation",
+            "signature": "(self, other, operation, r=False, intify=False)",
+            "doc": ""
+        },
+        {
+            "name": "_operation_stage1",
+            "signature": "(self, other, operation, r=False, intify=False)",
+            "doc": "Two operands' operation. Scanning of other happens to understand\nif other must be directly an operand or rather a subitem thereof"
+        },
+        {
+            "name": "_operation_stage2",
+            "signature": "(self, other, operation, r=False)",
+            "doc": "Rich Comparison operators. Scans other and returns either an\noperation with other directly or a subitem from other"
+        },
+        {
+            "name": "_operationown",
+            "signature": "(self, operation)",
+            "doc": ""
+        },
+        {
+            "name": "_operationown_stage1",
+            "signature": "(self, operation)",
+            "doc": "Operation with single operand which is \"self\""
+        },
+        {
+            "name": "_operationown_stage2",
+            "signature": "(self, operation)",
+            "doc": ""
+        },
+        {
+            "name": "_periodrecalc",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_periodset",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_plotinit",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_plotlabel",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_roperation",
+            "signature": "(self, other, operation, intify=False)",
+            "doc": "Relies on self._operation to and passes \"r\" True to define a\nreverse operation"
+        },
+        {
+            "name": "_settz",
+            "signature": "(self, tz)",
+            "doc": ""
+        },
+        {
+            "name": "_stage1",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_stage2",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_start",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_stop",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "add_timer",
+            "signature": "(self, when, offset=datetime.timedelta(0), repeat=datetime.timedelta(0), weekdays=[], weekcarry=False, monthdays=[], monthcarry=True, allow=None, tzdata=None, cheat=False, *args, **kwargs)",
+            "doc": "**Note**: can be called during ``__init__`` or ``start``\n\nSchedules a timer to invoke either a specified callback or the\n``notify_timer`` of one or more strategies.\n\nArguments:\n\n  - ``when``: can be\n\n    - ``datetime.time`` instance (see below ``tzdata``)\n    - ``bt.timer.SESSION_START`` to reference a session start\n    - ``bt.timer.SESSION_END`` to reference a session end\n\n - ``offset`` which must be a ``datetime.timedelta`` instance\n\n   Used to offset the value ``when``. It has a meaningful use in\n   combination with ``SESSION_START`` and ``SESSION_END``, to indicated\n   things like a timer being called ``15 minutes`` after the session\n   start.\n\n  - ``repeat`` which must be a ``datetime.timedelta`` instance\n\n    Indicates if after a 1st call, further calls will be scheduled\n    within the same session at the scheduled ``repeat`` delta\n\n    Once the timer goes over the end of the session it is reset to the\n    original value for ``when``\n\n  - ``weekdays``: a **sorted** iterable with integers indicating on\n    which days (iso codes, Monday is 1, Sunday is 7) the timers can\n    be actually invoked\n\n    If not specified, the timer will be active on all days\n\n  - ``weekcarry`` (default: ``False``). If ``True`` and the weekday was\n    not seen (ex: trading holiday), the timer will be executed on the\n    next day (even if in a new week)\n\n  - ``monthdays``: a **sorted** iterable with integers indicating on\n    which days of the month a timer has to be executed. For example\n    always on day *15* of the month\n\n    If not specified, the timer will be active on all days\n\n  - ``monthcarry`` (default: ``True``). If the day was not seen\n    (weekend, trading holiday), the timer will be executed on the next\n    available day.\n\n  - ``allow`` (default: ``None``). A callback which receives a\n    `datetime.date`` instance and returns ``True`` if the date is\n    allowed for timers or else returns ``False``\n\n  - ``tzdata`` which can be either ``None`` (default), a ``pytz``\n    instance or a ``data feed`` instance.\n\n    ``None``: ``when`` is interpreted at face value (which translates\n    to handling it as if it where UTC even if it's not)\n\n    ``pytz`` instance: ``when`` will be interpreted as being specified\n    in the local time specified by the timezone instance.\n\n    ``data feed`` instance: ``when`` will be interpreted as being\n    specified in the local time specified by the ``tz`` parameter of\n    the data feed instance.\n\n    **Note**: If ``when`` is either ``SESSION_START`` or\n      ``SESSION_END`` and ``tzdata`` is ``None``, the 1st *data feed*\n      in the system (aka ``self.data0``) will be used as the reference\n      to find out the session times.\n\n  - ``cheat`` (default ``False``) if ``True`` the timer will be called\n    before the broker has a chance to evaluate the orders. This opens\n    the chance to issue orders based on opening price for example right\n    before the session starts\n\n  - ``*args``: any extra args will be passed to ``notify_timer``\n\n  - ``**kwargs``: any extra kwargs will be passed to ``notify_timer``\n\nReturn Value:\n\n  - The created timer"
+        },
+        {
+            "name": "addindicator",
+            "signature": "(self, indicator)",
+            "doc": ""
+        },
+        {
+            "name": "addminperiod",
+            "signature": "(self, minperiod)",
+            "doc": "The passed minperiod is fed to the lines"
+        },
+        {
+            "name": "advance",
+            "signature": "(self, size=1)",
+            "doc": ""
+        },
+        {
+            "name": "backwards",
+            "signature": "(self, size=1, force=False)",
+            "doc": ""
+        },
+        {
+            "name": "bind2line",
+            "signature": "(self, owner=None, own=None)",
+            "doc": ""
+        },
+        {
+            "name": "bind2lines",
+            "signature": "(self, owner=None, own=None)",
+            "doc": ""
+        },
+        {
+            "name": "bindlines",
+            "signature": "(self, owner=None, own=None)",
+            "doc": ""
+        },
+        {
+            "name": "buy",
+            "signature": "(self, data=None, size=None, price=None, plimit=None, exectype=None, valid=None, tradeid=0, oco=None, trailamount=None, trailpercent=None, parent=None, transmit=True, **kwargs)",
+            "doc": "Create a buy (long) order and send it to the broker\n\n  - ``data`` (default: ``None``)\n\n    For which data the order has to be created. If ``None`` then the\n    first data in the system, ``self.datas[0] or self.data0`` (aka\n    ``self.data``) will be used\n\n  - ``size`` (default: ``None``)\n\n    Size to use (positive) of units of data to use for the order.\n\n    If ``None`` the ``sizer`` instance retrieved via ``getsizer`` will\n    be used to determine the size.\n\n  - ``price`` (default: ``None``)\n\n    Price to use (live brokers may place restrictions on the actual\n    format if it does not comply to minimum tick size requirements)\n\n    ``None`` is valid for ``Market`` and ``Close`` orders (the market\n    determines the price)\n\n    For ``Limit``, ``Stop`` and ``StopLimit`` orders this value\n    determines the trigger point (in the case of ``Limit`` the trigger\n    is obviously at which price the order should be matched)\n\n  - ``plimit`` (default: ``None``)\n\n    Only applicable to ``StopLimit`` orders. This is the price at which\n    to set the implicit *Limit* order, once the *Stop* has been\n    triggered (for which ``price`` has been used)\n\n  - ``trailamount`` (default: ``None``)\n\n    If the order type is StopTrail or StopTrailLimit, this is an\n    absolute amount which determines the distance to the price (below\n    for a Sell order and above for a buy order) to keep the trailing\n    stop\n\n  - ``trailpercent`` (default: ``None``)\n\n    If the order type is StopTrail or StopTrailLimit, this is a\n    percentage amount which determines the distance to the price (below\n    for a Sell order and above for a buy order) to keep the trailing\n    stop (if ``trailamount`` is also specified it will be used)\n\n  - ``exectype`` (default: ``None``)\n\n    Possible values:\n\n    - ``Order.Market`` or ``None``. A market order will be executed\n      with the next available price. In backtesting it will be the\n      opening price of the next bar\n\n    - ``Order.Limit``. An order which can only be executed at the given\n      ``price`` or better\n\n    - ``Order.Stop``. An order which is triggered at ``price`` and\n      executed like an ``Order.Market`` order\n\n    - ``Order.StopLimit``. An order which is triggered at ``price`` and\n      executed as an implicit *Limit* order with price given by\n      ``pricelimit``\n\n    - ``Order.Close``. An order which can only be executed with the\n      closing price of the session (usually during a closing auction)\n\n    - ``Order.StopTrail``. An order which is triggered at ``price``\n      minus ``trailamount`` (or ``trailpercent``) and which is updated\n      if the price moves away from the stop\n\n    - ``Order.StopTrailLimit``. An order which is triggered at\n      ``price`` minus ``trailamount`` (or ``trailpercent``) and which\n      is updated if the price moves away from the stop\n\n  - ``valid`` (default: ``None``)\n\n    Possible values:\n\n      - ``None``: this generates an order that will not expire (aka\n        *Good till cancel*) and remain in the market until matched or\n        canceled. In reality brokers tend to impose a temporal limit,\n        but this is usually so far away in time to consider it as not\n        expiring\n\n      - ``datetime.datetime`` or ``datetime.date`` instance: the date\n        will be used to generate an order valid until the given\n        datetime (aka *good till date*)\n\n      - ``Order.DAY`` or ``0`` or ``timedelta()``: a day valid until\n        the *End of the Session* (aka *day* order) will be generated\n\n      - ``numeric value``: This is assumed to be a value corresponding\n        to a datetime in ``matplotlib`` coding (the one used by\n        ``backtrader``) and will used to generate an order valid until\n        that time (*good till date*)\n\n  - ``tradeid`` (default: ``0``)\n\n    This is an internal value applied by ``backtrader`` to keep track\n    of overlapping trades on the same asset. This ``tradeid`` is sent\n    back to the *strategy* when notifying changes to the status of the\n    orders.\n\n  - ``oco`` (default: ``None``)\n\n    Another ``order`` instance. This order will become part of an OCO\n    (Order Cancel Others) group. The execution of one of the orders,\n    immediately cancels all others in the same group\n\n  - ``parent`` (default: ``None``)\n\n    Controls the relationship of a group of orders, for example a buy\n    which is bracketed by a high-side limit sell and a low side stop\n    sell. The high/low side orders remain inactive until the parent\n    order has been either executed (they become active) or is\n    canceled/expires (the children are also canceled) bracket orders\n    have the same size\n\n  - ``transmit`` (default: ``True``)\n\n    Indicates if the order has to be **transmitted**, ie: not only\n    placed in the broker but also issued. This is meant for example to\n    control bracket orders, in which one disables the transmission for\n    the parent and 1st set of children and activates it for the last\n    children, which triggers the full placement of all bracket orders.\n\n  - ``**kwargs``: additional broker implementations may support extra\n    parameters. ``backtrader`` will pass the *kwargs* down to the\n    created order objects\n\n    Example: if the 4 order execution types directly supported by\n    ``backtrader`` are not enough, in the case of for example\n    *Interactive Brokers* the following could be passed as *kwargs*::\n\n      orderType='LIT', lmtPrice=10.0, auxPrice=9.8\n\n    This would override the settings created by ``backtrader`` and\n    generate a ``LIMIT IF TOUCHED`` order with a *touched* price of 9.8\n    and a *limit* price of 10.0.\n\nReturns:\n  - the submitted order"
+        },
+        {
+            "name": "buy_bracket",
+            "signature": "(self, data=None, size=None, price=None, plimit=None, exectype=2, valid=None, tradeid=0, trailamount=None, trailpercent=None, oargs={}, stopprice=None, stopexec=3, stopargs={}, limitprice=None, limitexec=2, limitargs={}, **kwargs)",
+            "doc": "Create a bracket order group (low side - buy order - high side). The\ndefault behavior is as follows:\n\n  - Issue a **buy** order with execution ``Limit``\n\n  - Issue a *low side* bracket **sell** order with execution ``Stop``\n\n  - Issue a *high side* bracket **sell** order with execution\n    ``Limit``.\n\nSee below for the different parameters\n\n  - ``data`` (default: ``None``)\n\n    For which data the order has to be created. If ``None`` then the\n    first data in the system, ``self.datas[0] or self.data0`` (aka\n    ``self.data``) will be used\n\n  - ``size`` (default: ``None``)\n\n    Size to use (positive) of units of data to use for the order.\n\n    If ``None`` the ``sizer`` instance retrieved via ``getsizer`` will\n    be used to determine the size.\n\n    **Note**: The same size is applied to all 3 orders of the bracket\n\n  - ``price`` (default: ``None``)\n\n    Price to use (live brokers may place restrictions on the actual\n    format if it does not comply to minimum tick size requirements)\n\n    ``None`` is valid for ``Market`` and ``Close`` orders (the market\n    determines the price)\n\n    For ``Limit``, ``Stop`` and ``StopLimit`` orders this value\n    determines the trigger point (in the case of ``Limit`` the trigger\n    is obviously at which price the order should be matched)\n\n  - ``plimit`` (default: ``None``)\n\n    Only applicable to ``StopLimit`` orders. This is the price at which\n    to set the implicit *Limit* order, once the *Stop* has been\n    triggered (for which ``price`` has been used)\n\n  - ``trailamount`` (default: ``None``)\n\n    If the order type is StopTrail or StopTrailLimit, this is an\n    absolute amount which determines the distance to the price (below\n    for a Sell order and above for a buy order) to keep the trailing\n    stop\n\n  - ``trailpercent`` (default: ``None``)\n\n    If the order type is StopTrail or StopTrailLimit, this is a\n    percentage amount which determines the distance to the price (below\n    for a Sell order and above for a buy order) to keep the trailing\n    stop (if ``trailamount`` is also specified it will be used)\n\n  - ``exectype`` (default: ``bt.Order.Limit``)\n\n    Possible values: (see the documentation for the method ``buy``\n\n  - ``valid`` (default: ``None``)\n\n    Possible values: (see the documentation for the method ``buy``\n\n  - ``tradeid`` (default: ``0``)\n\n    Possible values: (see the documentation for the method ``buy``\n\n  - ``oargs`` (default: ``{}``)\n\n    Specific keyword arguments (in a ``dict``) to pass to the main side\n    order. Arguments from the default ``**kwargs`` will be applied on\n    top of this.\n\n  - ``**kwargs``: additional broker implementations may support extra\n    parameters. ``backtrader`` will pass the *kwargs* down to the\n    created order objects\n\n    Possible values: (see the documentation for the method ``buy``\n\n    **Note**: this ``kwargs`` will be applied to the 3 orders of a\n    bracket. See below for specific keyword arguments for the low and\n    high side orders\n\n  - ``stopprice`` (default: ``None``)\n\n    Specific price for the *low side* stop order\n\n  - ``stopexec`` (default: ``bt.Order.Stop``)\n\n    Specific execution type for the *low side* order\n\n  - ``stopargs`` (default: ``{}``)\n\n    Specific keyword arguments (in a ``dict``) to pass to the low side\n    order. Arguments from the default ``**kwargs`` will be applied on\n    top of this.\n\n  - ``limitprice`` (default: ``None``)\n\n    Specific price for the *high side* stop order\n\n  - ``stopexec`` (default: ``bt.Order.Limit``)\n\n    Specific execution type for the *high side* order\n\n  - ``limitargs`` (default: ``{}``)\n\n    Specific keyword arguments (in a ``dict``) to pass to the high side\n    order. Arguments from the default ``**kwargs`` will be applied on\n    top of this.\n\nHigh/Low Side orders can be suppressed by using:\n\n  - ``limitexec=None`` to suppress the *high side*\n\n  - ``stopexec=None`` to suppress the *low side*\n\nReturns:\n\n  - A list containing the 3 orders [order, stop side, limit side]\n\n  - If high/low orders have been suppressed the return value will still\n    contain 3 orders, but those suppressed will have a value of\n    ``None``"
+        },
+        {
+            "name": "cancel",
+            "signature": "(self, order)",
+            "doc": "Cancels the order in the broker"
+        },
+        {
+            "name": "clear",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "close",
+            "signature": "(self, data=None, size=None, **kwargs)",
+            "doc": "Counters a long/short position closing it\n\nSee the documentation for ``buy`` for an explanation of the parameters\n\nNote:\n\n  - ``size``: automatically calculated from the existing position if\n    not provided (default: ``None``) by the caller\n\nReturns: the submitted order"
+        },
+        {
+            "name": "extend",
+            "signature": "(self, value=nan, size=0)",
+            "doc": ""
+        },
+        {
+            "name": "forward",
+            "signature": "(self, value=nan, size=1)",
+            "doc": ""
+        },
+        {
+            "name": "getdatabyname",
+            "signature": "(self, name)",
+            "doc": "Returns a given data by name using the environment (cerebro)"
+        },
+        {
+            "name": "getdatanames",
+            "signature": "(self)",
+            "doc": "Returns a list of the existing data names"
+        },
+        {
+            "name": "getindicators",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "getindicators_lines",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "getobservers",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "getposition",
+            "signature": "(self, data=None, broker=None)",
+            "doc": "Returns the current position for a given data in a given broker.\n\nIf both are None, the main data and the default broker will be used\n\nA property ``position`` is also available"
+        },
+        {
+            "name": "getpositionbyname",
+            "signature": "(self, name=None, broker=None)",
+            "doc": "Returns the current position for a given name in a given broker.\n\nIf both are None, the main data and the default broker will be used\n\nA property ``positionbyname`` is also available"
+        },
+        {
+            "name": "getpositions",
+            "signature": "(self, broker=None)",
+            "doc": "Returns the current by data positions directly from the broker\n\nIf the given ``broker`` is None, the default broker will be used\n\nA property ``positions`` is also available"
+        },
+        {
+            "name": "getpositionsbyname",
+            "signature": "(self, broker=None)",
+            "doc": "Returns the current by name positions directly from the broker\n\nIf the given ``broker`` is None, the default broker will be used\n\nA property ``positionsbyname`` is also available"
+        },
+        {
+            "name": "getsizer",
+            "signature": "(self)",
+            "doc": "Returns the sizer which is in used if automatic statke calculation is\nused\n\nAlso available as ``sizer``"
+        },
+        {
+            "name": "getsizing",
+            "signature": "(self, data=None, isbuy=True)",
+            "doc": "Return the stake calculated by the sizer instance for the current\nsituation"
+        },
+        {
+            "name": "getwriterheaders",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "getwriterinfo",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "getwritervalues",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "home",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "incminperiod",
+            "signature": "(self, minperiod)",
+            "doc": "The passed minperiod is fed to the lines"
+        },
+        {
+            "name": "minbuffer",
+            "signature": "(self, size)",
+            "doc": "Receive notification of how large the buffer must at least be"
+        },
+        {
+            "name": "next",
+            "signature": "(self)",
+            "doc": "This method will be called for all remaining data points when the\nminimum period for all datas/indicators have been meet."
+        },
+        {
+            "name": "next_open",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "nextstart",
+            "signature": "(self)",
+            "doc": "This method will be called once, exactly when the minimum period for\nall datas/indicators have been meet. The default behavior is to call\nnext"
+        },
+        {
+            "name": "nextstart_open",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "notify_cashvalue",
+            "signature": "(self, cash, value)",
+            "doc": "Receives the current fund value, value status of the strategy's broker"
+        },
+        {
+            "name": "notify_data",
+            "signature": "(self, data, status, *args, **kwargs)",
+            "doc": "Receives a notification from data"
+        },
+        {
+            "name": "notify_fund",
+            "signature": "(self, cash, value, fundvalue, shares)",
+            "doc": "Receives the current cash, value, fundvalue and fund shares"
+        },
+        {
+            "name": "notify_order",
+            "signature": "(self, order)",
+            "doc": "Receives an order whenever there has been a change in one"
+        },
+        {
+            "name": "notify_store",
+            "signature": "(self, msg, *args, **kwargs)",
+            "doc": "Receives a notification from a store provider"
+        },
+        {
+            "name": "notify_timer",
+            "signature": "(self, timer, when, *args, **kwargs)",
+            "doc": "Receives a timer notification where ``timer`` is the timer which was\nreturned by ``add_timer``, and ``when`` is the calling time. ``args``\nand ``kwargs`` are any additional arguments passed to ``add_timer``\n\nThe actual ``when`` time can be later, but the system may have not be\nable to call the timer before. This value is the timer value and no the\nsystem time."
+        },
+        {
+            "name": "notify_trade",
+            "signature": "(self, trade)",
+            "doc": "Receives a trade whenever there has been a change in one"
+        },
+        {
+            "name": "once",
+            "signature": "(self, start, end)",
+            "doc": "Called to calculate values at \"once\" when the minperiod is over"
+        },
+        {
+            "name": "oncestart",
+            "signature": "(self, start, end)",
+            "doc": "It will be called when the minperiod phase is over for the 1st\npost-minperiod value\n\nOnly called once and defaults to automatically calling once"
+        },
+        {
+            "name": "order_target_percent",
+            "signature": "(self, data=None, target=0.0, **kwargs)",
+            "doc": "Place an order to rebalance a position to have final value of\n``target`` percentage of current portfolio ``value``\n\n``target`` is expressed in decimal: ``0.05`` -> ``5%``\n\nIt uses ``order_target_value`` to execute the order.\n\nExample:\n  - ``target=0.05`` and portfolio value is ``100``\n\n  - The ``value`` to be reached is ``0.05 * 100 = 5``\n\n  - ``5`` is passed as the ``target`` value to ``order_target_value``\n\nThe current ``value`` is taken into account as the start point to\nachieve ``target``\n\nThe ``position.size`` is used to determine if a position is ``long`` /\n``short``\n\n  - If ``target`` > ``value``\n    - buy if ``pos.size >= 0`` (Increase a long position)\n    - sell if ``pos.size < 0`` (Increase a short position)\n\n  - If ``target`` < ``value``\n    - sell if ``pos.size >= 0`` (Decrease a long position)\n    - buy if ``pos.size < 0`` (Decrease a short position)\n\nIt returns either:\n\n  - The generated order\n\n  or\n\n  - ``None`` if no order has been issued (``target == position.size``)"
+        },
+        {
+            "name": "order_target_size",
+            "signature": "(self, data=None, target=0, **kwargs)",
+            "doc": "Place an order to rebalance a position to have final size of ``target``\n\nThe current ``position`` size is taken into account as the start point\nto achieve ``target``\n\n  - If ``target`` > ``pos.size`` -> buy ``target - pos.size``\n\n  - If ``target`` < ``pos.size`` -> sell ``pos.size - target``\n\nIt returns either:\n\n  - The generated order\n\n  or\n\n  - ``None`` if no order has been issued (``target == position.size``)"
+        },
+        {
+            "name": "order_target_value",
+            "signature": "(self, data=None, target=0.0, price=None, **kwargs)",
+            "doc": "Place an order to rebalance a position to have final value of\n``target``\n\nThe current ``value`` is taken into account as the start point to\nachieve ``target``\n\n  - If no ``target`` then close postion on data\n  - If ``target`` > ``value`` then buy on data\n  - If ``target`` < ``value`` then sell on data\n\nIt returns either:\n\n  - The generated order\n\n  or\n\n  - ``None`` if no order has been issued"
+        },
+        {
+            "name": "plotlabel",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "prenext",
+            "signature": "(self)",
+            "doc": "This method will be called before the minimum period of all\ndatas/indicators have been meet for the strategy to start executing"
+        },
+        {
+            "name": "prenext_open",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "preonce",
+            "signature": "(self, start, end)",
+            "doc": "It will be called during the \"minperiod\" phase of a \"once\" iteration"
+        },
+        {
+            "name": "qbuffer",
+            "signature": "(self, savemem=0, replaying=False)",
+            "doc": "Enable the memory saving schemes. Possible values for ``savemem``:\n\n  0: No savings. Each lines object keeps in memory all values\n\n  1: All lines objects save memory, using the strictly minimum needed\n\nNegative values are meant to be used when plotting is required:\n\n  -1: Indicators at Strategy Level and Observers do not enable memory\n      savings (but anything declared below it does)\n\n  -2: Same as -1 plus activation of memory saving for any indicators\n      which has declared *plotinfo.plot* as False (will not be plotted)"
+        },
+        {
+            "name": "reset",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "rewind",
+            "signature": "(self, size=1)",
+            "doc": ""
+        },
+        {
+            "name": "sell",
+            "signature": "(self, data=None, size=None, price=None, plimit=None, exectype=None, valid=None, tradeid=0, oco=None, trailamount=None, trailpercent=None, parent=None, transmit=True, **kwargs)",
+            "doc": "To create a selll (short) order and send it to the broker\n\nSee the documentation for ``buy`` for an explanation of the parameters\n\nReturns: the submitted order"
+        },
+        {
+            "name": "sell_bracket",
+            "signature": "(self, data=None, size=None, price=None, plimit=None, exectype=2, valid=None, tradeid=0, trailamount=None, trailpercent=None, oargs={}, stopprice=None, stopexec=3, stopargs={}, limitprice=None, limitexec=2, limitargs={}, **kwargs)",
+            "doc": "Create a bracket order group (low side - buy order - high side). The\ndefault behavior is as follows:\n\n  - Issue a **sell** order with execution ``Limit``\n\n  - Issue a *high side* bracket **buy** order with execution ``Stop``\n\n  - Issue a *low side* bracket **buy** order with execution ``Limit``.\n\nSee ``bracket_buy`` for the meaning of the parameters\n\nHigh/Low Side orders can be suppressed by using:\n\n  - ``stopexec=None`` to suppress the *high side*\n\n  - ``limitexec=None`` to suppress the *low side*\n\nReturns:\n\n  - A list containing the 3 orders [order, stop side, limit side]\n\n  - If high/low orders have been suppressed the return value will still\n    contain 3 orders, but those suppressed will have a value of\n    ``None``"
+        },
+        {
+            "name": "set_tradehistory",
+            "signature": "(self, onoff=True)",
+            "doc": ""
+        },
+        {
+            "name": "setminperiod",
+            "signature": "(self, minperiod)",
+            "doc": "Direct minperiod manipulation. It could be used for example\nby a strategy\nto not wait for all indicators to produce a value"
+        },
+        {
+            "name": "setsizer",
+            "signature": "(self, sizer)",
+            "doc": "Replace the default (fixed stake) sizer"
+        },
+        {
+            "name": "start",
+            "signature": "(self)",
+            "doc": "Called right before the backtesting is about to be started."
+        },
+        {
+            "name": "stop",
+            "signature": "(self)",
+            "doc": "Called right before the backtesting is about to be stopped"
+        },
+        {
+            "name": "updateminperiod",
+            "signature": "(self, minperiod)",
+            "doc": "Update the minperiod if needed. The minperiod will have been\ncalculated elsewhere\nand has to take over if greater that self's"
+        }
+    ],
+    "attributes": {
+        "_ltype": {
+            "value": "1",
+            "doc": "int([x]) -> integer\nint(x, base=10) -> integer\n\nConvert a number or string to an integer, or return 0 if no arguments\nare given.  If x is a number, return x.__int__().  For floating point\nnumbers, this truncates towards zero.\n\nIf x is not a number or if base is given, then x must be a string,\nbytes, or bytearray instance representing an integer literal in the\ngiven base.  The literal can be preceded by '+' or '-' and be surrounded\nby whitespace.  The base defaults to 10.  Valid bases are 0 and 2-36.\nBase 0 means to interpret the base from the string as an integer literal.\n>>> int('0b100', base=0)\n4"
+        },
+        "csv": {
+            "value": "True",
+            "doc": "bool(x) -> bool\n\nReturns True when the argument x is true, False otherwise.\nThe builtins True and False are the only two instances of the class bool.\nThe class bool is a subclass of the class int, and cannot be subclassed."
+        },
+        "_oldsync": {
+            "value": "False",
+            "doc": "bool(x) -> bool\n\nReturns True when the argument x is true, False otherwise.\nThe builtins True and False are the only two instances of the class bool.\nThe class bool is a subclass of the class int, and cannot be subclassed."
+        },
+        "position": {
+            "value": "<property object at 0x00000238E49E2570>",
+            "doc": "Returns the current position for a given data in a given broker.\n\nIf both are None, the main data and the default broker will be used\n\nA property ``position`` is also available"
+        },
+        "positionbyname": {
+            "value": "<property object at 0x00000238E49E25C0>",
+            "doc": "Returns the current position for a given name in a given broker.\n\nIf both are None, the main data and the default broker will be used\n\nA property ``positionbyname`` is also available"
+        },
+        "positions": {
+            "value": "<property object at 0x00000238E49E2610>",
+            "doc": "Returns the current by data positions directly from the broker\n\nIf the given ``broker`` is None, the default broker will be used\n\nA property ``positions`` is also available"
+        },
+        "positionsbyname": {
+            "value": "<property object at 0x00000238E49E2660>",
+            "doc": "Returns the current by name positions directly from the broker\n\nIf the given ``broker`` is None, the default broker will be used\n\nA property ``positionsbyname`` is also available"
+        },
+        "sizer": {
+            "value": "<property object at 0x00000238E49E26B0>",
+            "doc": "Returns the sizer which is in used if automatic statke calculation is\nused\n\nAlso available as ``sizer``"
+        },
+        "alias": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "aliased": {
+            "value": "''",
+            "doc": "str(object='') -> str\nstr(bytes_or_buffer[, encoding[, errors]]) -> str\n\nCreate a new string object from the given object. If encoding or\nerrors is specified, then the object must expose a data buffer\nthat will be decoded using the given encoding and error handler.\nOtherwise, returns the result of object.__str__() (if defined)\nor repr(object).\nencoding defaults to sys.getdefaultencoding().\nerrors defaults to 'strict'."
+        },
+        "packages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "frompackages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        }
+    },
+    "input_schema": {
+        "args": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "kwargs": {
+            "default": null,
+            "annotation": "Any"
+        }
+    },
+    "params_schema": {},
+    "output_schema": {
+        "lines": {
+            "model": "<class 'backtrader.lineseries.Lines_LineSeries_LineIterator_DataAccessor_StrategyBase_Strategy'>",
+            "doc": "Defines an \"array\" of lines which also has most of the interface of\na LineBuffer class (forward, rewind, advance...).\n\nThis interface operations are passed to the lines held by self\n\nThe class can autosubclass itself (_derive) to hold new lines keeping them\nin the defined order."
+        }
+    }
+}

@@ -1,0 +1,1716 @@
+Strategy
+
+A 
+Cerebro
+ instance is the pumping heart and controlling brain of
+
+backtrader
+. A 
+Strategy
+ is the same for the platform user.
+
+The 
+Strategy’s
+ expressed lifecycle in methods
+
+Note
+
+A strategy can be interrupted during 
+birth
+ by raising a
+
+StrategySkipError
+ exception from the module 
+backtrader.errors
+
+This will avoid going through the strategy during a backtesting. See
+the section 
+Exceptions
+
+Conception: 
+__init__
+
+This is obviously invoked during instantiation: 
+indicators
+ will be
+ created here and other needed attribute. Example:
+
+```
+def __init__(self):
+    self.sma = btind.SimpleMovingAverage(period=15)
+
+```
+
+Birth: 
+start
+
+The world (
+cerebro
+) tells the strategy is time to start kicking. A
+ default empty method exists.
+
+Childhood: 
+prenext
+
+indicators
+ declared during conception will have put constraints on how
+ long the strategy needs to mature: this is called the 
+minimum
+ period
+. Above 
+__init__
+ created a 
+SimpleMovingAverage
+ with a
+
+period=15
+.
+
+As long as the system has seen less than 
+15
+ bars, 
+prenext
+ will be
+ called (the default implementation is a no-op)
+
+Adulthood: 
+next
+
+Once the system has seen 
+15
+ bars and the 
+SimpleMovingAverage
+ has a
+ buffer large enough to start producing values, the strategy is mature
+ enough to really execute.
+
+There is a 
+nextstart
+ method which is called exactly 
+once
+, to mark
+ the switch from 
+prenext
+ to 
+next
+. The default implementation of
+
+nextstart
+ is to simply call 
+next
+
+Reproduction: 
+None
+
+Ok, strategies do not really reproduce. But in a sense they do, because
+ the system will instantiate them several times if 
+optimizing
+ (with
+ different parameters)
+
+Death: 
+stop
+
+The system tells the strategy the time to come to a reset and put things
+ in order has come. A default empty method exists.
+
+In most cases and for regular usage patterns this will look like:
+
+```
+class MyStrategy(bt.Strategy):
+
+    def __init__(self):
+        self.sma = btind.SimpleMovingAverage(period=15)
+
+    def next(self):
+        if self.sma > self.data.close:
+            # Do something
+            pass
+
+        elif self.sma < self.data.close:
+            # Do something else
+            pass
+
+```
+
+In this snippet:
+
+During 
+__init__
+ an attribute is assigned an indicator
+
+The default empty 
+start
+ method is not overriden
+
+prenext
+ and 
+nexstart
+ are not overriden
+
+In 
+next
+ the value of the indicator is compared against the closing
+    price to do something
+
+The default empty 
+stop
+ method is not overriden
+
+Strategies, like a trader in the real world, will get notified when events take
+place. Actually once per 
+next
+ cycle in the backtesting process. The
+strategy will:
+
+be notified through 
+notify_order(order)
+ of any status change in an
+    order
+
+be notified through 
+notify_trade(trade)
+ of any
+    opening/updating/closing trade
+
+be notified through 
+notify_cashvalue(cash, value)
+ of the current cash
+    and portfolio in the broker
+
+be notified through 
+notify_fund(cash, value, fundvalue, shares)
+ of the
+    current cash and portfolio in the broker and tradking of fundvalue and
+    shares
+
+Events (implementation specific) via 
+notify_store(msg, *args, **kwargs)
+
+See Cerebro for an explanation on the 
+store
+ notifications. These
+will delivered to the strategy even if they have also been delivered to a
+
+cerebro
+ instance (with an overriden 
+notify_store
+ method or via a
+
+callback
+)
+
+And 
+Strategies
+ also like traders have the chance to operate in the market
+during the 
+next
+ method to try to achieve profit with
+
+the 
+buy
+ method to go long or reduce/close a short position
+
+the 
+sell
+ method to go short or reduce/close a long position
+
+the 
+close
+ method to obviously close an existing position
+
+the 
+cancel
+ method to cancel a not yet executed order
+
+How to Buy/Sell/Close
+
+The 
+Buy
+ and 
+Sell
+ methods generate orders. When invoked they return an
+
+Order
+ (or subclass) instance that can be used as a reference. This order
+has a unique 
+ref
+ identifier that can be used for comparison
+
+Note
+
+Subclasses of 
+Order
+ for speficic broker implementations may carry
+additional 
+unique identifiers
+ provided by the broker.
+
+To create the order use the following parameters:
+
+data
+ (default: 
+None
+)
+
+For which data the order has to be created. If 
+None
+ then the
+first data in the system, 
+self.datas[0] or self.data0
+ (aka
+
+self.data
+) will be used
+
+size
+ (default: 
+None
+)
+
+Size to use (positive) of units of data to use for the order.
+
+If 
+None
+ the 
+sizer
+ instance retrieved via 
+getsizer
+ will
+be used to determine the size.
+
+price
+ (default: 
+None
+)
+
+Price to use (live brokers may place restrictions on the actual
+format if it does not comply to minimum tick size requirements)
+
+None
+ is valid for 
+Market
+ and 
+Close
+ orders (the market
+determines the price)
+
+For 
+Limit
+, 
+Stop
+ and 
+StopLimit
+ orders this value
+determines the trigger point (in the case of 
+Limit
+ the trigger
+is obviously at which price the order should be matched)
+
+plimit
+ (default: 
+None
+)
+
+Only applicable to 
+StopLimit
+ orders. This is the price at which
+to set the implicit 
+Limit
+ order, once the 
+Stop
+ has been
+triggered (for which 
+price
+ has been used)
+
+exectype
+ (default: 
+None
+)
+
+Possible values:
+
+Order.Market
+ or 
+None
+. A market order will be executed
+  with the next available price. In backtesting it will be the
+  opening price of the next bar
+
+Order.Limit
+. An order which can only be executed at the given
+
+price
+ or better
+
+Order.Stop
+. An order which is triggered at 
+price
+ and
+  executed like an 
+Order.Market
+ order
+
+Order.StopLimit
+. An order which is triggered at 
+price
+ and
+  executed as an implicit 
+Limit
+ order with price given by
+
+pricelimit
+
+valid
+ (default: 
+None
+)
+
+Possible values:
+
+None
+: this generates an order that will not expire (aka
+
+Good til cancel
+) and remain in the market until matched or
+    canceled. In reality brokers tend to impose a temporal limit,
+    but this is usually so far away in time to consider it as not
+    expiring
+
+datetime.datetime
+ or 
+datetime.date
+ instance: the date
+    will be used to generate an order valid until the given
+    datetime (aka 
+good til date
+)
+
+Order.DAY
+ or 
+0
+ or 
+timedelta()
+: a day valid until
+    the 
+End of the Session
+ (aka 
+day
+ order) will be generated
+
+numeric value
+: This is assumed to be a value corresponding
+    to a datetime in 
+matplotlib
+ coding (the one used by
+
+backtrader
+) and will used to generate an order valid until
+    that time (
+good til date
+)
+
+tradeid
+ (default: 
+0
+)
+
+This is an internal value applied by 
+backtrader
+ to keep track
+of overlapping trades on the same asset. This 
+tradeid
+ is sent
+back to the 
+strategy
+ when notifying changes to the status of the
+orders.
+
+**kwargs
+: additional broker implementations may support extra
+    parameters. 
+backtrader
+ will pass the 
+kwargs
+ down to the
+    created order objects
+
+Example: if the 4 order execution types directly supported by
+
+backtrader
+ are not enough, in the case of for example
+
+Interactive Brokers
+ the following could be passed as 
+kwargs
+:
+
+```
+orderType='LIT', lmtPrice=10.0, auxPrice=9.8
+
+```
+
+This would override the settings created by 
+backtrader
+ and
+generate a 
+LIMIT IF TOUCHED
+ order with a 
+touched
+ price of 9.8
+and a 
+limit
+ price of 10.0.
+
+Information Bits:
+
+A Strategy has a 
+length
+ which is always equal to that of the main
+    data (
+datas[0]
+) and can of course be gotten with 
+len(self)
+
+next
+ can be called without changes in 
+length
+ if data is being
+replayed or a live feed is being passed and new ticks for the same
+point in time (length) are arriving
+
+Member Attributes:
+
+env
+: the cerebro entity in which this Strategy lives
+
+datas
+: array of data feeds which have been passed to cerebro
+
+data/data0
+ is an alias for datas[0]
+
+dataX
+ is an alias for datas[X]
+
+data feeds
+ can also be accessed by name (see the reference) if one has been
+assigned to it
+
+dnames
+: an alternative to reach the data feeds by name (either with
+
+[name]
+ or with 
+.name
+ notation)
+
+For example if resampling a data like this:
+
+```
+...
+data0 = bt.feeds.YahooFinanceData(datname='YHOO', fromdate=..., name='days')
+cerebro.adddata(data0)
+cerebro.resampledata(data0, timeframe=bt.TimeFrame.Weeks, name='weeks')
+...
+
+```
+
+Later in the strategy one can create indicators on each like this:
+
+```
+...
+smadays = bt.ind.SMA(self.dnames.days, period=30)  # or self.dnames['days']
+smaweeks = bt.ind.SMA(self.dnames.weeks, period=10)  # or self.dnames['weeks']
+...
+
+```
+
+broker
+: reference to the broker associated to this strategy
+    (received from cerebro)
+
+stats
+: list/named tuple-like sequence holding the Observers created by
+    cerebro for this strategy
+
+analyzers
+: list/named tuple-like sequence holding the Analyzers created
+    by cerebro for this strategy
+
+position
+: actually a property which gives the current position for
+
+data0
+.
+
+Methods to retrieve all possitions are available (see the reference)
+
+Member Attributes (meant for statistics/observers/analyzers):
+
+_orderspending
+: list of orders which will be notified to the
+    strategy before 
+next
+ is called
+
+_tradespending
+: list of trades which will be notified to the
+    strategy before 
+next
+ is called
+
+_orders
+: list of order which have been already notified. An order
+    can be several times in the list with different statuses and different
+    execution bits. The list is menat to keep the history.
+
+_trades
+: list of order which have been already notified. A trade
+    can be several times in the list just like an order.
+
+Note
+
+Bear in mind that 
+prenext
+, 
+nextstart
+ and 
+next
+ can be called several
+times for the same point in time (ticks updating prices for the daily bar,
+when a daily timeframe is in use)
+
+Reference: Strategy
+
+class backtrader.Strategy(*args, **kwargs)
+
+Base class to be subclassed for user defined strategies.
+
+next()
+
+This method will be called for all remaining data points when the
+minimum period for all datas/indicators have been meet.
+
+nextstart()
+
+This method will be called once, exactly when the minimum period for
+all datas/indicators have been meet. The default behavior is to call
+next
+
+prenext()
+
+This method will be called before the minimum period of all
+datas/indicators have been meet for the strategy to start executing
+
+start()
+
+Called right before the backtesting is about to be started.
+
+stop()
+
+Called right before the backtesting is about to be stopped
+
+notify_order(order)
+
+Receives an order whenever there has been a change in one
+
+notify_trade(trade)
+
+Receives a trade whenever there has been a change in one
+
+notify_cashvalue(cash, value)
+
+Receives the current fund value, value status of the strategy’s broker
+
+notify_fund(cash, value, fundvalue, shares)
+
+Receives the current cash, value, fundvalue and fund shares
+
+notify_store(msg, *args, **kwargs)
+
+Receives a notification from a store provider
+
+buy(data=None, size=None, price=None, plimit=None, exectype=None, valid=None, tradeid=0, oco=None, trailamount=None, trailpercent=None, parent=None, transmit=True, **kwargs)
+
+Create a buy (long) order and send it to the broker
+
+data
+ (default: 
+None
+)
+
+For which data the order has to be created. If 
+None
+ then the
+first data in the system, 
+self.datas[0] or self.data0
+ (aka
+
+self.data
+) will be used
+
+size
+ (default: 
+None
+)
+
+Size to use (positive) of units of data to use for the order.
+
+If 
+None
+ the 
+sizer
+ instance retrieved via 
+getsizer
+ will
+be used to determine the size.
+
+price
+ (default: 
+None
+)
+
+Price to use (live brokers may place restrictions on the actual
+format if it does not comply to minimum tick size requirements)
+
+None
+ is valid for 
+Market
+ and 
+Close
+ orders (the market
+determines the price)
+
+For 
+Limit
+, 
+Stop
+ and 
+StopLimit
+ orders this value
+determines the trigger point (in the case of 
+Limit
+ the trigger
+is obviously at which price the order should be matched)
+
+plimit
+ (default: 
+None
+)
+
+Only applicable to 
+StopLimit
+ orders. This is the price at which
+to set the implicit 
+Limit
+ order, once the 
+Stop
+ has been
+triggered (for which 
+price
+ has been used)
+
+trailamount
+ (default: 
+None
+)
+
+If the order type is StopTrail or StopTrailLimit, this is an
+absolute amount which determines the distance to the price (below
+for a Sell order and above for a buy order) to keep the trailing
+stop
+
+trailpercent
+ (default: 
+None
+)
+
+If the order type is StopTrail or StopTrailLimit, this is a
+percentage amount which determines the distance to the price (below
+for a Sell order and above for a buy order) to keep the trailing
+stop (if 
+trailamount
+ is also specified it will be used)
+
+exectype
+ (default: 
+None
+)
+
+Possible values:
+
+Order.Market
+ or 
+None
+. A market order will be executed
+  with the next available price. In backtesting it will be the
+  opening price of the next bar
+
+Order.Limit
+. An order which can only be executed at the given
+
+price
+ or better
+
+Order.Stop
+. An order which is triggered at 
+price
+ and
+  executed like an 
+Order.Market
+ order
+
+Order.StopLimit
+. An order which is triggered at 
+price
+ and
+  executed as an implicit 
+Limit
+ order with price given by
+
+pricelimit
+
+Order.Close
+. An order which can only be executed with the
+  closing price of the session (usually during a closing auction)
+
+Order.StopTrail
+. An order which is triggered at 
+price
+
+  minus 
+trailamount
+ (or 
+trailpercent
+) and which is updated
+  if the price moves away from the stop
+
+Order.StopTrailLimit
+. An order which is triggered at
+
+price
+ minus 
+trailamount
+ (or 
+trailpercent
+) and which
+  is updated if the price moves away from the stop
+
+valid
+ (default: 
+None
+)
+
+Possible values:
+
+None
+: this generates an order that will not expire (aka
+
+Good till cancel
+) and remain in the market until matched or
+    canceled. In reality brokers tend to impose a temporal limit,
+    but this is usually so far away in time to consider it as not
+    expiring
+
+datetime.datetime
+ or 
+datetime.date
+ instance: the date
+    will be used to generate an order valid until the given
+    datetime (aka 
+good till date
+)
+
+Order.DAY
+ or 
+0
+ or 
+timedelta()
+: a day valid until
+    the 
+End of the Session
+ (aka 
+day
+ order) will be generated
+
+numeric value
+: This is assumed to be a value corresponding
+    to a datetime in 
+matplotlib
+ coding (the one used by
+
+backtrader
+) and will used to generate an order valid until
+    that time (
+good till date
+)
+
+tradeid
+ (default: 
+0
+)
+
+This is an internal value applied by 
+backtrader
+ to keep track
+of overlapping trades on the same asset. This 
+tradeid
+ is sent
+back to the 
+strategy
+ when notifying changes to the status of the
+orders.
+
+oco
+ (default: 
+None
+)
+
+Another 
+order
+ instance. This order will become part of an OCO
+(Order Cancel Others) group. The execution of one of the orders,
+immediately cancels all others in the same group
+
+parent
+ (default: 
+None
+)
+
+Controls the relationship of a group of orders, for example a buy
+which is bracketed by a high-side limit sell and a low side stop
+sell. The high/low side orders remain inactive until the parent
+order has been either executed (they become active) or is
+canceled/expires (the children are also canceled) bracket orders
+have the same size
+
+transmit
+ (default: 
+True
+)
+
+Indicates if the order has to be 
+transmitted
+, ie: not only
+placed in the broker but also issued. This is meant for example to
+control bracket orders, in which one disables the transmission for
+the parent and 1
+st
+ set of children and activates it for the last
+children, which triggers the full placement of all bracket orders.
+
+**kwargs
+: additional broker implementations may support extra
+    parameters. 
+backtrader
+ will pass the 
+kwargs
+ down to the
+    created order objects
+
+Example: if the 4 order execution types directly supported by
+
+backtrader
+ are not enough, in the case of for example
+
+Interactive Brokers
+ the following could be passed as 
+kwargs
+:
+
+```
+orderType='LIT', lmtPrice=10.0, auxPrice=9.8
+
+```
+
+This would override the settings created by 
+backtrader
+ and
+generate a 
+LIMIT IF TOUCHED
+ order with a 
+touched
+ price of 9.8
+and a 
+limit
+ price of 10.0.
+
+Returns
+
+the submitted order
+
+sell(data=None, size=None, price=None, plimit=None, exectype=None, valid=None, tradeid=0, oco=None, trailamount=None, trailpercent=None, parent=None, transmit=True, **kwargs)
+
+To create a selll (short) order and send it to the broker
+
+See the documentation for 
+buy
+ for an explanation of the parameters
+
+Returns: the submitted order
+
+close(data=None, size=None, **kwargs)
+
+Counters a long/short position closing it
+
+See the documentation for 
+buy
+ for an explanation of the parameters
+
+Note
+
+size
+: automatically calculated from the existing position if
+    not provided (default: 
+None
+) by the caller
+
+Returns: the submitted order
+
+cancel(order)
+
+Cancels the order in the broker
+
+buy_bracket(data=None, size=None, price=None, plimit=None, exectype=2, valid=None, tradeid=0, trailamount=None, trailpercent=None, oargs={}, stopprice=None, stopexec=3, stopargs={}, limitprice=None, limitexec=2, limitargs={}, **kwargs)
+
+Create a bracket order group (low side - buy order - high side). The
+default behavior is as follows:
+
+Issue a 
+buy
+ order with execution 
+Limit
+
+Issue a 
+low side
+ bracket 
+sell
+ order with execution 
+Stop
+
+Issue a 
+high side
+ bracket 
+sell
+ order with execution
+
+Limit
+.
+
+See below for the different parameters
+
+data
+ (default: 
+None
+)
+
+For which data the order has to be created. If 
+None
+ then the
+first data in the system, 
+self.datas[0] or self.data0
+ (aka
+
+self.data
+) will be used
+
+size
+ (default: 
+None
+)
+
+Size to use (positive) of units of data to use for the order.
+
+If 
+None
+ the 
+sizer
+ instance retrieved via 
+getsizer
+ will
+be used to determine the size.
+
+Note
+
+The same size is applied to all 3 orders of the bracket
+
+price
+ (default: 
+None
+)
+
+Price to use (live brokers may place restrictions on the actual
+format if it does not comply to minimum tick size requirements)
+
+None
+ is valid for 
+Market
+ and 
+Close
+ orders (the market
+determines the price)
+
+For 
+Limit
+, 
+Stop
+ and 
+StopLimit
+ orders this value
+determines the trigger point (in the case of 
+Limit
+ the trigger
+is obviously at which price the order should be matched)
+
+plimit
+ (default: 
+None
+)
+
+Only applicable to 
+StopLimit
+ orders. This is the price at which
+to set the implicit 
+Limit
+ order, once the 
+Stop
+ has been
+triggered (for which 
+price
+ has been used)
+
+trailamount
+ (default: 
+None
+)
+
+If the order type is StopTrail or StopTrailLimit, this is an
+absolute amount which determines the distance to the price (below
+for a Sell order and above for a buy order) to keep the trailing
+stop
+
+trailpercent
+ (default: 
+None
+)
+
+If the order type is StopTrail or StopTrailLimit, this is a
+percentage amount which determines the distance to the price (below
+for a Sell order and above for a buy order) to keep the trailing
+stop (if 
+trailamount
+ is also specified it will be used)
+
+exectype
+ (default: 
+bt.Order.Limit
+)
+
+Possible values: (see the documentation for the method 
+buy
+
+valid
+ (default: 
+None
+)
+
+Possible values: (see the documentation for the method 
+buy
+
+tradeid
+ (default: 
+0
+)
+
+Possible values: (see the documentation for the method 
+buy
+
+oargs
+ (default: 
+{}
+)
+
+Specific keyword arguments (in a 
+dict
+) to pass to the main side
+order. Arguments from the default 
+**kwargs
+ will be applied on
+top of this.
+
+**kwargs
+: additional broker implementations may support extra
+    parameters. 
+backtrader
+ will pass the 
+kwargs
+ down to the
+    created order objects
+
+Possible values: (see the documentation for the method 
+buy
+
+Note
+
+This 
+kwargs
+ will be applied to the 3 orders of a
+bracket. See below for specific keyword arguments for the low and
+high side orders
+
+stopprice
+ (default: 
+None
+)
+
+Specific price for the 
+low side
+ stop order
+
+stopexec
+ (default: 
+bt.Order.Stop
+)
+
+Specific execution type for the 
+low side
+ order
+
+stopargs
+ (default: 
+{}
+)
+
+Specific keyword arguments (in a 
+dict
+) to pass to the low side
+order. Arguments from the default 
+**kwargs
+ will be applied on
+top of this.
+
+limitprice
+ (default: 
+None
+)
+
+Specific price for the 
+high side
+ stop order
+
+stopexec
+ (default: 
+bt.Order.Limit
+)
+
+Specific execution type for the 
+high side
+ order
+
+limitargs
+ (default: 
+{}
+)
+
+Specific keyword arguments (in a 
+dict
+) to pass to the high side
+order. Arguments from the default 
+**kwargs
+ will be applied on
+top of this.
+
+High/Low Side orders can be suppressed by using:
+
+limitexec=None
+ to suppress the 
+high side
+
+stopexec=None
+ to suppress the 
+low side
+
+Returns
+
+A list containing the 3 orders [order, stop side, limit side]
+
+If high/low orders have been suppressed the return value will still
+  contain 3 orders, but those suppressed will have a value of
+
+None
+
+sell_bracket(data=None, size=None, price=None, plimit=None, exectype=2, valid=None, tradeid=0, trailamount=None, trailpercent=None, oargs={}, stopprice=None, stopexec=3, stopargs={}, limitprice=None, limitexec=2, limitargs={}, **kwargs)
+
+Create a bracket order group (low side - buy order - high side). The
+default behavior is as follows:
+
+Issue a 
+sell
+ order with execution 
+Limit
+
+Issue a 
+high side
+ bracket 
+buy
+ order with execution 
+Stop
+
+Issue a 
+low side
+ bracket 
+buy
+ order with execution 
+Limit
+.
+
+See 
+bracket_buy
+ for the meaning of the parameters
+
+High/Low Side orders can be suppressed by using:
+
+stopexec=None
+ to suppress the 
+high side
+
+limitexec=None
+ to suppress the 
+low side
+
+Returns
+
+A list containing the 3 orders [order, stop side, limit side]
+
+If high/low orders have been suppressed the return value will still
+  contain 3 orders, but those suppressed will have a value of
+
+None
+
+order_target_size(data=None, target=0, **kwargs)
+
+Place an order to rebalance a position to have final size of 
+target
+
+The current 
+position
+ size is taken into account as the start point
+to achieve 
+target
+
+If 
+target
+ > 
+pos.size
+ -> buy 
+target - pos.size
+
+If 
+target
+ < 
+pos.size
+ -> sell 
+pos.size - target
+
+It returns either:
+
+The generated order
+
+or
+
+None
+ if no order has been issued (
+target == position.size
+)
+
+order_target_value(data=None, target=0.0, price=None, **kwargs)
+
+Place an order to rebalance a position to have final value of
+
+target
+
+The current 
+value
+ is taken into account as the start point to
+achieve 
+target
+
+If no 
+target
+ then close postion on data
+
+If 
+target
+ > 
+value
+ then buy on data
+
+If 
+target
+ < 
+value
+ then sell on data
+
+It returns either:
+
+The generated order
+
+or
+
+None
+ if no order has been issued
+
+order_target_percent(data=None, target=0.0, **kwargs)
+
+Place an order to rebalance a position to have final value of
+
+target
+ percentage of current portfolio 
+value
+
+target
+ is expressed in decimal: 
+0.05
+ -> 
+5%
+
+It uses 
+order_target_value
+ to execute the order.
+
+Example
+
+target=0.05
+ and portfolio value is 
+100
+
+The 
+value
+ to be reached is 
+0.05 * 100 = 5
+
+5
+ is passed as the 
+target
+ value to 
+order_target_value
+
+The current 
+value
+ is taken into account as the start point to
+achieve 
+target
+
+The 
+position.size
+ is used to determine if a position is 
+long
+ /
+
+short
+
+If 
+target
+ > 
+value
+
+buy if 
+pos.size >= 0
+ (Increase a long position)
+
+sell if 
+pos.size < 0
+ (Increase a short position)
+
+If 
+target
+ < 
+value
+
+sell if 
+pos.size >= 0
+ (Decrease a long position)
+
+buy if 
+pos.size < 0
+ (Decrease a short position)
+
+It returns either:
+
+The generated order
+
+or
+
+None
+ if no order has been issued (
+target == position.size
+)
+
+getsizer()
+
+Returns the sizer which is in used if automatic statke calculation is
+used
+
+Also available as 
+sizer
+
+setsizer(sizer)
+
+Replace the default (fixed stake) sizer
+
+getsizing(data=None, isbuy=True)
+
+Return the stake calculated by the sizer instance for the current
+situation
+
+getposition(data=None, broker=None)
+
+Returns the current position for a given data in a given broker.
+
+If both are None, the main data and the default broker will be used
+
+A property 
+position
+ is also available
+
+getpositionbyname(name=None, broker=None)
+
+Returns the current position for a given name in a given broker.
+
+If both are None, the main data and the default broker will be used
+
+A property 
+positionbyname
+ is also available
+
+getpositionsbyname(broker=None)
+
+Returns the current by name positions directly from the broker
+
+If the given 
+broker
+ is None, the default broker will be used
+
+A property 
+positionsbyname
+ is also available
+
+getdatanames()
+
+Returns a list of the existing data names
+
+getdatabyname(name)
+
+Returns a given data by name using the environment (cerebro)
+
+add_timer(when, offset=datetime.timedelta(0), repeat=datetime.timedelta(0), weekdays=[], weekcarry=False, monthdays=[], monthcarry=True, allow=None, tzdata=None, cheat=False, *args, **kwargs)
+
+Note
+
+Can be called during 
+__init__
+ or 
+start
+
+Schedules a timer to invoke either a specified callback or the
+
+notify_timer
+ of one or more strategies.
+
+Parameters
+
+when
+ (
+-
+) – can be
+
+datetime.time
+ instance (see below 
+tzdata
+)
+
+bt.timer.SESSION_START
+ to reference a session start
+
+bt.timer.SESSION_END
+ to reference a session end
+
+offset
+ which must be a 
+datetime.timedelta
+ instance
+
+Used to offset the value 
+when
+. It has a meaningful use in
+  combination with 
+SESSION_START
+ and 
+SESSION_END
+, to indicated
+  things like a timer being called 
+15 minutes
+ after the session
+  start.
+
+repeat
+ which must be a 
+datetime.timedelta
+ instance
+
+Indicates if after a 1
+st
+ call, further calls will be scheduled
+within the same session at the scheduled 
+repeat
+ delta
+
+Once the timer goes over the end of the session it is reset to the
+original value for 
+when
+
+weekdays
+: a 
+sorted
+ iterable with integers indicating on
+    which days (iso codes, Monday is 1, Sunday is 7) the timers can
+    be actually invoked
+
+If not specified, the timer will be active on all days
+
+weekcarry
+ (default: 
+False
+). If 
+True
+ and the weekday was
+    not seen (ex: trading holiday), the timer will be executed on the
+    next day (even if in a new week)
+
+monthdays
+: a 
+sorted
+ iterable with integers indicating on
+    which days of the month a timer has to be executed. For example
+    always on day 
+15
+ of the month
+
+If not specified, the timer will be active on all days
+
+monthcarry
+ (default: 
+True
+). If the day was not seen
+    (weekend, trading holiday), the timer will be executed on the next
+    available day.
+
+allow
+ (default: 
+None
+). A callback which receives a
+    datetime.date` instance and returns 
+True
+ if the date is
+    allowed for timers or else returns 
+False
+
+tzdata
+ which can be either 
+None
+ (default), a 
+pytz
+
+    instance or a 
+data feed
+ instance.
+
+None
+: 
+when
+ is interpreted at face value (which translates
+to handling it as if it where UTC even if it’s not)
+
+pytz
+ instance: 
+when
+ will be interpreted as being specified
+in the local time specified by the timezone instance.
+
+data feed
+ instance: 
+when
+ will be interpreted as being
+specified in the local time specified by the 
+tz
+ parameter of
+the data feed instance.
+
+Note
+
+If 
+when
+ is either 
+SESSION_START
+ or 
+SESSION_END
+ and 
+tzdata
+
+is 
+None
+, the 1
+st
+
+data feed
+ in the system (aka 
+self.data0
+)
+will be used as the reference to find out the session times.
+
+cheat
+ (default 
+False
+) if 
+True
+ the timer will be called
+    before the broker has a chance to evaluate the orders. This opens
+    the chance to issue orders based on opening price for example right
+    before the session starts
+
+*args
+: any extra args will be passed to 
+notify_timer
+
+**kwargs
+: any extra kwargs will be passed to 
+notify_timer
+
+Return Value:
+
+The created timer
+
+notify_timer(timer, when, *args, **kwargs)
+
+Receives a timer notification where 
+timer
+ is the timer which was
+returned by 
+add_timer
+, and 
+when
+ is the calling time. 
+args
+
+and 
+kwargs
+ are any additional arguments passed to 
+add_timer
+
+The actual 
+when
+ time can be later, but the system may have not be
+able to call the timer before. This value is the timer value and no the
+system time.

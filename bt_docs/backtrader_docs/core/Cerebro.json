@@ -1,0 +1,290 @@
+{
+    "name": "Cerebro",
+    "module": "backtrader.cerebro",
+    "doc": "Params:\n\n- ``preload`` (default: ``True``)\n\n  Whether to preload the different ``data feeds`` passed to cerebro for\n  the Strategies\n\n- ``runonce`` (default: ``True``)\n\n  Run ``Indicators`` in vectorized mode to speed up the entire system.\n  Strategies and Observers will always be run on an event based basis\n\n- ``live`` (default: ``False``)\n\n  If no data has reported itself as *live* (via the data's ``islive``\n  method but the end user still want to run in ``live`` mode, this\n  parameter can be set to true\n\n  This will simultaneously deactivate ``preload`` and ``runonce``. It\n  will have no effect on memory saving schemes.\n\n  Run ``Indicators`` in vectorized mode to speed up the entire system.\n  Strategies and Observers will always be run on an event based basis\n\n- ``maxcpus`` (default: None -> all available cores)\n\n   How many cores to use simultaneously for optimization\n\n- ``stdstats`` (default: ``True``)\n\n  If True default Observers will be added: Broker (Cash and Value),\n  Trades and BuySell\n\n- ``oldbuysell`` (default: ``False``)\n\n  If ``stdstats`` is ``True`` and observers are getting automatically\n  added, this switch controls the main behavior of the ``BuySell``\n  observer\n\n  - ``False``: use the modern behavior in which the buy / sell signals\n    are plotted below / above the low / high prices respectively to avoid\n    cluttering the plot\n\n  - ``True``: use the deprecated behavior in which the buy / sell signals\n    are plotted where the average price of the order executions for the\n    given moment in time is. This will of course be on top of an OHLC bar\n    or on a Line on Cloe bar, difficulting the recognition of the plot.\n\n- ``oldtrades`` (default: ``False``)\n\n  If ``stdstats`` is ``True`` and observers are getting automatically\n  added, this switch controls the main behavior of the ``Trades``\n  observer\n\n  - ``False``: use the modern behavior in which trades for all datas are\n    plotted with different markers\n\n  - ``True``: use the old Trades observer which plots the trades with the\n    same markers, differentiating only if they are positive or negative\n\n- ``exactbars`` (default: ``False``)\n\n  With the default value each and every value stored in a line is kept in\n  memory\n\n  Possible values:\n    - ``True`` or ``1``: all \"lines\" objects reduce memory usage to the\n      automatically calculated minimum period.\n\n      If a Simple Moving Average has a period of 30, the underlying data\n      will have always a running buffer of 30 bars to allow the\n      calculation of the Simple Moving Average\n\n      - This setting will deactivate ``preload`` and ``runonce``\n      - Using this setting also deactivates **plotting**\n\n    - ``-1``: datafreeds and indicators/operations at strategy level will\n      keep all data in memory.\n\n      For example: a ``RSI`` internally uses the indicator ``UpDay`` to\n      make calculations. This subindicator will not keep all data in\n      memory\n\n      - This allows to keep ``plotting`` and ``preloading`` active.\n\n      - ``runonce`` will be deactivated\n\n    - ``-2``: data feeds and indicators kept as attributes of the\n      strategy will keep all points in memory.\n\n      For example: a ``RSI`` internally uses the indicator ``UpDay`` to\n      make calculations. This subindicator will not keep all data in\n      memory\n\n      If in the ``__init__`` something like\n      ``a = self.data.close - self.data.high`` is defined, then ``a``\n      will not keep all data in memory\n\n      - This allows to keep ``plotting`` and ``preloading`` active.\n\n      - ``runonce`` will be deactivated\n\n- ``objcache`` (default: ``False``)\n\n  Experimental option to implement a cache of lines objects and reduce\n  the amount of them. Example from UltimateOscillator::\n\n    bp = self.data.close - TrueLow(self.data)\n    tr = TrueRange(self.data)  # -> creates another TrueLow(self.data)\n\n  If this is ``True`` the 2nd ``TrueLow(self.data)`` inside ``TrueRange``\n  matches the signature of the one in the ``bp`` calculation. It will be\n  reused.\n\n  Corner cases may happen in which this drives a line object off its\n  minimum period and breaks things and it is therefore disabled.\n\n- ``writer`` (default: ``False``)\n\n  If set to ``True`` a default WriterFile will be created which will\n  print to stdout. It will be added to the strategy (in addition to any\n  other writers added by the user code)\n\n- ``tradehistory`` (default: ``False``)\n\n  If set to ``True``, it will activate update event logging in each trade\n  for all strategies. This can also be accomplished on a per strategy\n  basis with the strategy method ``set_tradehistory``\n\n- ``optdatas`` (default: ``True``)\n\n  If ``True`` and optimizing (and the system can ``preload`` and use\n  ``runonce``, data preloading will be done only once in the main process\n  to save time and resources.\n\n  The tests show an approximate ``20%`` speed-up moving from a sample\n  execution in ``83`` seconds to ``66``\n\n- ``optreturn`` (default: ``True``)\n\n  If ``True`` the optimization results will not be full ``Strategy``\n  objects (and all *datas*, *indicators*, *observers* ...) but and object\n  with the following attributes (same as in ``Strategy``):\n\n    - ``params`` (or ``p``) the strategy had for the execution\n    - ``analyzers`` the strategy has executed\n\n  In most occassions, only the *analyzers* and with which *params* are\n  the things needed to evaluate a the performance of a strategy. If\n  detailed analysis of the generated values for (for example)\n  *indicators* is needed, turn this off\n\n  The tests show a ``13% - 15%`` improvement in execution time. Combined\n  with ``optdatas`` the total gain increases to a total speed-up of\n  ``32%`` in an optimization run.\n\n- ``oldsync`` (default: ``False``)\n\n  Starting with release 1.9.0.99 the synchronization of multiple datas\n  (same or different timeframes) has been changed to allow datas of\n  different lengths.\n\n  If the old behavior with data0 as the master of the system is wished,\n  set this parameter to true\n\n- ``tz`` (default: ``None``)\n\n  Adds a global timezone for strategies. The argument ``tz`` can be\n\n    - ``None``: in this case the datetime displayed by strategies will be\n      in UTC, which has been always the standard behavior\n\n    - ``pytz`` instance. It will be used as such to convert UTC times to\n      the chosen timezone\n\n    - ``string``. Instantiating a ``pytz`` instance will be attempted.\n\n    - ``integer``. Use, for the strategy, the same timezone as the\n      corresponding ``data`` in the ``self.datas`` iterable (``0`` would\n      use the timezone from ``data0``)\n\n- ``cheat_on_open`` (default: ``False``)\n\n  The ``next_open`` method of strategies will be called. This happens\n  before ``next`` and before the broker has had a chance to evaluate\n  orders. The indicators have not yet been recalculated. This allows\n  issuing an orde which takes into account the indicators of the previous\n  day but uses the ``open`` price for stake calculations\n\n  For cheat_on_open order execution, it is also necessary to make the\n  call ``cerebro.broker.set_coo(True)`` or instantite a broker with\n  ``BackBroker(coo=True)`` (where *coo* stands for cheat-on-open) or set\n  the ``broker_coo`` parameter to ``True``. Cerebro will do it\n  automatically unless disabled below.\n\n- ``broker_coo`` (default: ``True``)\n\n  This will automatically invoke the ``set_coo`` method of the broker\n  with ``True`` to activate ``cheat_on_open`` execution. Will only do it\n  if ``cheat_on_open`` is also ``True``\n\n- ``quicknotify`` (default: ``False``)\n\n  Broker notifications are delivered right before the delivery of the\n  *next* prices. For backtesting this has no implications, but with live\n  brokers a notification can take place long before the bar is\n  delivered. When set to ``True`` notifications will be delivered as soon\n  as possible (see ``qcheck`` in live feeds)\n\n  Set to ``False`` for compatibility. May be changed to ``True``",
+    "constructor_signature": "(self)",
+    "methods": [
+        {
+            "name": "_add_timer",
+            "signature": "(self, owner, when, offset=datetime.timedelta(0), repeat=datetime.timedelta(0), weekdays=[], weekcarry=False, monthdays=[], monthcarry=True, allow=None, tzdata=None, strats=False, cheat=False, *args, **kwargs)",
+            "doc": "Internal method to really create the timer (not started yet) which\ncan be called by cerebro instances or other objects which can access\ncerebro"
+        },
+        {
+            "name": "_brokernotify",
+            "signature": "(self)",
+            "doc": "Internal method which kicks the broker and delivers any broker\nnotification to the strategy"
+        },
+        {
+            "name": "_check_timers",
+            "signature": "(self, runstrats, dt0, cheat=False)",
+            "doc": ""
+        },
+        {
+            "name": "_datanotify",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_disable_runonce",
+            "signature": "(self)",
+            "doc": "API for lineiterators to disable runonce (see HeikinAshi)"
+        },
+        {
+            "name": "_init_stcount",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_next_stid",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_next_writers",
+            "signature": "(self, runstrats)",
+            "doc": ""
+        },
+        {
+            "name": "_notify_data",
+            "signature": "(self, data, status, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "_notify_store",
+            "signature": "(self, msg, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "_runnext",
+            "signature": "(self, runstrats)",
+            "doc": "Actual implementation of run in full next mode. All objects have its\n``next`` method invoke on each data arrival"
+        },
+        {
+            "name": "_runnext_old",
+            "signature": "(self, runstrats)",
+            "doc": "Actual implementation of run in full next mode. All objects have its\n``next`` method invoke on each data arrival"
+        },
+        {
+            "name": "_runonce",
+            "signature": "(self, runstrats)",
+            "doc": "Actual implementation of run in vector mode.\n\nStrategies are still invoked on a pseudo-event mode in which ``next``\nis called for each data arrival"
+        },
+        {
+            "name": "_runonce_old",
+            "signature": "(self, runstrats)",
+            "doc": "Actual implementation of run in vector mode.\nStrategies are still invoked on a pseudo-event mode in which ``next``\nis called for each data arrival"
+        },
+        {
+            "name": "_storenotify",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "add_order_history",
+            "signature": "(self, orders, notify=True)",
+            "doc": "Add a history of orders to be directly executed in the broker for\nperformance evaluation\n\n  - ``orders``: is an iterable (ex: list, tuple, iterator, generator)\n    in which each element will be also an iterable (with length) with\n    the following sub-elements (2 formats are possible)\n\n    ``[datetime, size, price]`` or ``[datetime, size, price, data]``\n\n    **Note**: it must be sorted (or produce sorted elements) by\n      datetime ascending\n\n    where:\n\n      - ``datetime`` is a python ``date/datetime`` instance or a string\n        with format YYYY-MM-DD[THH:MM:SS[.us]] where the elements in\n        brackets are optional\n      - ``size`` is an integer (positive to *buy*, negative to *sell*)\n      - ``price`` is a float/integer\n      - ``data`` if present can take any of the following values\n\n        - *None* - The 1st data feed will be used as target\n        - *integer* - The data with that index (insertion order in\n          **Cerebro**) will be used\n        - *string* - a data with that name, assigned for example with\n          ``cerebro.addata(data, name=value)``, will be the target\n\n  - ``notify`` (default: *True*)\n\n    If ``True`` the 1st strategy inserted in the system will be\n    notified of the artificial orders created following the information\n    from each order in ``orders``\n\n**Note**: Implicit in the description is the need to add a data feed\n  which is the target of the orders. This is for example needed by\n  analyzers which track for example the returns"
+        },
+        {
+            "name": "add_signal",
+            "signature": "(self, sigtype, sigcls, *sigargs, **sigkwargs)",
+            "doc": "Adds a signal to the system which will be later added to a\n``SignalStrategy``"
+        },
+        {
+            "name": "add_timer",
+            "signature": "(self, when, offset=datetime.timedelta(0), repeat=datetime.timedelta(0), weekdays=[], weekcarry=False, monthdays=[], monthcarry=True, allow=None, tzdata=None, strats=False, cheat=False, *args, **kwargs)",
+            "doc": "Schedules a timer to invoke ``notify_timer``\n\nArguments:\n\n  - ``when``: can be\n\n    - ``datetime.time`` instance (see below ``tzdata``)\n    - ``bt.timer.SESSION_START`` to reference a session start\n    - ``bt.timer.SESSION_END`` to reference a session end\n\n - ``offset`` which must be a ``datetime.timedelta`` instance\n\n   Used to offset the value ``when``. It has a meaningful use in\n   combination with ``SESSION_START`` and ``SESSION_END``, to indicated\n   things like a timer being called ``15 minutes`` after the session\n   start.\n\n  - ``repeat`` which must be a ``datetime.timedelta`` instance\n\n    Indicates if after a 1st call, further calls will be scheduled\n    within the same session at the scheduled ``repeat`` delta\n\n    Once the timer goes over the end of the session it is reset to the\n    original value for ``when``\n\n  - ``weekdays``: a **sorted** iterable with integers indicating on\n    which days (iso codes, Monday is 1, Sunday is 7) the timers can\n    be actually invoked\n\n    If not specified, the timer will be active on all days\n\n  - ``weekcarry`` (default: ``False``). If ``True`` and the weekday was\n    not seen (ex: trading holiday), the timer will be executed on the\n    next day (even if in a new week)\n\n  - ``monthdays``: a **sorted** iterable with integers indicating on\n    which days of the month a timer has to be executed. For example\n    always on day *15* of the month\n\n    If not specified, the timer will be active on all days\n\n  - ``monthcarry`` (default: ``True``). If the day was not seen\n    (weekend, trading holiday), the timer will be executed on the next\n    available day.\n\n  - ``allow`` (default: ``None``). A callback which receives a\n    `datetime.date`` instance and returns ``True`` if the date is\n    allowed for timers or else returns ``False``\n\n  - ``tzdata`` which can be either ``None`` (default), a ``pytz``\n    instance or a ``data feed`` instance.\n\n    ``None``: ``when`` is interpreted at face value (which translates\n    to handling it as if it where UTC even if it's not)\n\n    ``pytz`` instance: ``when`` will be interpreted as being specified\n    in the local time specified by the timezone instance.\n\n    ``data feed`` instance: ``when`` will be interpreted as being\n    specified in the local time specified by the ``tz`` parameter of\n    the data feed instance.\n\n    **Note**: If ``when`` is either ``SESSION_START`` or\n      ``SESSION_END`` and ``tzdata`` is ``None``, the 1st *data feed*\n      in the system (aka ``self.data0``) will be used as the reference\n      to find out the session times.\n\n  - ``strats`` (default: ``False``) call also the ``notify_timer`` of\n    strategies\n\n  - ``cheat`` (default ``False``) if ``True`` the timer will be called\n    before the broker has a chance to evaluate the orders. This opens\n    the chance to issue orders based on opening price for example right\n    before the session starts\n  - ``*args``: any extra args will be passed to ``notify_timer``\n\n  - ``**kwargs``: any extra kwargs will be passed to ``notify_timer``\n\nReturn Value:\n\n  - The created timer"
+        },
+        {
+            "name": "addanalyzer",
+            "signature": "(self, ancls, *args, **kwargs)",
+            "doc": "Adds an ``Analyzer`` class to the mix. Instantiation will be done at\n``run`` time"
+        },
+        {
+            "name": "addcalendar",
+            "signature": "(self, cal)",
+            "doc": "Adds a global trading calendar to the system. Individual data feeds\nmay have separate calendars which override the global one\n\n``cal`` can be an instance of ``TradingCalendar`` a string or an\ninstance of ``pandas_market_calendars``. A string will be will be\ninstantiated as a ``PandasMarketCalendar`` (which needs the module\n``pandas_market_calendar`` installed in the system.\n\nIf a subclass of `TradingCalendarBase` is passed (not an instance) it\nwill be instantiated"
+        },
+        {
+            "name": "adddata",
+            "signature": "(self, data, name=None)",
+            "doc": "Adds a ``Data Feed`` instance to the mix.\n\nIf ``name`` is not None it will be put into ``data._name`` which is\nmeant for decoration/plotting purposes."
+        },
+        {
+            "name": "adddatacb",
+            "signature": "(self, callback)",
+            "doc": "Adds a callback to get messages which would be handled by the\nnotify_data method\n\nThe signature of the callback must support the following:\n\n  - callback(data, status, \\*args, \\*\\*kwargs)\n\nThe actual ``*args`` and ``**kwargs`` received are implementation\ndefined (depend entirely on the *data/broker/store*) but in general one\nshould expect them to be *printable* to allow for reception and\nexperimentation."
+        },
+        {
+            "name": "addindicator",
+            "signature": "(self, indcls, *args, **kwargs)",
+            "doc": "Adds an ``Indicator`` class to the mix. Instantiation will be done at\n``run`` time in the passed strategies"
+        },
+        {
+            "name": "addobserver",
+            "signature": "(self, obscls, *args, **kwargs)",
+            "doc": "Adds an ``Observer`` class to the mix. Instantiation will be done at\n``run`` time"
+        },
+        {
+            "name": "addobservermulti",
+            "signature": "(self, obscls, *args, **kwargs)",
+            "doc": "Adds an ``Observer`` class to the mix. Instantiation will be done at\n``run`` time\n\nIt will be added once per \"data\" in the system. A use case is a\nbuy/sell observer which observes individual datas.\n\nA counter-example is the CashValue, which observes system-wide values"
+        },
+        {
+            "name": "addsizer",
+            "signature": "(self, sizercls, *args, **kwargs)",
+            "doc": "Adds a ``Sizer`` class (and args) which is the default sizer for any\nstrategy added to cerebro"
+        },
+        {
+            "name": "addsizer_byidx",
+            "signature": "(self, idx, sizercls, *args, **kwargs)",
+            "doc": "Adds a ``Sizer`` class by idx. This idx is a reference compatible to\nthe one returned by ``addstrategy``. Only the strategy referenced by\n``idx`` will receive this size"
+        },
+        {
+            "name": "addstore",
+            "signature": "(self, store)",
+            "doc": "Adds an ``Store`` instance to the if not already present"
+        },
+        {
+            "name": "addstorecb",
+            "signature": "(self, callback)",
+            "doc": "Adds a callback to get messages which would be handled by the\nnotify_store method\n\nThe signature of the callback must support the following:\n\n  - callback(msg, \\*args, \\*\\*kwargs)\n\nThe actual ``msg``, ``*args`` and ``**kwargs`` received are\nimplementation defined (depend entirely on the *data/broker/store*) but\nin general one should expect them to be *printable* to allow for\nreception and experimentation."
+        },
+        {
+            "name": "addstrategy",
+            "signature": "(self, strategy, *args, **kwargs)",
+            "doc": "Adds a ``Strategy`` class to the mix for a single pass run.\nInstantiation will happen during ``run`` time.\n\nargs and kwargs will be passed to the strategy as they are during\ninstantiation.\n\nReturns the index with which addition of other objects (like sizers)\ncan be referenced"
+        },
+        {
+            "name": "addtz",
+            "signature": "(self, tz)",
+            "doc": "This can also be done with the parameter ``tz``\n\nAdds a global timezone for strategies. The argument ``tz`` can be\n\n  - ``None``: in this case the datetime displayed by strategies will be\n    in UTC, which has been always the standard behavior\n\n  - ``pytz`` instance. It will be used as such to convert UTC times to\n    the chosen timezone\n\n  - ``string``. Instantiating a ``pytz`` instance will be attempted.\n\n  - ``integer``. Use, for the strategy, the same timezone as the\n    corresponding ``data`` in the ``self.datas`` iterable (``0`` would\n    use the timezone from ``data0``)"
+        },
+        {
+            "name": "addwriter",
+            "signature": "(self, wrtcls, *args, **kwargs)",
+            "doc": "Adds an ``Writer`` class to the mix. Instantiation will be done at\n``run`` time in cerebro"
+        },
+        {
+            "name": "chaindata",
+            "signature": "(self, *args, **kwargs)",
+            "doc": "Chains several data feeds into one\n\nIf ``name`` is passed as named argument and is not None it will be put\ninto ``data._name`` which is meant for decoration/plotting purposes.\n\nIf ``None``, then the name of the 1st data will be used"
+        },
+        {
+            "name": "getbroker",
+            "signature": "(self)",
+            "doc": "Returns the broker instance.\n\nThis is also available as a ``property`` by the name ``broker``"
+        },
+        {
+            "name": "iterize",
+            "signature": "(iterable)",
+            "doc": "Handy function which turns things into things that can be iterated upon\nincluding iterables"
+        },
+        {
+            "name": "notify_data",
+            "signature": "(self, data, status, *args, **kwargs)",
+            "doc": "Receive data notifications in cerebro\n\nThis method can be overridden in ``Cerebro`` subclasses\n\nThe actual ``*args`` and ``**kwargs`` received are\nimplementation defined (depend entirely on the *data/broker/store*) but\nin general one should expect them to be *printable* to allow for\nreception and experimentation."
+        },
+        {
+            "name": "notify_store",
+            "signature": "(self, msg, *args, **kwargs)",
+            "doc": "Receive store notifications in cerebro\n\nThis method can be overridden in ``Cerebro`` subclasses\n\nThe actual ``msg``, ``*args`` and ``**kwargs`` received are\nimplementation defined (depend entirely on the *data/broker/store*) but\nin general one should expect them to be *printable* to allow for\nreception and experimentation."
+        },
+        {
+            "name": "notify_timer",
+            "signature": "(self, timer, when, *args, **kwargs)",
+            "doc": "Receives a timer notification where ``timer`` is the timer which was\nreturned by ``add_timer``, and ``when`` is the calling time. ``args``\nand ``kwargs`` are any additional arguments passed to ``add_timer``\n\nThe actual ``when`` time can be later, but the system may have not be\nable to call the timer before. This value is the timer value and no the\nsystem time."
+        },
+        {
+            "name": "optcallback",
+            "signature": "(self, cb)",
+            "doc": "Adds a *callback* to the list of callbacks that will be called with the\noptimizations when each of the strategies has been run\n\nThe signature: cb(strategy)"
+        },
+        {
+            "name": "optstrategy",
+            "signature": "(self, strategy, *args, **kwargs)",
+            "doc": "Adds a ``Strategy`` class to the mix for optimization. Instantiation\nwill happen during ``run`` time.\n\nargs and kwargs MUST BE iterables which hold the values to check.\n\nExample: if a Strategy accepts a parameter ``period``, for optimization\npurposes the call to ``optstrategy`` looks like:\n\n  - cerebro.optstrategy(MyStrategy, period=(15, 25))\n\nThis will execute an optimization for values 15 and 25. Whereas\n\n  - cerebro.optstrategy(MyStrategy, period=range(15, 25))\n\nwill execute MyStrategy with ``period`` values 15 -> 25 (25 not\nincluded, because ranges are semi-open in Python)\n\nIf a parameter is passed but shall not be optimized the call looks\nlike:\n\n  - cerebro.optstrategy(MyStrategy, period=(15,))\n\nNotice that ``period`` is still passed as an iterable ... of just 1\nelement\n\n``backtrader`` will anyhow try to identify situations like:\n\n  - cerebro.optstrategy(MyStrategy, period=15)\n\nand will create an internal pseudo-iterable if possible"
+        },
+        {
+            "name": "plot",
+            "signature": "(self, plotter=None, numfigs=1, iplot=True, start=None, end=None, width=16, height=9, dpi=300, tight=True, use=None, **kwargs)",
+            "doc": "Plots the strategies inside cerebro\n\nIf ``plotter`` is None a default ``Plot`` instance is created and\n``kwargs`` are passed to it during instantiation.\n\n``numfigs`` split the plot in the indicated number of charts reducing\nchart density if wished\n\n``iplot``: if ``True`` and running in a ``notebook`` the charts will be\ndisplayed inline\n\n``use``: set it to the name of the desired matplotlib backend. It will\ntake precedence over ``iplot``\n\n``start``: An index to the datetime line array of the strategy or a\n``datetime.date``, ``datetime.datetime`` instance indicating the start\nof the plot\n\n``end``: An index to the datetime line array of the strategy or a\n``datetime.date``, ``datetime.datetime`` instance indicating the end\nof the plot\n\n``width``: in inches of the saved figure\n\n``height``: in inches of the saved figure\n\n``dpi``: quality in dots per inches of the saved figure\n\n``tight``: only save actual content and not the frame of the figure"
+        },
+        {
+            "name": "replaydata",
+            "signature": "(self, dataname, name=None, **kwargs)",
+            "doc": "Adds a ``Data Feed`` to be replayed by the system\n\nIf ``name`` is not None it will be put into ``data._name`` which is\nmeant for decoration/plotting purposes.\n\nAny other kwargs like ``timeframe``, ``compression``, ``todate`` which\nare supported by the replay filter will be passed transparently"
+        },
+        {
+            "name": "resampledata",
+            "signature": "(self, dataname, name=None, **kwargs)",
+            "doc": "Adds a ``Data Feed`` to be resample by the system\n\nIf ``name`` is not None it will be put into ``data._name`` which is\nmeant for decoration/plotting purposes.\n\nAny other kwargs like ``timeframe``, ``compression``, ``todate`` which\nare supported by the resample filter will be passed transparently"
+        },
+        {
+            "name": "rolloverdata",
+            "signature": "(self, *args, **kwargs)",
+            "doc": "Chains several data feeds into one\n\nIf ``name`` is passed as named argument and is not None it will be put\ninto ``data._name`` which is meant for decoration/plotting purposes.\n\nIf ``None``, then the name of the 1st data will be used\n\nAny other kwargs will be passed to the RollOver class"
+        },
+        {
+            "name": "run",
+            "signature": "(self, **kwargs)",
+            "doc": "The core method to perform backtesting. Any ``kwargs`` passed to it\nwill affect the value of the standard parameters ``Cerebro`` was\ninstantiated with.\n\nIf ``cerebro`` has not datas the method will immediately bail out.\n\nIt has different return values:\n\n  - For No Optimization: a list contanining instances of the Strategy\n    classes added with ``addstrategy``\n\n  - For Optimization: a list of lists which contain instances of the\n    Strategy classes added with ``addstrategy``"
+        },
+        {
+            "name": "runstop",
+            "signature": "(self)",
+            "doc": "If invoked from inside a strategy or anywhere else, including other\nthreads the execution will stop as soon as possible."
+        },
+        {
+            "name": "runstrategies",
+            "signature": "(self, iterstrat, predata=False)",
+            "doc": "Internal method invoked by ``run``` to run a set of strategies"
+        },
+        {
+            "name": "set_fund_history",
+            "signature": "(self, fund)",
+            "doc": "Add a history of orders to be directly executed in the broker for\nperformance evaluation\n\n  - ``fund``: is an iterable (ex: list, tuple, iterator, generator)\n    in which each element will be also an iterable (with length) with\n    the following sub-elements (2 formats are possible)\n\n    ``[datetime, share_value, net asset value]``\n\n    **Note**: it must be sorted (or produce sorted elements) by\n      datetime ascending\n\n    where:\n\n      - ``datetime`` is a python ``date/datetime`` instance or a string\n        with format YYYY-MM-DD[THH:MM:SS[.us]] where the elements in\n        brackets are optional\n      - ``share_value`` is an float/integer\n      - ``net_asset_value`` is a float/integer"
+        },
+        {
+            "name": "setbroker",
+            "signature": "(self, broker)",
+            "doc": "Sets a specific ``broker`` instance for this strategy, replacing the\none inherited from cerebro."
+        },
+        {
+            "name": "signal_accumulate",
+            "signature": "(self, onoff)",
+            "doc": "If signals are added to the system and the ``accumulate`` value is\nset to True, entering the market when already in the market, will be\nallowed to increase a position"
+        },
+        {
+            "name": "signal_concurrent",
+            "signature": "(self, onoff)",
+            "doc": "If signals are added to the system and the ``concurrent`` value is\nset to True, concurrent orders will be allowed"
+        },
+        {
+            "name": "signal_strategy",
+            "signature": "(self, stratcls, *args, **kwargs)",
+            "doc": "Adds a SignalStrategy subclass which can accept signals"
+        },
+        {
+            "name": "stop_writers",
+            "signature": "(self, runstrats)",
+            "doc": ""
+        }
+    ],
+    "attributes": {
+        "broker": {
+            "value": "<property object at 0x00000238E4F341D0>",
+            "doc": "Returns the broker instance.\n\nThis is also available as a ``property`` by the name ``broker``"
+        },
+        "packages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "frompackages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        }
+    },
+    "input_schema": {},
+    "params_schema": {},
+    "output_schema": {}
+}

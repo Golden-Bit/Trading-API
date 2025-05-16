@@ -1,0 +1,372 @@
+Observers Reference
+
+Benchmark
+
+class backtrader.observers.Benchmark()
+
+This observer stores the 
+returns
+ of the strategy and the 
+return
+ of a
+reference asset which is one of the datas passed to the system.
+
+Params:
+
+timeframe
+ (default: 
+None
+)
+    If 
+None
+ then the complete return over the entire backtested period
+    will be reported
+
+compression
+ (default: 
+None
+)
+
+Only used for sub-day timeframes to for example work on an hourly
+timeframe by specifying “TimeFrame.Minutes” and 60 as compression
+
+data
+ (default: 
+None
+)
+
+Reference asset to track to allow for comparison.
+
+NOTE
+: this data must have been added to a 
+cerebro
+ instance with
+
+addata
+, 
+resampledata
+ or 
+replaydata
+.
+
+_doprenext
+ (default: 
+False
+)
+
+Benchmarking will take place from the point at which the strategy kicks
+in (i.e.: when the minimum period of the strategy has been met).
+
+Setting this to 
+True
+ will record benchmarking values from the
+starting point of the data feeds
+
+firstopen
+ (default: 
+False
+)
+
+Keepint it as 
+False
+ ensures that the 1
+st
+ comparison point between
+the value and the benchmark starts at 0%, because the benchmark will
+not use its opening price.
+
+See the 
+TimeReturn
+ analyzer reference for a full explanation of the
+meaning of the parameter
+
+fund
+ (default: 
+None
+)
+
+If 
+None
+ the actual mode of the broker (fundmode - True/False) will
+be autodetected to decide if the returns are based on the total net
+asset value or on the fund value. See 
+set_fundmode
+ in the broker
+documentation
+
+Set it to 
+True
+ or 
+False
+ for a specific behavior
+
+Remember that at any moment of a 
+run
+ the current values can be checked
+by looking at the 
+lines
+ by name at index 
+0
+.
+
+Broker
+
+class backtrader.observers.Broker(*args, **kwargs)
+
+This observer keeps track of the current cash amount and portfolio value in
+the broker (including the cash)
+
+Params: None
+
+Broker - Cash
+
+class backtrader.observers.Cash(*args, **kwargs)
+
+This observer keeps track of the current amount of cash in the broker
+
+Params: None
+
+Broker - Value
+
+class backtrader.observers.Value(*args, **kwargs)
+
+This observer keeps track of the current portfolio value in the broker
+including the cash
+
+Params:
+
+fund
+ (default: 
+None
+)
+
+If 
+None
+ the actual mode of the broker (fundmode - True/False) will
+be autodetected to decide if the returns are based on the total net
+asset value or on the fund value. See 
+set_fundmode
+ in the broker
+documentation
+
+Set it to 
+True
+ or 
+False
+ for a specific behavior
+
+BuySell
+
+class backtrader.observers.BuySell(*args, **kwargs)
+
+This observer keeps track of the individual buy/sell orders (individual
+executions) and will plot them on the chart along the data around the
+execution price level
+
+Params:
+
+```
+* `barplot` (default: `False`) Plot buy signals below the minimum and
+  sell signals above the maximum.
+
+  If `False` it will plot on the average price of executions during a
+  bar
+
+* `bardist` (default: `0.015` 1.5%) Distance to max/min when
+  `barplot` is `True`
+
+```
+
+DrawDown
+
+class backtrader.observers.DrawDown()
+
+This observer keeps track of the current drawdown level (plotted) and
+the maxdrawdown (not plotted) levels
+
+Params:
+
+fund
+ (default: 
+None
+)
+
+If 
+None
+ the actual mode of the broker (fundmode - True/False) will
+be autodetected to decide if the returns are based on the total net
+asset value or on the fund value. See 
+set_fundmode
+ in the broker
+documentation
+
+Set it to 
+True
+ or 
+False
+ for a specific behavior
+
+TimeReturn
+
+class backtrader.observers.TimeReturn()
+
+This observer stores the 
+returns
+ of the strategy.
+
+Params:
+
+timeframe
+ (default: 
+None
+)
+    If 
+None
+ then the complete return over the entire backtested period
+    will be reported
+
+Pass 
+TimeFrame.NoTimeFrame
+ to consider the entire dataset with no
+time constraints
+
+compression
+ (default: 
+None
+)
+
+Only used for sub-day timeframes to for example work on an hourly
+timeframe by specifying “TimeFrame.Minutes” and 60 as compression
+
+fund
+ (default: 
+None
+)
+
+If 
+None
+ the actual mode of the broker (fundmode - True/False) will
+be autodetected to decide if the returns are based on the total net
+asset value or on the fund value. See 
+set_fundmode
+ in the broker
+documentation
+
+Set it to 
+True
+ or 
+False
+ for a specific behavior
+
+Remember that at any moment of a 
+run
+ the current values can be checked
+by looking at the 
+lines
+ by name at index 
+0
+.
+
+Trades
+
+class backtrader.observers.Trades()
+
+This observer keeps track of full trades and plot the PnL level achieved
+when a trade is closed.
+
+A trade is open when a position goes from 0 (or crossing over 0) to X and
+is then closed when it goes back to 0 (or crosses over 0 in the opposite
+direction)
+
+Params:
+
+```
+* `pnlcomm` (def: `True`)
+
+  Show net/profit and loss, i.e.: after commission. If set to `False`
+  if will show the result of trades before commission
+
+```
+
+LogReturns
+
+class backtrader.observers.LogReturns()
+
+This observer stores the 
+log returns
+ of the strategy or a
+
+Params:
+
+timeframe
+ (default: 
+None
+)
+    If 
+None
+ then the complete return over the entire backtested period
+    will be reported
+
+Pass 
+TimeFrame.NoTimeFrame
+ to consider the entire dataset with no
+time constraints
+
+compression
+ (default: 
+None
+)
+
+Only used for sub-day timeframes to for example work on an hourly
+timeframe by specifying “TimeFrame.Minutes” and 60 as compression
+
+fund
+ (default: 
+None
+)
+
+If 
+None
+ the actual mode of the broker (fundmode - True/False) will
+be autodetected to decide if the returns are based on the total net
+asset value or on the fund value. See 
+set_fundmode
+ in the broker
+documentation
+
+Set it to 
+True
+ or 
+False
+ for a specific behavior
+
+Remember that at any moment of a 
+run
+ the current values can be checked
+by looking at the 
+lines
+ by name at index 
+0
+.
+
+LogReturns2
+
+class backtrader.observers.LogReturns2()
+
+Extends the observer LogReturns to show two instruments
+
+FundValue
+
+class backtrader.observers.FundValue(*args, **kwargs)
+
+This observer keeps track of the current fund-like value
+
+Params: None
+
+FundShares
+
+class backtrader.observers.FundShares(*args, **kwargs)
+
+This observer keeps track of the current fund-like shares
+
+Params: None

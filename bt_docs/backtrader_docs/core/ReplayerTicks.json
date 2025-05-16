@@ -1,0 +1,101 @@
+{
+    "name": "ReplayerTicks",
+    "module": "backtrader.resamplerfilter",
+    "doc": "This class replays data of a given timeframe to a larger timeframe.\n\nIt simulates the action of the market by slowly building up (for ex.) a\ndaily bar from tick/seconds/minutes data\n\nOnly when the bar is complete will the \"length\" of the data be changed\neffectively delivering a closed bar\n\nParams\n\n  - bar2edge (default: True)\n\n    replays using time boundaries as the target of the closed bar. For\n    example with a \"ticks -> 5 seconds\" the resulting 5 seconds bars will\n    be aligned to xx:00, xx:05, xx:10 ...\n\n  - adjbartime (default: False)\n\n    Use the time at the boundary to adjust the time of the delivered\n    resampled bar instead of the last seen timestamp. If resampling to \"5\n    seconds\" the time of the bar will be adjusted for example to hh:mm:05\n    even if the last seen timestamp was hh:mm:04.33\n\n    .. note::\n\n       Time will only be adjusted if \"bar2edge\" is True. It wouldn't make\n       sense to adjust the time if the bar has not been aligned to a\n       boundary\n\n    .. note:: if this parameter is True an extra tick with the *adjusted*\n              time will be introduced at the end of the *replayed* bar\n\n  - rightedge (default: True)\n\n    Use the right edge of the time boundaries to set the time.\n\n    If False and compressing to 5 seconds the time of a resampled bar for\n    seconds between hh:mm:00 and hh:mm:04 will be hh:mm:00 (the starting\n    boundary\n\n    If True the used boundary for the time will be hh:mm:05 (the ending\n    boundary)",
+    "constructor_signature": "(self, data)",
+    "methods": [
+        {
+            "name": "_adjusttime",
+            "signature": "(self, greater=False, forcedata=None)",
+            "doc": "Adjusts the time of calculated bar (from underlying data source) by\nusing the timeframe to the appropriate boundary, with compression taken\ninto account\n\nDepending on param ``rightedge`` uses the starting boundary or the\nending one"
+        },
+        {
+            "name": "_barover",
+            "signature": "(self, data)",
+            "doc": ""
+        },
+        {
+            "name": "_barover_days",
+            "signature": "(self, data)",
+            "doc": ""
+        },
+        {
+            "name": "_barover_months",
+            "signature": "(self, data)",
+            "doc": ""
+        },
+        {
+            "name": "_barover_subdays",
+            "signature": "(self, data)",
+            "doc": ""
+        },
+        {
+            "name": "_barover_weeks",
+            "signature": "(self, data)",
+            "doc": ""
+        },
+        {
+            "name": "_barover_years",
+            "signature": "(self, data)",
+            "doc": ""
+        },
+        {
+            "name": "_calcadjtime",
+            "signature": "(self, greater=False)",
+            "doc": ""
+        },
+        {
+            "name": "_checkbarover",
+            "signature": "(self, data, fromcheck=False, forcedata=None)",
+            "doc": ""
+        },
+        {
+            "name": "_dataonedge",
+            "signature": "(self, data)",
+            "doc": ""
+        },
+        {
+            "name": "_eoscheck",
+            "signature": "(self, data, seteos=True, exact=False)",
+            "doc": ""
+        },
+        {
+            "name": "_eosset",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_gettmpoint",
+            "signature": "(self, tm)",
+            "doc": "Returns the point of time intraday for a given time according to the\ntimeframe\n\n  - Ex 1: 00:05:00 in minutes -> point = 5\n  - Ex 2: 00:05:20 in seconds -> point = 5 * 60 + 20 = 320"
+        },
+        {
+            "name": "_latedata",
+            "signature": "(self, data)",
+            "doc": ""
+        },
+        {
+            "name": "check",
+            "signature": "(self, data, _forcedata=None)",
+            "doc": "Called to check if the current stored bar has to be delivered in\nspite of the data not having moved forward. If no ticks from a live\nfeed come in, a 5 second resampled bar could be delivered 20 seconds\nlater. When this method is called the wall clock (incl data time\noffset) is called to check if the time has gone so far as to have to\ndeliver the already stored data"
+        }
+    ],
+    "attributes": {
+        "packages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "frompackages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        }
+    },
+    "input_schema": {
+        "data": {
+            "default": null,
+            "annotation": "Any"
+        }
+    },
+    "params_schema": {},
+    "output_schema": {}
+}

@@ -1,0 +1,160 @@
+{
+    "name": "VWR",
+    "module": "backtrader.analyzers.vwr",
+    "doc": "Variability-Weighted Return: Better SharpeRatio with Log Returns\n\nAlias:\n\n  - VariabilityWeightedReturn\n\nSee:\n\n  - https://www.crystalbull.com/sharpe-ratio-better-with-log-returns/\n\nParams:\n\n  - ``timeframe`` (default: ``None``)\n    If ``None`` then the complete return over the entire backtested period\n    will be reported\n\n    Pass ``TimeFrame.NoTimeFrame`` to consider the entire dataset with no\n    time constraints\n\n  - ``compression`` (default: ``None``)\n\n    Only used for sub-day timeframes to for example work on an hourly\n    timeframe by specifying \"TimeFrame.Minutes\" and 60 as compression\n\n    If ``None`` then the compression of the 1st data of the system will be\n    used\n\n  - ``tann`` (default: ``None``)\n\n    Number of periods to use for the annualization (normalization) of the\n    average returns. If ``None``, then standard ``t`` values will be used,\n    namely:\n\n      - ``days: 252``\n      - ``weeks: 52``\n      - ``months: 12``\n      - ``years: 1``\n\n  - ``tau`` (default: ``2.0``)\n\n    factor for the calculation (see the literature)\n\n  - ``sdev_max`` (default: ``0.20``)\n\n    max standard deviation (see the literature)\n\n  - ``fund`` (default: ``None``)\n\n    If ``None`` the actual mode of the broker (fundmode - True/False) will\n    be autodetected to decide if the returns are based on the total net\n    asset value or on the fund value. See ``set_fundmode`` in the broker\n    documentation\n\n    Set it to ``True`` or ``False`` for a specific behavior\n\nMethods:\n\n  - get_analysis\n\n    Returns a dictionary with returns as values and the datetime points for\n    each return as keys\n\n    The returned dict contains the following keys:\n\n      - ``vwr``: Variability-Weighted Return",
+    "constructor_signature": "(self)",
+    "methods": [
+        {
+            "name": "_dt_over",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_get_dt_cmpkey",
+            "signature": "(self, dt)",
+            "doc": ""
+        },
+        {
+            "name": "_get_subday_cmpkey",
+            "signature": "(self, dt)",
+            "doc": ""
+        },
+        {
+            "name": "_next",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_nextstart",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_notify_cashvalue",
+            "signature": "(self, cash, value)",
+            "doc": ""
+        },
+        {
+            "name": "_notify_fund",
+            "signature": "(self, cash, value, fundvalue, shares)",
+            "doc": ""
+        },
+        {
+            "name": "_notify_order",
+            "signature": "(self, order)",
+            "doc": ""
+        },
+        {
+            "name": "_notify_trade",
+            "signature": "(self, trade)",
+            "doc": ""
+        },
+        {
+            "name": "_prenext",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_register",
+            "signature": "(self, child)",
+            "doc": ""
+        },
+        {
+            "name": "_start",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_stop",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "create_analysis",
+            "signature": "(self)",
+            "doc": "Meant to be overriden by subclasses. Gives a chance to create the\nstructures that hold the analysis.\n\nThe default behaviour is to create a ``OrderedDict`` named ``rets``"
+        },
+        {
+            "name": "get_analysis",
+            "signature": "(self)",
+            "doc": "Returns a *dict-like* object with the results of the analysis\n\nThe keys and format of analysis results in the dictionary is\nimplementation dependent.\n\nIt is not even enforced that the result is a *dict-like object*, just\nthe convention\n\nThe default implementation returns the default OrderedDict ``rets``\ncreated by the default ``create_analysis`` method"
+        },
+        {
+            "name": "next",
+            "signature": "(self)",
+            "doc": "Invoked for each next invocation of the strategy, once the minum\npreiod of the strategy has been reached"
+        },
+        {
+            "name": "nextstart",
+            "signature": "(self)",
+            "doc": "Invoked exactly once for the nextstart invocation of the strategy,\nwhen the minimum period has been first reached"
+        },
+        {
+            "name": "notify_cashvalue",
+            "signature": "(self, cash, value)",
+            "doc": "Receives the cash/value notification before each next cycle"
+        },
+        {
+            "name": "notify_fund",
+            "signature": "(self, cash, value, fundvalue, shares)",
+            "doc": "Receives the current cash, value, fundvalue and fund shares"
+        },
+        {
+            "name": "notify_order",
+            "signature": "(self, order)",
+            "doc": "Receives order notifications before each next cycle"
+        },
+        {
+            "name": "notify_trade",
+            "signature": "(self, trade)",
+            "doc": "Receives trade notifications before each next cycle"
+        },
+        {
+            "name": "on_dt_over",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "pprint",
+            "signature": "(self, *args, **kwargs)",
+            "doc": "Prints the results returned by ``get_analysis`` using the pretty\nprint Python module (*pprint*)"
+        },
+        {
+            "name": "prenext",
+            "signature": "(self)",
+            "doc": "Invoked for each prenext invocation of the strategy, until the minimum\nperiod of the strategy has been reached\n\nThe default behavior for an analyzer is to invoke ``next``"
+        },
+        {
+            "name": "print",
+            "signature": "(self, *args, **kwargs)",
+            "doc": "Prints the results returned by ``get_analysis`` via a standard\n``Writerfile`` object, which defaults to writing things to standard\noutput"
+        },
+        {
+            "name": "start",
+            "signature": "(self)",
+            "doc": "Invoked to indicate the start of operations, giving the analyzer\ntime to setup up needed things"
+        },
+        {
+            "name": "stop",
+            "signature": "(self)",
+            "doc": "Invoked to indicate the end of operations, giving the analyzer\ntime to shut down needed things"
+        }
+    ],
+    "attributes": {
+        "_TANN": {
+            "value": "{5: 252.0, 6: 52.0, 7: 12.0, 8: 1.0}",
+            "doc": "dict() -> new empty dictionary\ndict(mapping) -> new dictionary initialized from a mapping object's\n    (key, value) pairs\ndict(iterable) -> new dictionary initialized as if via:\n    d = {}\n    for k, v in iterable:\n        d[k] = v\ndict(**kwargs) -> new dictionary initialized with the name=value pairs\n    in the keyword argument list.  For example:  dict(one=1, two=2)"
+        },
+        "packages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "frompackages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        }
+    },
+    "input_schema": {},
+    "params_schema": {},
+    "output_schema": {}
+}

@@ -1,0 +1,42 @@
+{
+    "name": "EnvelopeMixIn",
+    "module": "backtrader.indicators.envelope",
+    "doc": "MixIn class to create a subclass with another indicator. The main line of\nthat indicator will be surrounded by an upper and lower band separated a\ngiven \"perc\"entage from the input main line\n\nThe usage is:\n\n  - Class XXXEnvelope(XXX, EnvelopeMixIn)\n\nFormula:\n  - 'line' (inherited from XXX))\n  - top = 'line' * (1 + perc)\n  - bot = 'line' * (1 - perc)\n\nSee also:\n  - http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:moving_average_envelopes",
+    "constructor_signature": "(self)",
+    "methods": [],
+    "attributes": {
+        "lines": {
+            "value": "('top', 'bot')",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "params": {
+            "value": "(('perc', 2.5),)",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "plotlines": {
+            "value": "{'top': {'_samecolor': True}, 'bot': {'_samecolor': True}}",
+            "doc": "dict() -> new empty dictionary\ndict(mapping) -> new dictionary initialized from a mapping object's\n    (key, value) pairs\ndict(iterable) -> new dictionary initialized as if via:\n    d = {}\n    for k, v in iterable:\n        d[k] = v\ndict(**kwargs) -> new dictionary initialized with the name=value pairs\n    in the keyword argument list.  For example:  dict(one=1, two=2)"
+        }
+    },
+    "input_schema": {},
+    "params_schema": {
+        "perc": {
+            "default": 2.5,
+            "extra": null
+        }
+    },
+    "output_schema": {
+        "lines": [
+            {
+                "name": "top",
+                "type": "Line",
+                "description": ""
+            },
+            {
+                "name": "bot",
+                "type": "Line",
+                "description": ""
+            }
+        ]
+    }
+}

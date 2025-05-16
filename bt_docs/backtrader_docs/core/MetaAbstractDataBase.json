@@ -1,0 +1,59 @@
+{
+    "name": "MetaAbstractDataBase",
+    "module": "backtrader.feed",
+    "doc": "Dirty job manager for a LineSeries\n\n  - During __new__ (class creation), it reads \"lines\", \"plotinfo\",\n    \"plotlines\" class variable definitions and turns them into\n    Classes of type Lines or AutoClassInfo (plotinfo/plotlines)\n\n  - During \"new\" (instance creation) the lines/plotinfo/plotlines\n    classes are substituted in the instance with instances of the\n    aforementioned classes and aliases are added for the \"lines\" held\n    in the \"lines\" instance\n\n    Additionally and for remaining kwargs, these are matched against\n    args in plotinfo and if existent are set there and removed from kwargs\n\n    Remember that this Metaclass has a MetaParams (from metabase)\n    as root class and therefore \"params\" defined for the class have been\n    removed from kwargs at an earlier state",
+    "constructor_signature": "(cls, name, bases, dct)",
+    "methods": [
+        {
+            "name": "doinit",
+            "signature": "(cls, _obj, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "donew",
+            "signature": "(cls, *args, **kwargs)",
+            "doc": "Intercept instance creation, take over lines/plotinfo/plotlines\nclass attributes by creating corresponding instance variables and add\naliases for \"lines\" and the \"lines\" held within it"
+        },
+        {
+            "name": "dopostinit",
+            "signature": "(cls, _obj, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "dopreinit",
+            "signature": "(cls, _obj, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "doprenew",
+            "signature": "(cls, *args, **kwargs)",
+            "doc": ""
+        }
+    ],
+    "attributes": {
+        "_indcol": {
+            "value": "{'AbstractDataBase': <class 'backtrader.feed.AbstractDataBase'>, 'CSVDataBase': <class 'backtrader.feed.CSVDataBase'>, 'DataClone': <class 'backtrader.feed.DataClone'>, 'GenericCSVData': <class 'backtrader.feeds.csvgeneric.GenericCSVData'>, 'BacktraderCSVData': <class 'backtrader.feeds.btcsv.BacktraderCSVData'>, 'VChartCSVData': <class 'backtrader.feeds.vchartcsv.VChartCSVData'>, 'VChartData': <class 'backtrader.feeds.vchart.VChartData'>, 'YahooFinanceCSVData': <class 'backtrader.feeds.yahoo.YahooFinanceCSVData'>, 'YahooLegacyCSV': <class 'backtrader.feeds.yahoo.YahooLegacyCSV'>, 'YahooFinanceData': <class 'backtrader.feeds.yahoo.YahooFinanceData'>, 'QuandlCSV': <class 'backtrader.feeds.quandl.QuandlCSV'>, 'Quandl': <class 'backtrader.feeds.quandl.Quandl'>, 'SierraChartCSVData': <class 'backtrader.feeds.sierrachart.SierraChartCSVData'>, 'MT4CSVData': <class 'backtrader.feeds.mt4csv.MT4CSVData'>, 'PandasDirectData': <class 'backtrader.feeds.pandafeed.PandasDirectData'>, 'PandasData': <class 'backtrader.feeds.pandafeed.PandasData'>, 'InfluxDB': <class 'backtrader.feeds.influxfeed.InfluxDB'>, 'VCData': <class 'backtrader.feeds.vcdata.VCData'>, 'VChartFile': <class 'backtrader.feeds.vchartfile.VChartFile'>, 'RollOver': <class 'backtrader.feeds.rollover.RollOver'>, 'Chainer': <class 'backtrader.feeds.chainer.Chainer'>, 'DataFilter': <class 'backtrader.filters.datafilter.DataFilter'>, 'DataFiller': <class 'backtrader.filters.datafiller.DataFiller'>}",
+            "doc": "dict() -> new empty dictionary\ndict(mapping) -> new dictionary initialized from a mapping object's\n    (key, value) pairs\ndict(iterable) -> new dictionary initialized as if via:\n    d = {}\n    for k, v in iterable:\n        d[k] = v\ndict(**kwargs) -> new dictionary initialized with the name=value pairs\n    in the keyword argument list.  For example:  dict(one=1, two=2)"
+        }
+    },
+    "input_schema": {
+        "cls": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "name": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "bases": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "dct": {
+            "default": null,
+            "annotation": "Any"
+        }
+    },
+    "params_schema": {},
+    "output_schema": {}
+}

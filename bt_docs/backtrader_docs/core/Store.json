@@ -1,0 +1,75 @@
+{
+    "name": "Store",
+    "module": "backtrader.store",
+    "doc": "Base class for all Stores",
+    "constructor_signature": "(self, /, *args, **kwargs)",
+    "methods": [
+        {
+            "name": "get_notifications",
+            "signature": "(self)",
+            "doc": "Return the pending \"store\" notifications"
+        },
+        {
+            "name": "getdata",
+            "signature": "(self, *args, **kwargs)",
+            "doc": "Returns ``DataCls`` with args, kwargs"
+        },
+        {
+            "name": "put_notification",
+            "signature": "(self, msg, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "start",
+            "signature": "(self, data=None, broker=None)",
+            "doc": ""
+        },
+        {
+            "name": "stop",
+            "signature": "(self)",
+            "doc": ""
+        }
+    ],
+    "attributes": {
+        "_started": {
+            "value": "False",
+            "doc": "bool(x) -> bool\n\nReturns True when the argument x is true, False otherwise.\nThe builtins True and False are the only two instances of the class bool.\nThe class bool is a subclass of the class int, and cannot be subclassed."
+        },
+        "getbroker": {
+            "value": "<classmethod(<function Store.getbroker at 0x00000238E48EC940>)>",
+            "doc": "Returns broker with *args, **kwargs from registered ``BrokerCls``"
+        },
+        "BrokerCls": {
+            "value": "None",
+            "doc": ""
+        },
+        "DataCls": {
+            "value": "None",
+            "doc": ""
+        },
+        "packages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "frompackages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "_singleton": {
+            "value": "None",
+            "doc": ""
+        }
+    },
+    "input_schema": {
+        "args": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "kwargs": {
+            "default": null,
+            "annotation": "Any"
+        }
+    },
+    "params_schema": {},
+    "output_schema": {}
+}

@@ -1,0 +1,28 @@
+{
+    "name": "SimpleFilterWrapper",
+    "module": "backtrader.dataseries",
+    "doc": "Wrapper for filters added via .addfilter to turn them\ninto processors.\n\nFilters are callables which\n\n  - Take a ``data`` as an argument\n  - Return False if the current bar has not triggered the filter\n  - Return True if the current bar must be filtered\n\nThe wrapper takes the return value and executes the bar removal\nif needed be",
+    "constructor_signature": "(self, data, ffilter, *args, **kwargs)",
+    "methods": [],
+    "attributes": {},
+    "input_schema": {
+        "data": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "ffilter": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "args": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "kwargs": {
+            "default": null,
+            "annotation": "Any"
+        }
+    },
+    "params_schema": {},
+    "output_schema": {}
+}

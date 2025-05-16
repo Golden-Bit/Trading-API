@@ -1,0 +1,54 @@
+{
+    "name": "MetaBroker",
+    "module": "backtrader.broker",
+    "doc": "type(object) -> the object's type\ntype(name, bases, dict, **kwds) -> a new type",
+    "constructor_signature": "(cls, name, bases, dct)",
+    "methods": [
+        {
+            "name": "doinit",
+            "signature": "(cls, _obj, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "donew",
+            "signature": "(cls, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "dopostinit",
+            "signature": "(cls, _obj, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "dopreinit",
+            "signature": "(cls, _obj, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "doprenew",
+            "signature": "(cls, *args, **kwargs)",
+            "doc": ""
+        }
+    ],
+    "attributes": {},
+    "input_schema": {
+        "cls": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "name": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "bases": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "dct": {
+            "default": null,
+            "annotation": "Any"
+        }
+    },
+    "params_schema": {},
+    "output_schema": {}
+}

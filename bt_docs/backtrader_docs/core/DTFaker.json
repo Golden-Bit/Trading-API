@@ -1,0 +1,56 @@
+{
+    "name": "DTFaker",
+    "module": "backtrader.resamplerfilter",
+    "doc": "",
+    "constructor_signature": "(self, data, forcedata=None)",
+    "methods": [
+        {
+            "name": "_getnexteos",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "date",
+            "signature": "(self, idx=0)",
+            "doc": ""
+        },
+        {
+            "name": "date2num",
+            "signature": "(self, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "datetime",
+            "signature": "(self, idx=0)",
+            "doc": ""
+        },
+        {
+            "name": "num2date",
+            "signature": "(self, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "time",
+            "signature": "(self, idx=0)",
+            "doc": ""
+        }
+    ],
+    "attributes": {
+        "_calendar": {
+            "value": "<property object at 0x00000238E491FE70>",
+            "doc": ""
+        }
+    },
+    "input_schema": {
+        "data": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "forcedata": {
+            "default": null,
+            "annotation": "Any"
+        }
+    },
+    "params_schema": {},
+    "output_schema": {}
+}

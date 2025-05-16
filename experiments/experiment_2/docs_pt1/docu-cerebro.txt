@@ -1,0 +1,1657 @@
+Cerebro
+
+This class is the cornerstone of 
+backtrader
+ because it serves as a central
+point for:
+
+Gathering all inputs (
+Data Feeds
+), actors (
+Stratgegies
+), spectators
+     (
+Observers
+), critics (
+Analyzers
+) and documenters (
+Writers
+) ensuring the
+     show still goes on at any moment.
+
+Execute the backtesting/or live data feeding/trading
+
+Returning the results
+
+Giving access to the plotting facilities
+
+Gathering input
+
+Start by creating a 
+cerebro
+:
+
+```
+cerebro = bt.Cerebro(**kwargs)
+
+```
+
+Some 
+**kwargs
+ to control execution are supported, see the reference
+ (the same arguments can be applied later to the 
+run
+ method)
+
+Add 
+Data feeds
+
+The most usual pattern is 
+cerebro.adddata(data)
+, where 
+data
+ is a
+
+data feed
+ already instantiated. Example:
+
+```
+data = bt.BacktraderCSVData(dataname='mypath.days', timeframe=bt.TimeFrame.Days)
+cerebro.adddata(data)
+
+```
+
+Resampling
+ and 
+Replaying
+ a data is possible and follows the same pattern:
+
+```
+data = bt.BacktraderCSVData(dataname='mypath.min', timeframe=bt.TimeFrame.Minutes)
+cerebro.resampledata(data, timeframe=bt.TimeFrame.Days)
+
+```
+
+or:
+
+```
+data = bt.BacktraderCSVData(dataname='mypath.min', timeframe=bt.TimeFrame.Minutes)
+cerebro.replaydatadata(data, timeframe=bt.TimeFrame.Days)
+
+```
+
+The system can accept any number of data feeds, including mixing regular data
+ with resampled and/or replayed data. Of course some of this combinationns
+ will for sure make no sense and a restriction apply in order to be able to
+ combine datas: 
+time aligment
+. See the
+ Data - Multiple Timeframes,
+ Data Resampling - Resampling` and
+ Data - Replay sections.
+
+Add 
+Strategies
+
+Unlike the 
+datas feeds
+ which are already an instance of a class,
+
+cerebro
+ takes directly the 
+Strategy
+ class and the arguments to
+ pass to it. The rationale behind: 
+in an optimization scenario the class
+ will be instantiated several times and passed different arguments
+
+Even if no 
+optimization
+ is run, the pattern still applies:
+
+```
+cerebro.addstrategy(MyStrategy, myparam1=value1, myparam2=value2)
+
+```
+
+When 
+optimizing
+ the parameters have to be added as iterables. See the
+
+Optimization
+ section for a detailed explanation. The basic pattern:
+
+```
+cerebro.optstrategy(MyStrategy, myparam1=range(10, 20))
+
+```
+
+Which will run 
+MyStrategy
+ 10 times with 
+myparam1
+ taking values
+ from 10 to 19 (remember ranges in Python are half-open and 
+20
+ will not
+ be reached)
+
+Other elements
+
+There are some other elements which can be added to enhance the
+ backtesting experience. See the appropriate sections for it. The methods
+ are:
+
+addwriter
+
+addanalyzer
+
+addobserver
+ (or 
+addobservermulti
+)
+
+Changing the broker
+
+Cerebro will use the default broker in 
+backtrader
+, but this can be
+ overriden:
+
+```
+broker = MyBroker()
+cerebro.broker = broker  # property using getbroker/setbroker methods
+
+```
+
+Receive notifications
+
+If 
+data feeds
+ and/or 
+brokers
+ send notifications (or a 
+store
+ provider
+ which creates them) they will be received through the
+
+Cerebro.notify_store
+ method. There are three (3) ways to work with
+ these notifications
+
+Add a 
+callback
+ to a 
+cerebro
+ instance via the
+
+addnotifycallback(callback)
+ call. The callback has to support this
+   signature:
+
+```
+callback(msg, *args, **kwargs)
+
+```
+
+The actual 
+msg
+, 
+*args
+ and 
+**kwargs
+ received are
+   implementation defined (depend entirely on the 
+data/broker/store
+) but
+   in general one should expect them to be 
+printable
+ to allow for
+   reception and experimentation.
+
+Override the 
+notify_store
+ method in the 
+Strategy
+ subclass which
+   is added to a 
+cerebro
+ instance.
+
+The signature: 
+notify_store(self, msg, *args, **kwargs)
+
+Subclass 
+Cerebro
+ and override 
+notify_store
+ (same signature as in
+   the 
+Strategy
+)
+
+This should be the least preferred method
+
+Execute the backtesting
+
+There is a single method to do it, but it supports several options (which can
+be also specified when instantiating) to decide how to run:
+
+```
+result = cerebro.run(**kwargs)
+
+```
+
+See the reerence below to understand which arguments are available.
+
+Standard Observers
+
+cerebro
+ (unless otherwise specified) automatically instantiates 
+three
+
+standard observers
+
+A 
+Broker
+ observer which keeps track of 
+cash
+ and 
+value
+ (portfolio)
+
+A 
+Trades
+ observer which should show how effective each trade has been
+
+A 
+Buy/Sell
+ observer which should document when operations are executed
+
+Should a cleaner plotting be wished just disable them with 
+stdstats=False
+
+Returning the results
+
+cerebro
+ returns the instances of the strategies it created during
+backtesting. This allows to analyze what they did, because all elements in the
+strategies are accessible:
+
+```
+result = cerebro.run(**kwargs)
+
+```
+
+The format of 
+result
+ returned by 
+run
+ will vary depending on whether 
+optimization
+
+is used (a 
+strategy
+ was added with 
+optstrategy
+):
+
+All strategies added with 
+addstrategy
+
+result
+ will be a 
+list
+ of the instances run during the backtesting
+
+1 or more strategies were added with 
+optstrategy
+
+result
+ will be a 
+list
+ of 
+list
+. Each internal list will contain
+the strategies after each optimization run
+
+Note
+
+The default behavior for 
+optimization
+ was changed to only return
+the 
+analyzers
+ present in the system, to make message passing across
+computer cores lighter.
+
+If the complete set of strategies is wished as return value, set the
+parameter 
+optreturn
+ to 
+False
+
+Giving access to the plotting facilities
+
+As an extra an if 
+matplotlib
+ is installed, the strategies can be
+plotted. With the usual pattern being:
+
+```
+cerebro.plot()
+
+```
+
+See below for the reference and the section Plotting
+
+Backtesting logic
+
+Brief outline of the flow of things:
+
+Deliver any store notifications
+
+Ask data feeds to deliver the next set of ticks/bars
+
+Versionchanged:
+ Changed in version 1.9.0.99: 
+New Behavior
+
+Data Feeds are synchronized by peeking at the 
+datetime
+ which is going
+ to be provided next by available data feeds. Feeds which have not
+ traded in the new period still provide the old data points, whilst data
+ feeds which have new data available offer this one (along with the
+ calculation of indicators)
+
+Old Behavior
+ (retained when using 
+oldsync=True
+ with 
+Cerebro
+)
+
+The 1
+st
+ data inserted into the system is the 
+datamaster
+ and the
+ system will wait for it to deliver a tick
+
+The other data feeds are, more or less, slaves to the 
+datamaster
+
+ and:
+
+```
+ * If the next tick to deliver is newer (datetime-wise) than the one
+   delivered by the `datamaster` it will not be delivered
+
+ * May return without delivering a new tick for a number of reasons
+
+```
+
+The logic was designed to easily synchronize multiple data feeds and
+   data feeds with different timeframes
+
+Notify the strategy about queued broker notifications of orders, trades
+     and cash/value
+
+Tell the broker to accept queued orders and execute the pending orders
+     with the new data
+
+Call the strategies’ 
+next
+ method to let the strategy evaluate the new
+     data (and maybe issue orders which are queued in the broker)
+
+Depending on the stage it may be 
+prenext
+ or 
+nextstart
+ before the
+ minimum period requirements of the strategy/indicators are met
+
+Internally the strategies will also kick the 
+observers
+,
+
+indicators
+, 
+analyzers
+  and other active elements
+
+Tell any 
+writers
+ to write the data to its target
+
+Important to take into account:
+
+Note
+
+In step 
+1
+ above when the 
+data feeds
+ deliver the new set of bars,
+those bars are 
+closed
+. This means the data has already happened.
+
+As such, 
+orders
+ issued by the strategy in step 
+4
+ cannot be
+
+executed
+ with the data from step 
+1
+.
+
+This means that orders will be executed with the concept of 
+x +
+1
+. Where 
+x
+ is the bar moment at which the order was executed
+and 
+x + 1
+ the next one, which is the earliest moment in time for
+a possible order execution
+
+Reference
+
+class backtrader.Cerebro()
+
+Params:
+
+preload
+ (default: 
+True
+)
+
+Whether to preload the different 
+data feeds
+ passed to cerebro for
+  the Strategies
+
+runonce
+ (default: 
+True
+)
+
+Run 
+Indicators
+ in vectorized mode to speed up the entire system.
+  Strategies and Observers will always be run on an event based basis
+
+live
+ (default: 
+False
+)
+
+If no data has reported itself as 
+live
+ (via the data’s 
+islive
+
+  method but the end user still want to run in 
+live
+ mode, this
+  parameter can be set to true
+
+This will simultaneously deactivate 
+preload
+ and 
+runonce
+. It
+  will have no effect on memory saving schemes.
+
+Run 
+Indicators
+ in vectorized mode to speed up the entire system.
+  Strategies and Observers will always be run on an event based basis
+
+maxcpus
+ (default: None -> all available cores)
+
+How many cores to use simultaneously for optimization
+
+stdstats
+ (default: 
+True
+)
+
+If True default Observers will be added: Broker (Cash and Value),
+  Trades and BuySell
+
+oldbuysell
+ (default: 
+False
+)
+
+If 
+stdstats
+ is 
+True
+ and observers are getting automatically
+  added, this switch controls the main behavior of the 
+BuySell
+
+  observer
+
+False
+: use the modern behavior in which the buy / sell signals
+    are plotted below / above the low / high prices respectively to avoid
+    cluttering the plot
+
+True
+: use the deprecated behavior in which the buy / sell signals
+    are plotted where the average price of the order executions for the
+    given moment in time is. This will of course be on top of an OHLC bar
+    or on a Line on Cloe bar, difficulting the recognition of the plot.
+
+oldtrades
+ (default: 
+False
+)
+
+If 
+stdstats
+ is 
+True
+ and observers are getting automatically
+  added, this switch controls the main behavior of the 
+Trades
+
+  observer
+
+False
+: use the modern behavior in which trades for all datas are
+    plotted with different markers
+
+True
+: use the old Trades observer which plots the trades with the
+    same markers, differentiating only if they are positive or negative
+
+exactbars
+ (default: 
+False
+)
+
+With the default value each and every value stored in a line is kept in
+  memory
+
+Possible values:
+
+```
+* `True` or `1`: all “lines” objects reduce memory usage to the
+  automatically calculated minimum period.
+
+  If a Simple Moving Average has a period of 30, the underlying data
+  will have always a running buffer of 30 bars to allow the
+  calculation of the Simple Moving Average
+
+  * This setting will deactivate `preload` and `runonce`
+
+  * Using this setting also deactivates **plotting**
+
+* `-1`: datafreeds and indicators/operations at strategy level will
+  keep all data in memory.
+
+  For example: a `RSI` internally uses the indicator `UpDay` to
+  make calculations. This subindicator will not keep all data in
+  memory
+
+  * This allows to keep `plotting` and `preloading` active.
+
+  * `runonce` will be deactivated
+
+* `-2`: data feeds and indicators kept as attributes of the
+  strategy will keep all points in memory.
+
+  For example: a `RSI` internally uses the indicator `UpDay` to
+  make calculations. This subindicator will not keep all data in
+  memory
+
+  If in the `__init__` something like
+  `a = self.data.close - self.data.high` is defined, then `a`
+  will not keep all data in memory
+
+  * This allows to keep `plotting` and `preloading` active.
+
+  * `runonce` will be deactivated
+
+```
+
+objcache
+ (default: 
+False
+)
+
+Experimental option to implement a cache of lines objects and reduce
+  the amount of them. Example from UltimateOscillator:
+
+```
+bp = self.data.close - TrueLow(self.data)
+tr = TrueRange(self.data)  # -> creates another TrueLow(self.data)
+
+```
+
+If this is 
+True
+ the 2
+nd
+
+TrueLow(self.data)
+ inside 
+TrueRange
+
+  matches the signature of the one in the 
+bp
+ calculation. It will be
+  reused.
+
+Corner cases may happen in which this drives a line object off its
+  minimum period and breaks things and it is therefore disabled.
+
+writer
+ (default: 
+False
+)
+
+If set to 
+True
+ a default WriterFile will be created which will
+  print to stdout. It will be added to the strategy (in addition to any
+  other writers added by the user code)
+
+tradehistory
+ (default: 
+False
+)
+
+If set to 
+True
+, it will activate update event logging in each trade
+  for all strategies. This can also be accomplished on a per strategy
+  basis with the strategy method 
+set_tradehistory
+
+optdatas
+ (default: 
+True
+)
+
+If 
+True
+ and optimizing (and the system can 
+preload
+ and use
+
+runonce
+, data preloading will be done only once in the main process
+  to save time and resources.
+
+The tests show an approximate 
+20%
+ speed-up moving from a sample
+  execution in 
+83
+ seconds to 
+66
+
+optreturn
+ (default: 
+True
+)
+
+If 
+True
+ the optimization results will not be full 
+Strategy
+
+  objects (and all 
+datas
+, 
+indicators
+, 
+observers
+ …) but and object
+  with the following attributes (same as in 
+Strategy
+):
+
+```
+* `params` (or `p`) the strategy had for the execution
+
+* `analyzers` the strategy has executed
+
+```
+
+In most occassions, only the 
+analyzers
+ and with which 
+params
+ are
+  the things needed to evaluate a the performance of a strategy. If
+  detailed analysis of the generated values for (for example)
+
+indicators
+ is needed, turn this off
+
+The tests show a 
+13% - 15%
+ improvement in execution time. Combined
+  with 
+optdatas
+ the total gain increases to a total speed-up of
+
+32%
+ in an optimization run.
+
+oldsync
+ (default: 
+False
+)
+
+Starting with release 1.9.0.99 the synchronization of multiple datas
+  (same or different timeframes) has been changed to allow datas of
+  different lengths.
+
+If the old behavior with data0 as the master of the system is wished,
+  set this parameter to true
+
+tz
+ (default: 
+None
+)
+
+Adds a global timezone for strategies. The argument 
+tz
+ can be
+
+```
+* `None`: in this case the datetime displayed by strategies will be
+  in UTC, which has been always the standard behavior
+
+* `pytz` instance. It will be used as such to convert UTC times to
+  the chosen timezone
+
+* `string`. Instantiating a `pytz` instance will be attempted.
+
+* `integer`. Use, for the strategy, the same timezone as the
+  corresponding `data` in the `self.datas` iterable (`0` would
+  use the timezone from `data0`)
+
+```
+
+cheat_on_open
+ (default: 
+False
+)
+
+The 
+next_open
+ method of strategies will be called. This happens
+  before 
+next
+ and before the broker has had a chance to evaluate
+  orders. The indicators have not yet been recalculated. This allows
+  issuing an orde which takes into account the indicators of the previous
+  day but uses the 
+open
+ price for stake calculations
+
+For cheat_on_open order execution, it is also necessary to make the
+  call 
+cerebro.broker.set_coo(True)
+ or instantite a broker with
+
+BackBroker(coo=True)
+ (where 
+coo
+ stands for cheat-on-open) or set
+  the 
+broker_coo
+ parameter to 
+True
+. Cerebro will do it
+  automatically unless disabled below.
+
+broker_coo
+ (default: 
+True
+)
+
+This will automatically invoke the 
+set_coo
+ method of the broker
+  with 
+True
+ to activate 
+cheat_on_open
+ execution. Will only do it
+  if 
+cheat_on_open
+ is also 
+True
+
+quicknotify
+ (default: 
+False
+)
+
+Broker notifications are delivered right before the delivery of the
+
+next
+ prices. For backtesting this has no implications, but with live
+  brokers a notification can take place long before the bar is
+  delivered. When set to 
+True
+ notifications will be delivered as soon
+  as possible (see 
+qcheck
+ in live feeds)
+
+Set to 
+False
+ for compatibility. May be changed to 
+True
+
+addstorecb(callback)
+
+Adds a callback to get messages which would be handled by the
+notify_store method
+
+The signature of the callback must support the following:
+
+callback(msg, *args, **kwargs)
+
+The actual 
+msg
+, 
+*args
+ and 
+**kwargs
+ received are
+implementation defined (depend entirely on the 
+data/broker/store
+) but
+in general one should expect them to be 
+printable
+ to allow for
+reception and experimentation.
+
+notify_store(msg, *args, **kwargs)
+
+Receive store notifications in cerebro
+
+This method can be overridden in 
+Cerebro
+ subclasses
+
+The actual 
+msg
+, 
+*args
+ and 
+**kwargs
+ received are
+implementation defined (depend entirely on the 
+data/broker/store
+) but
+in general one should expect them to be 
+printable
+ to allow for
+reception and experimentation.
+
+adddatacb(callback)
+
+Adds a callback to get messages which would be handled by the
+notify_data method
+
+The signature of the callback must support the following:
+
+callback(data, status, *args, **kwargs)
+
+The actual 
+*args
+ and 
+**kwargs
+ received are implementation
+defined (depend entirely on the 
+data/broker/store
+) but in general one
+should expect them to be 
+printable
+ to allow for reception and
+experimentation.
+
+notify_data(data, status, *args, **kwargs)
+
+Receive data notifications in cerebro
+
+This method can be overridden in 
+Cerebro
+ subclasses
+
+The actual 
+*args
+ and 
+**kwargs
+ received are
+implementation defined (depend entirely on the 
+data/broker/store
+) but
+in general one should expect them to be 
+printable
+ to allow for
+reception and experimentation.
+
+adddata(data, name=None)
+
+Adds a 
+Data Feed
+ instance to the mix.
+
+If 
+name
+ is not None it will be put into 
+data._name
+ which is
+meant for decoration/plotting purposes.
+
+resampledata(dataname, name=None, **kwargs)
+
+Adds a 
+Data Feed
+ to be resample by the system
+
+If 
+name
+ is not None it will be put into 
+data._name
+ which is
+meant for decoration/plotting purposes.
+
+Any other kwargs like 
+timeframe
+, 
+compression
+, 
+todate
+ which
+are supported by the resample filter will be passed transparently
+
+replaydata(dataname, name=None, **kwargs)
+
+Adds a 
+Data Feed
+ to be replayed by the system
+
+If 
+name
+ is not None it will be put into 
+data._name
+ which is
+meant for decoration/plotting purposes.
+
+Any other kwargs like 
+timeframe
+, 
+compression
+, 
+todate
+ which
+are supported by the replay filter will be passed transparently
+
+chaindata(*args, **kwargs)
+
+Chains several data feeds into one
+
+If 
+name
+ is passed as named argument and is not None it will be put
+into 
+data._name
+ which is meant for decoration/plotting purposes.
+
+If 
+None
+, then the name of the 1
+st
+ data will be used
+
+rolloverdata(*args, **kwargs)
+
+Chains several data feeds into one
+
+If 
+name
+ is passed as named argument and is not None it will be put
+into 
+data._name
+ which is meant for decoration/plotting purposes.
+
+If 
+None
+, then the name of the 1
+st
+ data will be used
+
+Any other kwargs will be passed to the RollOver class
+
+addstrategy(strategy, *args, **kwargs)
+
+Adds a 
+Strategy
+ class to the mix for a single pass run.
+Instantiation will happen during 
+run
+ time.
+
+args and kwargs will be passed to the strategy as they are during
+instantiation.
+
+Returns the index with which addition of other objects (like sizers)
+can be referenced
+
+optstrategy(strategy, *args, **kwargs)
+
+Adds a 
+Strategy
+ class to the mix for optimization. Instantiation
+will happen during 
+run
+ time.
+
+args and kwargs MUST BE iterables which hold the values to check.
+
+Example: if a Strategy accepts a parameter 
+period
+, for optimization
+purposes the call to 
+optstrategy
+ looks like:
+
+cerebro.optstrategy(MyStrategy, period=(15, 25))
+
+This will execute an optimization for values 15 and 25. Whereas
+
+cerebro.optstrategy(MyStrategy, period=range(15, 25))
+
+will execute MyStrategy with 
+period
+ values 15 -> 25 (25 not
+included, because ranges are semi-open in Python)
+
+If a parameter is passed but shall not be optimized the call looks
+like:
+
+cerebro.optstrategy(MyStrategy, period=(15,))
+
+Notice that 
+period
+ is still passed as an iterable … of just 1
+element
+
+backtrader
+ will anyhow try to identify situations like:
+
+cerebro.optstrategy(MyStrategy, period=15)
+
+and will create an internal pseudo-iterable if possible
+
+optcallback(cb)
+
+Adds a 
+callback
+ to the list of callbacks that will be called with the
+optimizations when each of the strategies has been run
+
+The signature: cb(strategy)
+
+addindicator(indcls, *args, **kwargs)
+
+Adds an 
+Indicator
+ class to the mix. Instantiation will be done at
+
+run
+ time in the passed strategies
+
+addobserver(obscls, *args, **kwargs)
+
+Adds an 
+Observer
+ class to the mix. Instantiation will be done at
+
+run
+ time
+
+addobservermulti(obscls, *args, **kwargs)
+
+Adds an 
+Observer
+ class to the mix. Instantiation will be done at
+
+run
+ time
+
+It will be added once per “data” in the system. A use case is a
+buy/sell observer which observes individual datas.
+
+A counter-example is the CashValue, which observes system-wide values
+
+addanalyzer(ancls, *args, **kwargs)
+
+Adds an 
+Analyzer
+ class to the mix. Instantiation will be done at
+
+run
+ time
+
+addwriter(wrtcls, *args, **kwargs)
+
+Adds an 
+Writer
+ class to the mix. Instantiation will be done at
+
+run
+ time in cerebro
+
+run(**kwargs)
+
+The core method to perform backtesting. Any 
+kwargs
+ passed to it
+will affect the value of the standard parameters 
+Cerebro
+ was
+instantiated with.
+
+If 
+cerebro
+ has not datas the method will immediately bail out.
+
+It has different return values:
+
+For No Optimization: a list contanining instances of the Strategy
+    classes added with 
+addstrategy
+
+For Optimization: a list of lists which contain instances of the
+    Strategy classes added with 
+addstrategy
+
+runstop()
+
+If invoked from inside a strategy or anywhere else, including other
+threads the execution will stop as soon as possible.
+
+setbroker(broker)
+
+Sets a specific 
+broker
+ instance for this strategy, replacing the
+one inherited from cerebro.
+
+getbroker()
+
+Returns the broker instance.
+
+This is also available as a 
+property
+ by the name 
+broker
+
+plot(plotter=None, numfigs=1, iplot=True, start=None, end=None, width=16, height=9, dpi=300, tight=True, use=None, **kwargs)
+
+Plots the strategies inside cerebro
+
+If 
+plotter
+ is None a default 
+Plot
+ instance is created and
+
+kwargs
+ are passed to it during instantiation.
+
+numfigs
+ split the plot in the indicated number of charts reducing
+chart density if wished
+
+iplot
+: if 
+True
+ and running in a 
+notebook
+ the charts will be
+displayed inline
+
+use
+: set it to the name of the desired matplotlib backend. It will
+take precedence over 
+iplot
+
+start
+: An index to the datetime line array of the strategy or a
+
+datetime.date
+, 
+datetime.datetime
+ instance indicating the start
+of the plot
+
+end
+: An index to the datetime line array of the strategy or a
+
+datetime.date
+, 
+datetime.datetime
+ instance indicating the end
+of the plot
+
+width
+: in inches of the saved figure
+
+height
+: in inches of the saved figure
+
+dpi
+: quality in dots per inches of the saved figure
+
+tight
+: only save actual content and not the frame of the figure
+
+addsizer(sizercls, *args, **kwargs)
+
+Adds a 
+Sizer
+ class (and args) which is the default sizer for any
+strategy added to cerebro
+
+addsizer_byidx(idx, sizercls, *args, **kwargs)
+
+Adds a 
+Sizer
+ class by idx. This idx is a reference compatible to
+the one returned by 
+addstrategy
+. Only the strategy referenced by
+
+idx
+ will receive this size
+
+add_signal(sigtype, sigcls, *sigargs, **sigkwargs)
+
+Adds a signal to the system which will be later added to a
+
+SignalStrategy
+
+signal_concurrent(onoff)
+
+If signals are added to the system and the 
+concurrent
+ value is
+set to True, concurrent orders will be allowed
+
+signal_accumulate(onoff)
+
+If signals are added to the system and the 
+accumulate
+ value is
+set to True, entering the market when already in the market, will be
+allowed to increase a position
+
+signal_strategy(stratcls, *args, **kwargs)
+
+Adds a SignalStrategy subclass which can accept signals
+
+addcalendar(cal)
+
+Adds a global trading calendar to the system. Individual data feeds
+may have separate calendars which override the global one
+
+cal
+ can be an instance of 
+TradingCalendar
+ a string or an
+instance of 
+pandas_market_calendars
+. A string will be will be
+instantiated as a 
+PandasMarketCalendar
+ (which needs the module
+
+pandas_market_calendar
+ installed in the system.
+
+If a subclass of TradingCalendarBase is passed (not an instance) it
+will be instantiated
+
+addtz(tz)
+
+This can also be done with the parameter 
+tz
+
+Adds a global timezone for strategies. The argument 
+tz
+ can be
+
+None
+: in this case the datetime displayed by strategies will be
+    in UTC, which has been always the standard behavior
+
+pytz
+ instance. It will be used as such to convert UTC times to
+    the chosen timezone
+
+string
+. Instantiating a 
+pytz
+ instance will be attempted.
+
+integer
+. Use, for the strategy, the same timezone as the
+    corresponding 
+data
+ in the 
+self.datas
+ iterable (
+0
+ would
+    use the timezone from 
+data0
+)
+
+add_timer(when, offset=datetime.timedelta(0), repeat=datetime.timedelta(0), weekdays=[], weekcarry=False, monthdays=[], monthcarry=True, allow=None, tzdata=None, strats=False, cheat=False, *args, **kwargs)
+
+Schedules a timer to invoke 
+notify_timer
+
+Parameters
+
+when
+ (
+-
+) – can be
+
+datetime.time
+ instance (see below 
+tzdata
+)
+
+bt.timer.SESSION_START
+ to reference a session start
+
+bt.timer.SESSION_END
+ to reference a session end
+
+offset
+ which must be a 
+datetime.timedelta
+ instance
+
+Used to offset the value 
+when
+. It has a meaningful use in
+  combination with 
+SESSION_START
+ and 
+SESSION_END
+, to indicated
+  things like a timer being called 
+15 minutes
+ after the session
+  start.
+
+repeat
+ which must be a 
+datetime.timedelta
+ instance
+
+Indicates if after a 1
+st
+ call, further calls will be scheduled
+within the same session at the scheduled 
+repeat
+ delta
+
+Once the timer goes over the end of the session it is reset to the
+original value for 
+when
+
+weekdays
+: a 
+sorted
+ iterable with integers indicating on
+    which days (iso codes, Monday is 1, Sunday is 7) the timers can
+    be actually invoked
+
+If not specified, the timer will be active on all days
+
+weekcarry
+ (default: 
+False
+). If 
+True
+ and the weekday was
+    not seen (ex: trading holiday), the timer will be executed on the
+    next day (even if in a new week)
+
+monthdays
+: a 
+sorted
+ iterable with integers indicating on
+    which days of the month a timer has to be executed. For example
+    always on day 
+15
+ of the month
+
+If not specified, the timer will be active on all days
+
+monthcarry
+ (default: 
+True
+). If the day was not seen
+    (weekend, trading holiday), the timer will be executed on the next
+    available day.
+
+allow
+ (default: 
+None
+). A callback which receives a
+    datetime.date` instance and returns 
+True
+ if the date is
+    allowed for timers or else returns 
+False
+
+tzdata
+ which can be either 
+None
+ (default), a 
+pytz
+
+    instance or a 
+data feed
+ instance.
+
+None
+: 
+when
+ is interpreted at face value (which translates
+to handling it as if it where UTC even if it’s not)
+
+pytz
+ instance: 
+when
+ will be interpreted as being specified
+in the local time specified by the timezone instance.
+
+data feed
+ instance: 
+when
+ will be interpreted as being
+specified in the local time specified by the 
+tz
+ parameter of
+the data feed instance.
+
+Note
+
+If 
+when
+ is either 
+SESSION_START
+ or 
+SESSION_END
+ and 
+tzdata
+
+is 
+None
+, the 1
+st
+
+data feed
+ in the system (aka 
+self.data0
+)
+will be used as the reference to find out the session times.
+
+strats
+ (default: 
+False
+) call also the 
+notify_timer
+ of
+    strategies
+
+cheat
+ (default 
+False
+) if 
+True
+ the timer will be called
+    before the broker has a chance to evaluate the orders. This opens
+    the chance to issue orders based on opening price for example right
+    before the session starts
+
+*args
+: any extra args will be passed to 
+notify_timer
+
+**kwargs
+: any extra kwargs will be passed to 
+notify_timer
+
+Return Value:
+
+The created timer
+
+notify_timer(timer, when, *args, **kwargs)
+
+Receives a timer notification where 
+timer
+ is the timer which was
+returned by 
+add_timer
+, and 
+when
+ is the calling time. 
+args
+
+and 
+kwargs
+ are any additional arguments passed to 
+add_timer
+
+The actual 
+when
+ time can be later, but the system may have not be
+able to call the timer before. This value is the timer value and no the
+system time.
+
+add_order_history(orders, notify=True)
+
+Add a history of orders to be directly executed in the broker for
+performance evaluation
+
+orders
+: is an iterable (ex: list, tuple, iterator, generator)
+    in which each element will be also an iterable (with length) with
+    the following sub-elements (2 formats are possible)
+
+[datetime, size, price]
+ or 
+[datetime, size, price, data]
+
+Note
+
+it must be sorted (or produce sorted elements) by datetime ascending
+
+where:
+
+datetime
+ is a python 
+date/datetime
+ instance or a string
+    with format YYYY-MM-DD[THH:MM:SS[.us]] where the elements in
+    brackets are optional
+
+size
+ is an integer (positive to 
+buy
+, negative to 
+sell
+)
+
+price
+ is a float/integer
+
+data
+ if present can take any of the following values
+
+None
+ - The 1
+st
+ data feed will be used as target
+
+integer
+ - The data with that index (insertion order in
+
+Cerebro
+) will be used
+
+string
+ - a data with that name, assigned for example with
+
+cerebro.addata(data, name=value)
+, will be the target
+
+notify
+ (default: 
+True
+)
+
+If 
+True
+ the 1
+st
+ strategy inserted in the system will be
+notified of the artificial orders created following the information
+from each order in 
+orders
+
+Note
+
+Implicit in the description is the need to add a data feed
+which is the target of the orders. This is for example needed by
+analyzers which track for example the returns

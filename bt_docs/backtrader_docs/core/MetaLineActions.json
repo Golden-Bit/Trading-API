@@ -1,0 +1,63 @@
+{
+    "name": "MetaLineActions",
+    "module": "backtrader.linebuffer",
+    "doc": "Metaclass for Lineactions\n\nScans the instance before init for LineBuffer (or parentclass LineSingle)\ninstances to calculate the minperiod for this instance\n\npostinit it registers the instance to the owner (remember that owner has\nbeen found in the base Metaclass for LineRoot)",
+    "constructor_signature": "(self, /, *args, **kwargs)",
+    "methods": [
+        {
+            "name": "doinit",
+            "signature": "(cls, _obj, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "donew",
+            "signature": "(cls, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "dopostinit",
+            "signature": "(cls, _obj, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "dopreinit",
+            "signature": "(cls, _obj, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "doprenew",
+            "signature": "(cls, *args, **kwargs)",
+            "doc": ""
+        }
+    ],
+    "attributes": {
+        "_acache": {
+            "value": "{}",
+            "doc": "dict() -> new empty dictionary\ndict(mapping) -> new dictionary initialized from a mapping object's\n    (key, value) pairs\ndict(iterable) -> new dictionary initialized as if via:\n    d = {}\n    for k, v in iterable:\n        d[k] = v\ndict(**kwargs) -> new dictionary initialized with the name=value pairs\n    in the keyword argument list.  For example:  dict(one=1, two=2)"
+        },
+        "_acacheuse": {
+            "value": "False",
+            "doc": "bool(x) -> bool\n\nReturns True when the argument x is true, False otherwise.\nThe builtins True and False are the only two instances of the class bool.\nThe class bool is a subclass of the class int, and cannot be subclassed."
+        },
+        "cleancache": {
+            "value": "<classmethod(<function MetaLineActions.cleancache at 0x00000238E48B7490>)>",
+            "doc": ""
+        },
+        "usecache": {
+            "value": "<classmethod(<function MetaLineActions.usecache at 0x00000238E48B7520>)>",
+            "doc": ""
+        }
+    },
+    "input_schema": {
+        "args": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "kwargs": {
+            "default": null,
+            "annotation": "Any"
+        }
+    },
+    "params_schema": {},
+    "output_schema": {}
+}

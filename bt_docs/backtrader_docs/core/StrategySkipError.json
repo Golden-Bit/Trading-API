@@ -1,0 +1,20 @@
+{
+    "name": "StrategySkipError",
+    "module": "backtrader.errors",
+    "doc": "Requests the platform to skip this strategy for backtesting. To be\nraised during the initialization (``__init__``) phase of the instance",
+    "constructor_signature": "(self, /, *args, **kwargs)",
+    "methods": [],
+    "attributes": {},
+    "input_schema": {
+        "args": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "kwargs": {
+            "default": null,
+            "annotation": "Any"
+        }
+    },
+    "params_schema": {},
+    "output_schema": {}
+}

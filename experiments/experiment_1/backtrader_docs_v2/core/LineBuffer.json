@@ -1,0 +1,323 @@
+{
+    "name": "LineBuffer",
+    "module": "backtrader.linebuffer",
+    "doc": "LineBuffer defines an interface to an \"array.array\" (or list) in which\nindex 0 points to the item which is active for input and output.\n\nPositive indices fetch values from the past (left hand side)\nNegative indices fetch values from the future (if the array has been\nextended on the right hand side)\n\nWith this behavior no index has to be passed around to entities which have\nto work with the current value produced by other entities: the value is\nalways reachable at \"0\".\n\nLikewise storing the current value produced by \"self\" is done at 0.\n\nAdditional operations to move the pointer (home, forward, extend, rewind,\nadvance getzero) are provided\n\nThe class can also hold \"bindings\" to other LineBuffers. When a value\nis set in this class\nit will also be set in the binding.",
+    "constructor_signature": "(self)",
+    "methods": [
+        {
+            "name": "_makeoperation",
+            "signature": "(self, other, operation, r=False, _ownerskip=None)",
+            "doc": ""
+        },
+        {
+            "name": "_makeoperationown",
+            "signature": "(self, operation, _ownerskip=None)",
+            "doc": ""
+        },
+        {
+            "name": "_operation",
+            "signature": "(self, other, operation, r=False, intify=False)",
+            "doc": ""
+        },
+        {
+            "name": "_operation_stage1",
+            "signature": "(self, other, operation, r=False, intify=False)",
+            "doc": "Two operands' operation. Scanning of other happens to understand\nif other must be directly an operand or rather a subitem thereof"
+        },
+        {
+            "name": "_operation_stage2",
+            "signature": "(self, other, operation, r=False)",
+            "doc": "Rich Comparison operators. Scans other and returns either an\noperation with other directly or a subitem from other"
+        },
+        {
+            "name": "_operationown",
+            "signature": "(self, operation)",
+            "doc": ""
+        },
+        {
+            "name": "_operationown_stage1",
+            "signature": "(self, operation)",
+            "doc": "Operation with single operand which is \"self\""
+        },
+        {
+            "name": "_operationown_stage2",
+            "signature": "(self, operation)",
+            "doc": ""
+        },
+        {
+            "name": "_roperation",
+            "signature": "(self, other, operation, intify=False)",
+            "doc": "Relies on self._operation to and passes \"r\" True to define a\nreverse operation"
+        },
+        {
+            "name": "_settz",
+            "signature": "(self, tz)",
+            "doc": ""
+        },
+        {
+            "name": "_stage1",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_stage2",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "addbinding",
+            "signature": "(self, binding)",
+            "doc": "Adds another line binding\n\nKeyword Args:\n    binding (LineBuffer): another line that must be set when this line\n    becomes a value"
+        },
+        {
+            "name": "addminperiod",
+            "signature": "(self, minperiod)",
+            "doc": "Add the minperiod (substracting the overlapping 1 minimum period)"
+        },
+        {
+            "name": "advance",
+            "signature": "(self, size=1)",
+            "doc": "Advances the logical index without touching the underlying buffer\n\nKeyword Args:\n    size (int): How many extra positions to move forward"
+        },
+        {
+            "name": "backwards",
+            "signature": "(self, size=1, force=False)",
+            "doc": "Moves the logical index backwards and reduces the buffer as much as needed\n\nKeyword Args:\n    size (int): How many extra positions to rewind and reduce the\n    buffer"
+        },
+        {
+            "name": "bind2line",
+            "signature": "(self, binding=0)",
+            "doc": "Stores a binding to another line. \"binding\" can be an index or a name"
+        },
+        {
+            "name": "bind2lines",
+            "signature": "(self, binding=0)",
+            "doc": "Stores a binding to another line. \"binding\" can be an index or a name"
+        },
+        {
+            "name": "buflen",
+            "signature": "(self)",
+            "doc": "Real data that can be currently held in the internal buffer\n\nThe internal buffer can be longer than the actual stored data to\nallow for \"lookahead\" operations. The real amount of data that is\nheld/can be held in the buffer\nis returned"
+        },
+        {
+            "name": "date",
+            "signature": "(self, ago=0, tz=None, naive=True)",
+            "doc": ""
+        },
+        {
+            "name": "datetime",
+            "signature": "(self, ago=0, tz=None, naive=True)",
+            "doc": ""
+        },
+        {
+            "name": "dt",
+            "signature": "(self, ago=0)",
+            "doc": "return numeric date part of datetimefloat"
+        },
+        {
+            "name": "extend",
+            "signature": "(self, value=nan, size=0)",
+            "doc": "Extends the underlying array with positions that the index will not reach\n\nKeyword Args:\n    value (variable): value to be set in new positins\n    size (int): How many extra positions to enlarge the buffer\n\nThe purpose is to allow for lookahead operations or to be able to\nset values in the buffer \"future\""
+        },
+        {
+            "name": "forward",
+            "signature": "(self, value=nan, size=1)",
+            "doc": "Moves the logical index foward and enlarges the buffer as much as needed\n\nKeyword Args:\n    value (variable): value to be set in new positins\n    size (int): How many extra positions to enlarge the buffer"
+        },
+        {
+            "name": "get",
+            "signature": "(self, ago=0, size=1)",
+            "doc": "Returns a slice of the array relative to *ago*\n\nKeyword Args:\n    ago (int): Point of the array to which size will be added\n    to return the slice size(int): size of the slice to return,\n    can be positive or negative\n\nIf size is positive *ago* will mark the end of the iterable and vice\nversa if size is negative\n\nReturns:\n    A slice of the underlying buffer"
+        },
+        {
+            "name": "get_idx",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "getindicators",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "getzero",
+            "signature": "(self, idx=0, size=1)",
+            "doc": "Returns a slice of the array relative to the real zero of the buffer\n\nKeyword Args:\n    idx (int): Where to start relative to the real start of the buffer\n    size(int): size of the slice to return\n\nReturns:\n    A slice of the underlying buffer"
+        },
+        {
+            "name": "getzeroval",
+            "signature": "(self, idx=0)",
+            "doc": "Returns a single value of the array relative to the real zero\nof the buffer\n\nKeyword Args:\n    idx (int): Where to start relative to the real start of the buffer\n    size(int): size of the slice to return\n\nReturns:\n    A slice of the underlying buffer"
+        },
+        {
+            "name": "home",
+            "signature": "(self)",
+            "doc": "Rewinds the logical index to the beginning\n\nThe underlying buffer remains untouched and the actual len can be found\nout with buflen"
+        },
+        {
+            "name": "incminperiod",
+            "signature": "(self, minperiod)",
+            "doc": "Increment the minperiod with no considerations"
+        },
+        {
+            "name": "minbuffer",
+            "signature": "(self, size)",
+            "doc": "The linebuffer must guarantee the minimum requested size to be\navailable.\n\nIn non-dqbuffer mode, this is always true (of course until data is\nfilled at the beginning, there are less values, but minperiod in the\nframework should account for this.\n\nIn dqbuffer mode the buffer has to be adjusted for this if currently\nless than requested"
+        },
+        {
+            "name": "next",
+            "signature": "(self)",
+            "doc": "Called to calculate values when the minperiod is over"
+        },
+        {
+            "name": "nextstart",
+            "signature": "(self)",
+            "doc": "It will be called when the minperiod phase is over for the 1st\npost-minperiod value. Only called once and defaults to automatically\ncalling next"
+        },
+        {
+            "name": "once",
+            "signature": "(self, start, end)",
+            "doc": "Called to calculate values at \"once\" when the minperiod is over"
+        },
+        {
+            "name": "oncebinding",
+            "signature": "(self)",
+            "doc": "Executes the bindings when running in \"once\" mode"
+        },
+        {
+            "name": "oncestart",
+            "signature": "(self, start, end)",
+            "doc": "It will be called when the minperiod phase is over for the 1st\npost-minperiod value\n\nOnly called once and defaults to automatically calling once"
+        },
+        {
+            "name": "plot",
+            "signature": "(self, idx=0, size=None)",
+            "doc": "Returns a slice of the array relative to the real zero of the buffer\n\nKeyword Args:\n    idx (int): Where to start relative to the real start of the buffer\n    size(int): size of the slice to return\n\nThis is a variant of getzero which unless told otherwise returns the\nentire buffer, which is usually the idea behind plottint (all must\nplotted)\n\nReturns:\n    A slice of the underlying buffer"
+        },
+        {
+            "name": "plotrange",
+            "signature": "(self, start, end)",
+            "doc": ""
+        },
+        {
+            "name": "prenext",
+            "signature": "(self)",
+            "doc": "It will be called during the \"minperiod\" phase of an iteration."
+        },
+        {
+            "name": "preonce",
+            "signature": "(self, start, end)",
+            "doc": "It will be called during the \"minperiod\" phase of a \"once\" iteration"
+        },
+        {
+            "name": "qbuffer",
+            "signature": "(self, savemem=0, extrasize=0)",
+            "doc": "Change the lines to implement a minimum size qbuffer scheme"
+        },
+        {
+            "name": "reset",
+            "signature": "(self)",
+            "doc": "Resets the internal buffer structure and the indices\n        "
+        },
+        {
+            "name": "rewind",
+            "signature": "(self, size=1)",
+            "doc": ""
+        },
+        {
+            "name": "set",
+            "signature": "(self, value, ago=0)",
+            "doc": "Sets a value at position \"ago\" and executes any associated bindings\n\nKeyword Args:\n    value (variable): value to be set\n    ago (int): Point of the array to which size will be added to return\n    the slice"
+        },
+        {
+            "name": "set_idx",
+            "signature": "(self, idx, force=False)",
+            "doc": ""
+        },
+        {
+            "name": "setminperiod",
+            "signature": "(self, minperiod)",
+            "doc": "Direct minperiod manipulation. It could be used for example\nby a strategy\nto not wait for all indicators to produce a value"
+        },
+        {
+            "name": "time",
+            "signature": "(self, ago=0, tz=None, naive=True)",
+            "doc": ""
+        },
+        {
+            "name": "tm",
+            "signature": "(self, ago=0)",
+            "doc": "return numeric time part of datetimefloat"
+        },
+        {
+            "name": "tm2datetime",
+            "signature": "(self, tm, ago=0)",
+            "doc": "Returns the given ``tm`` in the frame of the (ago bars) datatime.\n\nUseful for external comparisons to avoid precision errors"
+        },
+        {
+            "name": "tm2dtime",
+            "signature": "(self, tm, ago=0)",
+            "doc": "Returns the given ``tm`` in the frame of the (ago bars) datatime.\n\nUseful for external comparisons to avoid precision errors"
+        },
+        {
+            "name": "tm_eq",
+            "signature": "(self, other, ago=0)",
+            "doc": "return numeric time part of datetimefloat"
+        },
+        {
+            "name": "tm_ge",
+            "signature": "(self, other, ago=0)",
+            "doc": "return numeric time part of datetimefloat"
+        },
+        {
+            "name": "tm_gt",
+            "signature": "(self, other, ago=0)",
+            "doc": "return numeric time part of datetimefloat"
+        },
+        {
+            "name": "tm_le",
+            "signature": "(self, other, ago=0)",
+            "doc": "return numeric time part of datetimefloat"
+        },
+        {
+            "name": "tm_lt",
+            "signature": "(self, other, ago=0)",
+            "doc": "return numeric time part of datetimefloat"
+        },
+        {
+            "name": "tm_raw",
+            "signature": "(self, ago=0)",
+            "doc": "return raw numeric time part of datetimefloat"
+        },
+        {
+            "name": "updateminperiod",
+            "signature": "(self, minperiod)",
+            "doc": "Update the minperiod if needed. The minperiod will have been\ncalculated elsewhere\nand has to take over if greater that self's"
+        }
+    ],
+    "attributes": {
+        "UnBounded": {
+            "value": "0",
+            "doc": "int([x]) -> integer\nint(x, base=10) -> integer\n\nConvert a number or string to an integer, or return 0 if no arguments\nare given.  If x is a number, return x.__int__().  For floating point\nnumbers, this truncates towards zero.\n\nIf x is not a number or if base is given, then x must be a string,\nbytes, or bytearray instance representing an integer literal in the\ngiven base.  The literal can be preceded by '+' or '-' and be surrounded\nby whitespace.  The base defaults to 10.  Valid bases are 0 and 2-36.\nBase 0 means to interpret the base from the string as an integer literal.\n>>> int('0b100', base=0)\n4"
+        },
+        "QBuffer": {
+            "value": "1",
+            "doc": "int([x]) -> integer\nint(x, base=10) -> integer\n\nConvert a number or string to an integer, or return 0 if no arguments\nare given.  If x is a number, return x.__int__().  For floating point\nnumbers, this truncates towards zero.\n\nIf x is not a number or if base is given, then x must be a string,\nbytes, or bytearray instance representing an integer literal in the\ngiven base.  The literal can be preceded by '+' or '-' and be surrounded\nby whitespace.  The base defaults to 10.  Valid bases are 0 and 2-36.\nBase 0 means to interpret the base from the string as an integer literal.\n>>> int('0b100', base=0)\n4"
+        },
+        "idx": {
+            "value": "<property object at 0x00000256174DA110>",
+            "doc": ""
+        },
+        "packages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "frompackages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        }
+    },
+    "input_schema": {},
+    "params_schema": {},
+    "output_schema": {}
+}

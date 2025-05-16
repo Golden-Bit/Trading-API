@@ -1,0 +1,136 @@
+{
+    "name": "SharpeRatio_A",
+    "module": "backtrader.analyzers.sharpe",
+    "doc": "Extension of the SharpeRatio which returns the Sharpe Ratio directly in\nannualized form\n\nThe following param has been changed from ``SharpeRatio``\n\n  - ``annualize`` (default: ``True``)",
+    "constructor_signature": "(self)",
+    "methods": [
+        {
+            "name": "_next",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_nextstart",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_notify_cashvalue",
+            "signature": "(self, cash, value)",
+            "doc": ""
+        },
+        {
+            "name": "_notify_fund",
+            "signature": "(self, cash, value, fundvalue, shares)",
+            "doc": ""
+        },
+        {
+            "name": "_notify_order",
+            "signature": "(self, order)",
+            "doc": ""
+        },
+        {
+            "name": "_notify_trade",
+            "signature": "(self, trade)",
+            "doc": ""
+        },
+        {
+            "name": "_prenext",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_register",
+            "signature": "(self, child)",
+            "doc": ""
+        },
+        {
+            "name": "_start",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_stop",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "create_analysis",
+            "signature": "(self)",
+            "doc": "Meant to be overriden by subclasses. Gives a chance to create the\nstructures that hold the analysis.\n\nThe default behaviour is to create a ``OrderedDict`` named ``rets``"
+        },
+        {
+            "name": "get_analysis",
+            "signature": "(self)",
+            "doc": "Returns a *dict-like* object with the results of the analysis\n\nThe keys and format of analysis results in the dictionary is\nimplementation dependent.\n\nIt is not even enforced that the result is a *dict-like object*, just\nthe convention\n\nThe default implementation returns the default OrderedDict ``rets``\ncreated by the default ``create_analysis`` method"
+        },
+        {
+            "name": "next",
+            "signature": "(self)",
+            "doc": "Invoked for each next invocation of the strategy, once the minum\npreiod of the strategy has been reached"
+        },
+        {
+            "name": "nextstart",
+            "signature": "(self)",
+            "doc": "Invoked exactly once for the nextstart invocation of the strategy,\nwhen the minimum period has been first reached"
+        },
+        {
+            "name": "notify_cashvalue",
+            "signature": "(self, cash, value)",
+            "doc": "Receives the cash/value notification before each next cycle"
+        },
+        {
+            "name": "notify_fund",
+            "signature": "(self, cash, value, fundvalue, shares)",
+            "doc": "Receives the current cash, value, fundvalue and fund shares"
+        },
+        {
+            "name": "notify_order",
+            "signature": "(self, order)",
+            "doc": "Receives order notifications before each next cycle"
+        },
+        {
+            "name": "notify_trade",
+            "signature": "(self, trade)",
+            "doc": "Receives trade notifications before each next cycle"
+        },
+        {
+            "name": "pprint",
+            "signature": "(self, *args, **kwargs)",
+            "doc": "Prints the results returned by ``get_analysis`` using the pretty\nprint Python module (*pprint*)"
+        },
+        {
+            "name": "prenext",
+            "signature": "(self)",
+            "doc": "Invoked for each prenext invocation of the strategy, until the minimum\nperiod of the strategy has been reached\n\nThe default behavior for an analyzer is to invoke ``next``"
+        },
+        {
+            "name": "print",
+            "signature": "(self, *args, **kwargs)",
+            "doc": "Prints the results returned by ``get_analysis`` via a standard\n``Writerfile`` object, which defaults to writing things to standard\noutput"
+        },
+        {
+            "name": "start",
+            "signature": "(self)",
+            "doc": "Invoked to indicate the start of operations, giving the analyzer\ntime to setup up needed things"
+        },
+        {
+            "name": "stop",
+            "signature": "(self)",
+            "doc": "Invoked to indicate the end of operations, giving the analyzer\ntime to shut down needed things"
+        }
+    ],
+    "attributes": {
+        "packages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "frompackages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        }
+    },
+    "input_schema": {},
+    "params_schema": {},
+    "output_schema": {}
+}

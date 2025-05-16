@@ -1,0 +1,29 @@
+{
+    "name": "MovingAverage",
+    "module": "backtrader.indicators.mabase",
+    "doc": "MovingAverage (alias MovAv)\n\nA placeholder to gather all Moving Average Types in a single place.\n\nInstantiating a SimpleMovingAverage can be achieved as follows::\n\n  sma = MovingAverage.Simple(self.data, period)\n\nOr using the shorter aliases::\n\n  sma = MovAv.SMA(self.data, period)\n\nor with the full (forwards and backwards) names:\n\n  sma = MovAv.SimpleMovingAverage(self.data, period)\n\n  sma = MovAv.MovingAverageSimple(self.data, period)",
+    "constructor_signature": "(self, /, *args, **kwargs)",
+    "methods": [],
+    "attributes": {
+        "_movavs": {
+            "value": "[<class 'backtrader.indicators.mabase.MovingAverageBase'>, <class 'backtrader.indicators.sma.SMA'>, <class 'backtrader.indicators.sma.SimpleMovingAverage'>, <class 'backtrader.indicators.sma.MovingAverageSimple'>, <class 'backtrader.indicators.ema.EMA'>, <class 'backtrader.indicators.ema.MovingAverageExponential'>, <class 'backtrader.indicators.ema.ExponentialMovingAverage'>, <class 'backtrader.indicators.smma.SMMA'>, <class 'backtrader.indicators.smma.WilderMA'>, <class 'backtrader.indicators.smma.MovingAverageSmoothed'>, <class 'backtrader.indicators.smma.MovingAverageWilder'>, <class 'backtrader.indicators.smma.ModifiedMovingAverage'>, <class 'backtrader.indicators.smma.SmoothedMovingAverage'>, <class 'backtrader.indicators.wma.WMA'>, <class 'backtrader.indicators.wma.MovingAverageWeighted'>, <class 'backtrader.indicators.wma.WeightedMovingAverage'>, <class 'backtrader.indicators.dema.DEMA'>, <class 'backtrader.indicators.dema.MovingAverageDoubleExponential'>, <class 'backtrader.indicators.dema.DoubleExponentialMovingAverage'>, <class 'backtrader.indicators.dema.TEMA'>, <class 'backtrader.indicators.dema.MovingAverageTripleExponential'>, <class 'backtrader.indicators.dema.TripleExponentialMovingAverage'>, <class 'backtrader.indicators.kama.KAMA'>, <class 'backtrader.indicators.kama.MovingAverageAdaptive'>, <class 'backtrader.indicators.kama.AdaptiveMovingAverage'>, <class 'backtrader.indicators.zlema.ZLEMA'>, <class 'backtrader.indicators.zlema.ZeroLagEma'>, <class 'backtrader.indicators.zlema.ZeroLagExponentialMovingAverage'>, <class 'backtrader.indicators.hma.HMA'>, <class 'backtrader.indicators.hma.HullMA'>, <class 'backtrader.indicators.hma.HullMovingAverage'>, <class 'backtrader.indicators.zlind.ZLIndicator'>, <class 'backtrader.indicators.zlind.ZLInd'>, <class 'backtrader.indicators.zlind.EC'>, <class 'backtrader.indicators.zlind.ErrorCorrecting'>, <class 'backtrader.indicators.zlind.ZeroLagIndicator'>, <class 'backtrader.indicators.dma.DMA'>, <class 'backtrader.indicators.dma.DicksonMA'>, <class 'backtrader.indicators.dma.DicksonMovingAverage'>]",
+            "doc": "Built-in mutable sequence.\n\nIf no argument is given, the constructor creates a new empty list.\nThe argument must be an iterable if specified."
+        },
+        "register": {
+            "value": "<classmethod(<function MovingAverage.register at 0x00000238E5033BE0>)>",
+            "doc": ""
+        }
+    },
+    "input_schema": {
+        "args": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "kwargs": {
+            "default": null,
+            "annotation": "Any"
+        }
+    },
+    "params_schema": {},
+    "output_schema": {}
+}

@@ -1,0 +1,165 @@
+{
+    "name": "TimeFrameAnalyzerBase",
+    "module": "backtrader.analyzer",
+    "doc": "Analyzer base class. All analyzers are subclass of this one\n\nAn Analyzer instance operates in the frame of a strategy and provides an\nanalysis for that strategy.\n\nAutomagically set member attributes:\n\n  - ``self.strategy`` (giving access to the *strategy* and anything\n    accessible from it)\n\n  - ``self.datas[x]`` giving access to the array of data feeds present in\n    the the system, which could also be accessed via the strategy reference\n\n  - ``self.data``, giving access to ``self.datas[0]``\n\n  - ``self.dataX`` -> ``self.datas[X]``\n\n  - ``self.dataX_Y`` -> ``self.datas[X].lines[Y]``\n\n  - ``self.dataX_name`` -> ``self.datas[X].name``\n\n  - ``self.data_name`` -> ``self.datas[0].name``\n\n  - ``self.data_Y`` -> ``self.datas[0].lines[Y]``\n\nThis is not a *Lines* object, but the methods and operation follow the same\ndesign\n\n  - ``__init__`` during instantiation and initial setup\n\n  - ``start`` / ``stop`` to signal the begin and end of operations\n\n  - ``prenext`` / ``nextstart`` / ``next`` family of methods that follow\n    the calls made to the same methods in the strategy\n\n  - ``notify_trade`` / ``notify_order`` / ``notify_cashvalue`` /\n    ``notify_fund`` which receive the same notifications as the equivalent\n    methods of the strategy\n\nThe mode of operation is open and no pattern is preferred. As such the\nanalysis can be generated with the ``next`` calls, at the end of operations\nduring ``stop`` and even with a single method like ``notify_trade``\n\nThe important thing is to override ``get_analysis`` to return a *dict-like*\nobject containing the results of the analysis (the actual format is\nimplementation dependent)",
+    "constructor_signature": "(self, /, *args, **kwargs)",
+    "methods": [
+        {
+            "name": "_dt_over",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_get_dt_cmpkey",
+            "signature": "(self, dt)",
+            "doc": ""
+        },
+        {
+            "name": "_get_subday_cmpkey",
+            "signature": "(self, dt)",
+            "doc": ""
+        },
+        {
+            "name": "_next",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_nextstart",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_notify_cashvalue",
+            "signature": "(self, cash, value)",
+            "doc": ""
+        },
+        {
+            "name": "_notify_fund",
+            "signature": "(self, cash, value, fundvalue, shares)",
+            "doc": ""
+        },
+        {
+            "name": "_notify_order",
+            "signature": "(self, order)",
+            "doc": ""
+        },
+        {
+            "name": "_notify_trade",
+            "signature": "(self, trade)",
+            "doc": ""
+        },
+        {
+            "name": "_prenext",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_register",
+            "signature": "(self, child)",
+            "doc": ""
+        },
+        {
+            "name": "_start",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_stop",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "create_analysis",
+            "signature": "(self)",
+            "doc": "Meant to be overriden by subclasses. Gives a chance to create the\nstructures that hold the analysis.\n\nThe default behaviour is to create a ``OrderedDict`` named ``rets``"
+        },
+        {
+            "name": "get_analysis",
+            "signature": "(self)",
+            "doc": "Returns a *dict-like* object with the results of the analysis\n\nThe keys and format of analysis results in the dictionary is\nimplementation dependent.\n\nIt is not even enforced that the result is a *dict-like object*, just\nthe convention\n\nThe default implementation returns the default OrderedDict ``rets``\ncreated by the default ``create_analysis`` method"
+        },
+        {
+            "name": "next",
+            "signature": "(self)",
+            "doc": "Invoked for each next invocation of the strategy, once the minum\npreiod of the strategy has been reached"
+        },
+        {
+            "name": "nextstart",
+            "signature": "(self)",
+            "doc": "Invoked exactly once for the nextstart invocation of the strategy,\nwhen the minimum period has been first reached"
+        },
+        {
+            "name": "notify_cashvalue",
+            "signature": "(self, cash, value)",
+            "doc": "Receives the cash/value notification before each next cycle"
+        },
+        {
+            "name": "notify_fund",
+            "signature": "(self, cash, value, fundvalue, shares)",
+            "doc": "Receives the current cash, value, fundvalue and fund shares"
+        },
+        {
+            "name": "notify_order",
+            "signature": "(self, order)",
+            "doc": "Receives order notifications before each next cycle"
+        },
+        {
+            "name": "notify_trade",
+            "signature": "(self, trade)",
+            "doc": "Receives trade notifications before each next cycle"
+        },
+        {
+            "name": "on_dt_over",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "pprint",
+            "signature": "(self, *args, **kwargs)",
+            "doc": "Prints the results returned by ``get_analysis`` using the pretty\nprint Python module (*pprint*)"
+        },
+        {
+            "name": "prenext",
+            "signature": "(self)",
+            "doc": "Invoked for each prenext invocation of the strategy, until the minimum\nperiod of the strategy has been reached\n\nThe default behavior for an analyzer is to invoke ``next``"
+        },
+        {
+            "name": "print",
+            "signature": "(self, *args, **kwargs)",
+            "doc": "Prints the results returned by ``get_analysis`` via a standard\n``Writerfile`` object, which defaults to writing things to standard\noutput"
+        },
+        {
+            "name": "start",
+            "signature": "(self)",
+            "doc": "Invoked to indicate the start of operations, giving the analyzer\ntime to setup up needed things"
+        },
+        {
+            "name": "stop",
+            "signature": "(self)",
+            "doc": "Invoked to indicate the end of operations, giving the analyzer\ntime to shut down needed things"
+        }
+    ],
+    "attributes": {
+        "packages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "frompackages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        }
+    },
+    "input_schema": {
+        "args": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "kwargs": {
+            "default": null,
+            "annotation": "Any"
+        }
+    },
+    "params_schema": {},
+    "output_schema": {}
+}

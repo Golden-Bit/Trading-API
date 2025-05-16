@@ -1,0 +1,56 @@
+{
+    "name": "TradingCalendar",
+    "module": "backtrader.tradingcal",
+    "doc": "Wrapper of ``pandas_market_calendars`` for a trading calendar. The package\n``pandas_market_calendar`` must be installed\n\nParams:\n\n  - ``open`` (default ``time.min``)\n\n    Regular start of the session\n\n  - ``close`` (default ``time.max``)\n\n    Regular end of the session\n\n  - ``holidays`` (default ``[]``)\n\n    List of non-trading days (``datetime.datetime`` instances)\n\n  - ``earlydays`` (default ``[]``)\n\n    List of tuples determining the date and opening/closing times of days\n    which do not conform to the regular trading hours where each tuple has\n    (``datetime.datetime``, ``datetime.time``, ``datetime.time`` )\n\n  - ``offdays`` (default ``ISOWEEKEND``)\n\n    A list of weekdays in ISO format (Monday: 1 -> Sunday: 7) in which the\n    market doesn't trade. This is usually Saturday and Sunday and hence the\n    default",
+    "constructor_signature": "(self)",
+    "methods": [
+        {
+            "name": "_nextday",
+            "signature": "(self, day)",
+            "doc": "Returns the next trading day (datetime/date instance) after ``day``\n(datetime/date instance) and the isocalendar components\n\nThe return value is a tuple with 2 components: (nextday, (y, w, d))"
+        },
+        {
+            "name": "last_monthday",
+            "signature": "(self, day)",
+            "doc": "Returns ``True`` if the given ``day`` (datetime/date) instance is the\nlast trading day of this month"
+        },
+        {
+            "name": "last_weekday",
+            "signature": "(self, day)",
+            "doc": "Returns ``True`` if the given ``day`` (datetime/date) instance is the\nlast trading day of this week"
+        },
+        {
+            "name": "last_yearday",
+            "signature": "(self, day)",
+            "doc": "Returns ``True`` if the given ``day`` (datetime/date) instance is the\nlast trading day of this month"
+        },
+        {
+            "name": "nextday",
+            "signature": "(self, day)",
+            "doc": "Returns the next trading day (datetime/date instance) after ``day``\n(datetime/date instance)"
+        },
+        {
+            "name": "nextday_week",
+            "signature": "(self, day)",
+            "doc": "Returns the iso week number of the next trading day, given a ``day``\n(datetime/date) instance"
+        },
+        {
+            "name": "schedule",
+            "signature": "(self, day, tz=None)",
+            "doc": "Returns the opening and closing times for the given ``day``. If the\nmethod is called, the assumption is that ``day`` is an actual trading\nday\n\nThe return value is a tuple with 2 components: opentime, closetime"
+        }
+    ],
+    "attributes": {
+        "packages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "frompackages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        }
+    },
+    "input_schema": {},
+    "params_schema": {},
+    "output_schema": {}
+}

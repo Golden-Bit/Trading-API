@@ -1,0 +1,99 @@
+{
+    "name": "Lines_LineSeries",
+    "module": "backtrader.lineseries",
+    "doc": "Defines an \"array\" of lines which also has most of the interface of\na LineBuffer class (forward, rewind, advance...).\n\nThis interface operations are passed to the lines held by self\n\nThe class can autosubclass itself (_derive) to hold new lines keeping them\nin the defined order.",
+    "constructor_signature": "(self, initlines=None)",
+    "methods": [
+        {
+            "name": "advance",
+            "signature": "(self, size=1)",
+            "doc": "Proxy line operation"
+        },
+        {
+            "name": "backwards",
+            "signature": "(self, size=1, force=False)",
+            "doc": "Proxy line operation"
+        },
+        {
+            "name": "buflen",
+            "signature": "(self, line=0)",
+            "doc": "Proxy line operation"
+        },
+        {
+            "name": "extend",
+            "signature": "(self, value=nan, size=0)",
+            "doc": "Proxy line operation"
+        },
+        {
+            "name": "extrasize",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "forward",
+            "signature": "(self, value=nan, size=1)",
+            "doc": "Proxy line operation"
+        },
+        {
+            "name": "fullsize",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "get",
+            "signature": "(self, ago=0, size=1, line=0)",
+            "doc": "Proxy line operation"
+        },
+        {
+            "name": "home",
+            "signature": "(self)",
+            "doc": "Proxy line operation"
+        },
+        {
+            "name": "itersize",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "reset",
+            "signature": "(self)",
+            "doc": "Proxy line operation"
+        },
+        {
+            "name": "rewind",
+            "signature": "(self, size=1)",
+            "doc": "Proxy line operation"
+        },
+        {
+            "name": "size",
+            "signature": "(self)",
+            "doc": ""
+        }
+    ],
+    "attributes": {
+        "_getlinesbase": {
+            "value": "<classmethod(<function Lines._derive.<locals>.<lambda> at 0x00000238E490C4C0>)>",
+            "doc": ""
+        },
+        "_getlines": {
+            "value": "<classmethod(<function Lines._derive.<locals>.<lambda> at 0x00000238E490C550>)>",
+            "doc": ""
+        },
+        "_getlinesextrabase": {
+            "value": "<classmethod(<function Lines._derive.<locals>.<lambda> at 0x00000238E490C5E0>)>",
+            "doc": ""
+        },
+        "_getlinesextra": {
+            "value": "<classmethod(<function Lines._derive.<locals>.<lambda> at 0x00000238E490C670>)>",
+            "doc": ""
+        }
+    },
+    "input_schema": {
+        "initlines": {
+            "default": null,
+            "annotation": "Any"
+        }
+    },
+    "params_schema": {},
+    "output_schema": {}
+}

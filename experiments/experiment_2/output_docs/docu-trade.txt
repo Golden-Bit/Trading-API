@@ -1,0 +1,152 @@
+Trade
+
+Definition of a trade:
+
+A Trade is open when the a position in a instrument goes from 0 to a size X
+    which may positive/negative for long/short positions)
+
+A Trade is closed when a position goes from X to 0.
+
+The followig two actions:
+
+positive to negative
+
+negative to positive
+
+Are actually seen as:
+
+A trade has been closed (position went to 0 from X)
+
+A new trade has been open (position goes from 0 to Y)
+
+Trades are only informative and have no user callable methods.
+
+Reference: Trade
+
+class backtrader.trade.Trade(data=None, tradeid=0, historyon=False, size=0, price=0.0, value=0.0, commission=0.0)
+
+Keeps track of the life of an trade: size, price,
+commission (and value?)
+
+An trade starts at 0 can be increased and reduced and can
+be considered closed if it goes back to 0.
+
+The trade can be long (positive size) or short (negative size)
+
+An trade is not meant to be reversed (no support in the logic for it)
+
+Member Attributes:
+
+ref
+: unique trade identifier
+
+status
+ (
+int
+): one of Created, Open, Closed
+
+tradeid
+: grouping tradeid passed to orders during creation
+    The default in orders is 0
+
+size
+ (
+int
+): current size of the trade
+
+price
+ (
+float
+): current price of the trade
+
+value
+ (
+float
+): current value of the trade
+
+commission
+ (
+float
+): current accumulated commission
+
+pnl
+ (
+float
+): current profit and loss of the trade (gross pnl)
+
+pnlcomm
+ (
+float
+): current profit and loss of the trade minus
+    commission (net pnl)
+
+isclosed
+ (
+bool
+): records if the last update closed (set size to
+    null the trade
+
+isopen
+ (
+bool
+): records if any update has opened the trade
+
+justopened
+ (
+bool
+): if the trade was just opened
+
+baropen
+ (
+int
+): bar in which this trade was opened
+
+dtopen
+ (
+float
+): float coded datetime in which the trade was
+    opened
+
+Use method 
+open_datetime
+ to get a Python datetime.datetime
+  or use the platform provided 
+num2date
+ method
+
+barclose
+ (
+int
+): bar in which this trade was closed
+
+dtclose
+ (
+float
+): float coded datetime in which the trade was
+    closed
+
+Use method 
+close_datetime
+ to get a Python datetime.datetime
+  or use the platform provided 
+num2date
+ method
+
+barlen
+ (
+int
+): number of bars this trade was open
+
+historyon
+ (
+bool
+): whether history has to be recorded
+
+history
+ (
+list
+): holds a list updated with each “update” event
+    containing the resulting status and parameters used in the update
+
+The first entry in the history is the Opening Event
+The last entry in the history is the Closing Event

@@ -1,0 +1,32 @@
+{
+    "name": "ItemCollection",
+    "module": "backtrader.metabase",
+    "doc": "Holds a collection of items that can be reached by\n\n  - Index\n  - Name (if set in the append operation)",
+    "constructor_signature": "(self)",
+    "methods": [
+        {
+            "name": "append",
+            "signature": "(self, item, name=None)",
+            "doc": ""
+        },
+        {
+            "name": "getbyname",
+            "signature": "(self, name)",
+            "doc": ""
+        },
+        {
+            "name": "getitems",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "getnames",
+            "signature": "(self)",
+            "doc": ""
+        }
+    ],
+    "attributes": {},
+    "input_schema": {},
+    "params_schema": {},
+    "output_schema": {}
+}

@@ -1,0 +1,46 @@
+{
+    "name": "MetaTimeFrameAnalyzerBase",
+    "module": "backtrader.analyzer",
+    "doc": "type(object) -> the object's type\ntype(name, bases, dict, **kwds) -> a new type",
+    "constructor_signature": "(self, /, *args, **kwargs)",
+    "methods": [
+        {
+            "name": "doinit",
+            "signature": "(cls, _obj, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "donew",
+            "signature": "(cls, *args, **kwargs)",
+            "doc": "Intercept the strategy parameter"
+        },
+        {
+            "name": "dopostinit",
+            "signature": "(cls, _obj, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "dopreinit",
+            "signature": "(cls, _obj, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "doprenew",
+            "signature": "(cls, *args, **kwargs)",
+            "doc": ""
+        }
+    ],
+    "attributes": {},
+    "input_schema": {
+        "args": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "kwargs": {
+            "default": null,
+            "annotation": "Any"
+        }
+    },
+    "params_schema": {},
+    "output_schema": {}
+}

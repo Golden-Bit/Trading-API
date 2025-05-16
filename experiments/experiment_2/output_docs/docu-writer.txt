@@ -1,0 +1,154 @@
+Writer
+
+Write out to a stream the following contents:
+
+csv stream with data feeds, strategies, indicators and observers
+
+Which objects actually go into the csv stream can be controlled with the
+
+csv
+ attribute of each object (defaults to True for 
+data feeds
+ and
+
+observers
+ / False for 
+indicators
+)
+
+A summary of the properties of
+
+Data Feeds
+
+Strategies (lines and parameters)
+
+Indicators/Observers: (lines and parameters)
+
+Analyzers: (parameters and analysis outcome)
+
+There is only a single Writer defined called 
+WriterFile
+, which can be added
+to the system:
+
+By setting the 
+writer
+ parameter of cerebro to True
+
+A standard 
+WriterFile
+ will be instantiated
+
+By calling 
+Cerebro.addwriter(writerclass, **kwargs)
+
+writerclass
+ will be instantiated during backtesting execution with the
+givenn 
+kwargs
+
+Given that a standard 
+WriterFile
+ does not ouput 
+csv
+ as a default,
+the following 
+addwriter
+ invocation would take care of it:
+
+```
+cerebro.addwriter(bt.WriterFile, csv=True)
+
+```
+
+Reference
+
+class backtrader.WriterFile()
+
+The system wide writer class.
+
+It can be parametrized with:
+
+out
+ (default: 
+sys.stdout
+): output stream to write to
+
+If a string is passed a filename with the content of the parameter will
+be used
+
+close_out
+  (default: 
+False
+)
+
+If 
+out
+ is a stream whether it has to be explicitly closed by the
+writer
+
+csv
+ (default: 
+False
+)
+
+If a csv stream of the data feeds, strategies, observers and indicators
+has to be written to the stream during execution
+
+Which objects actually go into the csv stream can be controlled with
+the 
+csv
+ attribute of each object (defaults to 
+True
+ for 
+data
+feeds
+ and 
+observers
+ / False for 
+indicators
+)
+
+csv_filternan
+ (default: 
+True
+) whether 
+nan
+ values have to be
+    purged out of the csv stream (replaced by an empty field)
+
+csv_counter
+ (default: 
+True
+) if the writer shall keep and print
+    out a counter of the lines actually output
+
+indent
+ (default: 
+2
+) indentation spaces for each level
+
+separators
+ (default: 
+['=', '-', '+', '*', '.', '~', '"', '^',
+    '#']
+)
+
+Characters used for line separators across section/sub(sub)sections
+
+seplen
+ (default: 
+79
+)
+
+total length of a line separator including indentation
+
+rounding
+ (default: 
+None
+)
+
+Number of decimal places to round floats down to. With 
+None
+ no
+rounding is performed

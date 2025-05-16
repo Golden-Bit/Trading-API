@@ -1,0 +1,16 @@
+{
+    "name": "LineAlias",
+    "module": "backtrader.lineseries",
+    "doc": "Descriptor class that store a line reference and returns that line\nfrom the owner\n\nKeyword Args:\n    line (int): reference to the line that will be returned from\n    owner's *lines* buffer\n\nAs a convenience the __set__ method of the descriptor is used not set\nthe *line* reference because this is a constant along the live of the\ndescriptor instance, but rather to set the value of the *line* at the\ninstant '0' (the current one)",
+    "constructor_signature": "(self, line)",
+    "methods": [],
+    "attributes": {},
+    "input_schema": {
+        "line": {
+            "default": null,
+            "annotation": "Any"
+        }
+    },
+    "params_schema": {},
+    "output_schema": {}
+}

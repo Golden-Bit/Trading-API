@@ -1,0 +1,2699 @@
+Data Feeds Reference
+
+AbstractDataBase
+
+Lines:
+
+```
+* close
+
+* low
+
+* high
+
+* open
+
+* volume
+
+* openinterest
+
+* datetime
+
+```
+
+Params:
+
+```
+* dataname (None)
+
+* name ()
+
+* compression (1)
+
+* timeframe (5)
+
+* fromdate (None)
+
+* todate (None)
+
+* sessionstart (None)
+
+* sessionend (None)
+
+* filters ([])
+
+* tz (None)
+
+* tzinput (None)
+
+* qcheck (0.0)
+
+* calendar (None)
+
+```
+
+BacktraderCSVData
+
+Parses a self-defined CSV Data used for testing.
+
+Specific parameters:
+
+dataname
+: The filename to parse or a file-like object
+
+Lines:
+
+```
+* close
+
+* low
+
+* high
+
+* open
+
+* volume
+
+* openinterest
+
+* datetime
+
+```
+
+Params:
+
+```
+* dataname (None)
+
+* name ()
+
+* compression (1)
+
+* timeframe (5)
+
+* fromdate (None)
+
+* todate (None)
+
+* sessionstart (None)
+
+* sessionend (None)
+
+* filters ([])
+
+* tz (None)
+
+* tzinput (None)
+
+* qcheck (0.0)
+
+* calendar (None)
+
+* headers (True)
+
+* separator (,)
+
+```
+
+CSVDataBase
+
+Base class for classes implementing CSV DataFeeds
+
+The class takes care of opening the file, reading the lines and
+tokenizing them.
+
+Subclasses do only need to override:
+
+_loadline(tokens)
+
+The return value of 
+_loadline
+ (True/False) will be the return value
+of 
+_load
+ which has been overriden by this base class
+
+Lines:
+
+```
+* close
+
+* low
+
+* high
+
+* open
+
+* volume
+
+* openinterest
+
+* datetime
+
+```
+
+Params:
+
+```
+* dataname (None)
+
+* name ()
+
+* compression (1)
+
+* timeframe (5)
+
+* fromdate (None)
+
+* todate (None)
+
+* sessionstart (None)
+
+* sessionend (None)
+
+* filters ([])
+
+* tz (None)
+
+* tzinput (None)
+
+* qcheck (0.0)
+
+* calendar (None)
+
+* headers (True)
+
+* separator (,)
+
+```
+
+Chainer
+
+Class that chains datas
+
+Lines:
+
+```
+* close
+
+* low
+
+* high
+
+* open
+
+* volume
+
+* openinterest
+
+* datetime
+
+```
+
+Params:
+
+```
+* dataname (None)
+
+* name ()
+
+* compression (1)
+
+* timeframe (5)
+
+* fromdate (None)
+
+* todate (None)
+
+* sessionstart (None)
+
+* sessionend (None)
+
+* filters ([])
+
+* tz (None)
+
+* tzinput (None)
+
+* qcheck (0.0)
+
+* calendar (None)
+
+```
+
+DataClone
+
+Lines:
+
+```
+* close
+
+* low
+
+* high
+
+* open
+
+* volume
+
+* openinterest
+
+* datetime
+
+```
+
+Params:
+
+```
+* dataname (None)
+
+* name ()
+
+* compression (1)
+
+* timeframe (5)
+
+* fromdate (None)
+
+* todate (None)
+
+* sessionstart (None)
+
+* sessionend (None)
+
+* filters ([])
+
+* tz (None)
+
+* tzinput (None)
+
+* qcheck (0.0)
+
+* calendar (None)
+
+```
+
+DataFiller
+
+This class will fill gaps in the source data using the following
+information bits from the underlying data source
+
+timeframe and compression to dimension the output bars
+
+sessionstart and sessionend
+
+If a data feed has missing bars in between 10:31 and 10:34 and the
+timeframe is minutes, the output will be filled with bars for minutes
+10:32 and 10:33 using the closing price of the last bar (10:31)
+
+Bars can be missinga amongst other things because
+
+Params:
+
+```
+* `fill_price` (def: None): if None (or evaluates to False),the
+  closing price will be used, else the passed value (which can be
+  for example ‘NaN’ to have a missing bar in terms of evaluation but
+  present in terms of time
+
+* `fill_vol` (def: NaN): used to fill the volume of missing bars
+
+* `fill_oi` (def: NaN): used to fill the openinterest of missing bars
+
+```
+
+Lines:
+
+```
+* close
+
+* low
+
+* high
+
+* open
+
+* volume
+
+* openinterest
+
+* datetime
+
+```
+
+Params:
+
+```
+* dataname (None)
+
+* name ()
+
+* compression (1)
+
+* timeframe (5)
+
+* fromdate (None)
+
+* todate (None)
+
+* sessionstart (None)
+
+* sessionend (None)
+
+* filters ([])
+
+* tz (None)
+
+* tzinput (None)
+
+* qcheck (0.0)
+
+* calendar (None)
+
+* fill_price (None)
+
+* fill_vol (nan)
+
+* fill_oi (nan)
+
+```
+
+DataFilter
+
+This class filters out bars from a given data source. In addition to the
+standard parameters of a DataBase it takes a 
+funcfilter
+ parameter which
+can be any callable
+
+Logic:
+
+funcfilter
+ will be called with the underlying data source
+
+It can be any callable
+
+Return value 
+True
+: current data source bar values will used
+
+Return value 
+False
+: current data source bar values will discarded
+
+Lines:
+
+```
+* close
+
+* low
+
+* high
+
+* open
+
+* volume
+
+* openinterest
+
+* datetime
+
+```
+
+Params:
+
+```
+* dataname (None)
+
+* name ()
+
+* compression (1)
+
+* timeframe (5)
+
+* fromdate (None)
+
+* todate (None)
+
+* sessionstart (None)
+
+* sessionend (None)
+
+* filters ([])
+
+* tz (None)
+
+* tzinput (None)
+
+* qcheck (0.0)
+
+* calendar (None)
+
+* funcfilter (None)
+
+```
+
+GenericCSVData
+
+Parses a CSV file according to the order and field presence defined by the
+parameters
+
+Specific parameters (or specific meaning):
+
+dataname
+: The filename to parse or a file-like object
+
+The lines parameters (datetime, open, high …) take numeric values
+
+A value of -1 indicates absence of that field in the CSV source
+
+If 
+time
+ is present (parameter time >=0) the source contains
+    separated fields for date and time, which will be combined
+
+nullvalue
+
+Value that will be used if a value which should be there is missing
+(the CSV field is empty)
+
+dtformat
+: Format used to parse the datetime CSV field. See the
+    python strptime/strftime documentation for the format.
+
+If a numeric value is specified, it will be interpreted as follows
+
+1
+: The value is a Unix timestamp of type 
+int
+ representing
+    the number of seconds since Jan 1
+st
+, 1970
+
+2
+: The value is a Unix timestamp of type 
+float
+
+If a 
+callable
+ is passed
+
+it will accept a string and return a datetime.datetime python
+    instance
+
+tmformat
+: Format used to parse the time CSV field if “present”
+    (the default for the “time” CSV field is not to be present)
+
+Lines:
+
+```
+* close
+
+* low
+
+* high
+
+* open
+
+* volume
+
+* openinterest
+
+* datetime
+
+```
+
+Params:
+
+```
+* dataname (None)
+
+* name ()
+
+* compression (1)
+
+* timeframe (5)
+
+* fromdate (None)
+
+* todate (None)
+
+* sessionstart (None)
+
+* sessionend (None)
+
+* filters ([])
+
+* tz (None)
+
+* tzinput (None)
+
+* qcheck (0.0)
+
+* calendar (None)
+
+* headers (True)
+
+* separator (,)
+
+* nullvalue (nan)
+
+* dtformat (%Y-%m-%d %H:%M:%S)
+
+* tmformat (%H:%M:%S)
+
+* datetime (0)
+
+* time (-1)
+
+* open (1)
+
+* high (2)
+
+* low (3)
+
+* close (4)
+
+* volume (5)
+
+* openinterest (6)
+
+```
+
+IBData
+
+Interactive Brokers Data Feed.
+
+Supports the following contract specifications in parameter 
+dataname
+:
+
+TICKER  # Stock type and SMART exchange
+
+TICKER-STK  # Stock and SMART exchange
+
+TICKER-STK-EXCHANGE  # Stock
+
+TICKER-STK-EXCHANGE-CURRENCY  # Stock
+
+TICKER-CFD  # CFD and SMART exchange
+
+TICKER-CFD-EXCHANGE  # CFD
+
+TICKER-CDF-EXCHANGE-CURRENCY  # Stock
+
+TICKER-IND-EXCHANGE  # Index
+
+TICKER-IND-EXCHANGE-CURRENCY  # Index
+
+TICKER-YYYYMM-EXCHANGE  # Future
+
+TICKER-YYYYMM-EXCHANGE-CURRENCY  # Future
+
+TICKER-YYYYMM-EXCHANGE-CURRENCY-MULT  # Future
+
+TICKER-FUT-EXCHANGE-CURRENCY-YYYYMM-MULT # Future
+
+TICKER-YYYYMM-EXCHANGE-CURRENCY-STRIKE-RIGHT  # FOP
+
+TICKER-YYYYMM-EXCHANGE-CURRENCY-STRIKE-RIGHT-MULT  # FOP
+
+TICKER-FOP-EXCHANGE-CURRENCY-YYYYMM-STRIKE-RIGHT # FOP
+
+TICKER-FOP-EXCHANGE-CURRENCY-YYYYMM-STRIKE-RIGHT-MULT # FOP
+
+CUR1.CUR2-CASH-IDEALPRO  # Forex
+
+TICKER-YYYYMMDD-EXCHANGE-CURRENCY-STRIKE-RIGHT  # OPT
+
+TICKER-YYYYMMDD-EXCHANGE-CURRENCY-STRIKE-RIGHT-MULT  # OPT
+
+TICKER-OPT-EXCHANGE-CURRENCY-YYYYMMDD-STRIKE-RIGHT # OPT
+
+TICKER-OPT-EXCHANGE-CURRENCY-YYYYMMDD-STRIKE-RIGHT-MULT # OPT
+
+Params:
+
+sectype
+ (default: 
+STK
+)
+
+Default value to apply as 
+security type
+ if not provided in the
+
+dataname
+ specification
+
+exchange
+ (default: 
+SMART
+)
+
+Default value to apply as 
+exchange
+ if not provided in the
+
+dataname
+ specification
+
+currency
+ (default: 
+''
+)
+
+Default value to apply as 
+currency
+ if not provided in the
+
+dataname
+ specification
+
+historical
+ (default: 
+False
+)
+
+If set to 
+True
+ the data feed will stop after doing the first
+download of data.
+
+The standard data feed parameters 
+fromdate
+ and 
+todate
+ will be
+used as reference.
+
+The data feed will make multiple requests if the requested duration is
+larger than the one allowed by IB given the timeframe/compression
+chosen for the data.
+
+what
+ (default: 
+None
+)
+
+If 
+None
+ the default for different assets types will be used for
+historical data requests:
+
+‘BID’ for CASH assets
+
+‘TRADES’ for any other
+
+Check the IB API docs if another value is wished
+
+rtbar
+ (default: 
+False
+)
+
+If 
+True
+ the 
+5 Seconds Realtime bars
+ provided by Interactive
+Brokers will be used as the smalles tick. According to the
+documentation they correspond to real-time values (once collated and
+curated by IB)
+
+If 
+False
+ then the 
+RTVolume
+ prices will be used, which are based
+on receiving ticks. In the case of 
+CASH
+ assets (like for example
+EUR.JPY) 
+RTVolume
+ will always be used and from it the 
+bid
+ price
+(industry de-facto standard with IB according to the literature
+scattered over the Internet)
+
+Even if set to 
+True
+, if the data is resampled/kept to a
+timeframe/compression below Seconds/5, no real time bars will be used,
+because IB doesn’t serve them below that level
+
+qcheck
+ (default: 
+0.5
+)
+
+Time in seconds to wake up if no data is received to give a chance to
+resample/replay packets properly and pass notifications up the chain
+
+backfill_start
+ (default: 
+True
+)
+
+Perform backfilling at the start. The maximum possible historical data
+will be fetched in a single request.
+
+backfill
+ (default: 
+True
+)
+
+Perform backfilling after a disconnection/reconnection cycle. The gap
+duration will be used to download the smallest possible amount of data
+
+backfill_from
+ (default: 
+None
+)
+
+An additional data source can be passed to do an initial layer of
+backfilling. Once the data source is depleted and if requested,
+backfilling from IB will take place. This is ideally meant to backfill
+from already stored sources like a file on disk, but not limited to.
+
+latethrough
+ (default: 
+False
+)
+
+If the data source is resampled/replayed, some ticks may come in too
+late for the already delivered resampled/replayed bar. If this is
+
+True
+ those ticks will bet let through in any case.
+
+Check the Resampler documentation to see who to take those ticks into
+account.
+
+This can happen especially if 
+timeoffset
+ is set to 
+False
+  in
+the 
+IBStore
+ instance and the TWS server time is not in sync with
+that of the local computer
+
+tradename
+ (default: 
+None
+)
+    Useful for some specific cases like 
+CFD
+ in which prices are offered
+    by one asset and trading happens in a different onel
+
+SPY-STK-SMART-USD -> SP500 ETF (will be specified as 
+dataname
+)
+
+SPY-CFD-SMART-USD -> which is the corresponding CFD which offers not
+  price tracking but in this case will be the trading asset (specified
+  as 
+tradename
+)
+
+The default values in the params are the to allow things like 
+\
+TICKER
+,
+to which the parameter
+sectype
+(default:
+STK
+) and
+exchange
+(default:
+SMART`) are applied.
+
+Some assets like 
+AAPL
+ need full specification including 
+currency
+
+(default: ‘’) whereas others like 
+TWTR
+ can be simply passed as it is.
+
+AAPL-STK-SMART-USD
+ would be the full specification for dataname
+
+Or else: 
+IBData
+ as 
+IBData(dataname='AAPL', currency='USD')
+
+which uses the default values (
+STK
+ and 
+SMART
+) and overrides
+the currency to be 
+USD
+
+Lines:
+
+```
+* close
+
+* low
+
+* high
+
+* open
+
+* volume
+
+* openinterest
+
+* datetime
+
+```
+
+Params:
+
+```
+* dataname (None)
+
+* name ()
+
+* compression (1)
+
+* timeframe (5)
+
+* fromdate (None)
+
+* todate (None)
+
+* sessionstart (None)
+
+* sessionend (None)
+
+* filters ([])
+
+* tz (None)
+
+* tzinput (None)
+
+* qcheck (0.5)
+
+* calendar (None)
+
+* sectype (STK)
+
+* exchange (SMART)
+
+* currency ()
+
+* rtbar (False)
+
+* historical (False)
+
+* what (None)
+
+* useRTH (False)
+
+* backfill_start (True)
+
+* backfill (True)
+
+* backfill_from (None)
+
+* latethrough (False)
+
+* tradename (None)
+
+```
+
+InfluxDB
+
+Lines:
+
+```
+* close
+
+* low
+
+* high
+
+* open
+
+* volume
+
+* openinterest
+
+* datetime
+
+```
+
+Params:
+
+```
+* dataname (None)
+
+* name ()
+
+* compression (1)
+
+* timeframe (5)
+
+* fromdate (None)
+
+* todate (None)
+
+* sessionstart (None)
+
+* sessionend (None)
+
+* filters ([])
+
+* tz (None)
+
+* tzinput (None)
+
+* qcheck (0.0)
+
+* calendar (None)
+
+* host (127.0.0.1)
+
+* port (8086)
+
+* username (None)
+
+* password (None)
+
+* database (None)
+
+* startdate (None)
+
+* high (high_p)
+
+* low (low_p)
+
+* open (open_p)
+
+* close (close_p)
+
+* volume (volume)
+
+* ointerest (oi)
+
+```
+
+MT4CSVData
+
+Parses a 
+Metatrader4
+ History
+center CSV exported file.
+
+Specific parameters (or specific meaning):
+
+dataname
+: The filename to parse or a file-like object
+
+Uses GenericCSVData and simply modifies the params
+
+Lines:
+
+```
+* close
+
+* low
+
+* high
+
+* open
+
+* volume
+
+* openinterest
+
+* datetime
+
+```
+
+Params:
+
+```
+* dataname (None)
+
+* name ()
+
+* compression (1)
+
+* timeframe (5)
+
+* fromdate (None)
+
+* todate (None)
+
+* sessionstart (None)
+
+* sessionend (None)
+
+* filters ([])
+
+* tz (None)
+
+* tzinput (None)
+
+* qcheck (0.0)
+
+* calendar (None)
+
+* headers (True)
+
+* separator (,)
+
+* nullvalue (nan)
+
+* dtformat (%Y.%m.%d)
+
+* tmformat (%H:%M)
+
+* datetime (0)
+
+* time (1)
+
+* open (2)
+
+* high (3)
+
+* low (4)
+
+* close (5)
+
+* volume (6)
+
+* openinterest (-1)
+
+```
+
+OandaData
+
+Oanda Data Feed.
+
+Params:
+
+qcheck
+ (default: 
+0.5
+)
+
+Time in seconds to wake up if no data is received to give a chance to
+resample/replay packets properly and pass notifications up the chain
+
+historical
+ (default: 
+False
+)
+
+If set to 
+True
+ the data feed will stop after doing the first
+download of data.
+
+The standard data feed parameters 
+fromdate
+ and 
+todate
+ will be
+used as reference.
+
+The data feed will make multiple requests if the requested duration is
+larger than the one allowed by IB given the timeframe/compression
+chosen for the data.
+
+backfill_start
+ (default: 
+True
+)
+
+Perform backfilling at the start. The maximum possible historical data
+will be fetched in a single request.
+
+backfill
+ (default: 
+True
+)
+
+Perform backfilling after a disconnection/reconnection cycle. The gap
+duration will be used to download the smallest possible amount of data
+
+backfill_from
+ (default: 
+None
+)
+
+An additional data source can be passed to do an initial layer of
+backfilling. Once the data source is depleted and if requested,
+backfilling from IB will take place. This is ideally meant to backfill
+from already stored sources like a file on disk, but not limited to.
+
+bidask
+ (default: 
+True
+)
+
+If 
+True
+, then the historical/backfilling requests will request
+bid/ask prices from the server
+
+If 
+False
+, then 
+midpoint
+ will be requested
+
+useask
+ (default: 
+False
+)
+
+If 
+True
+ the 
+ask
+ part of the 
+bidask
+ prices will be used instead
+of the default use of 
+bid
+
+includeFirst
+ (default: 
+True
+)
+
+Influence the delivery of the 1
+st
+ bar of a historical/backfilling
+request by setting the parameter directly to the Oanda API calls
+
+reconnect
+ (default: 
+True
+)
+
+Reconnect when network connection is down
+
+reconnections
+ (default: 
+-1
+)
+
+Number of times to attempt reconnections: 
+-1
+ means forever
+
+reconntimeout
+ (default: 
+5.0
+)
+
+Time in seconds to wait in between reconnection attemps
+
+This data feed supports only this mapping of 
+timeframe
+ and
+
+compression
+, which comply with the definitions in the OANDA API
+Developer’s Guid:
+
+```
+(TimeFrame.Seconds, 5): 'S5',
+(TimeFrame.Seconds, 10): 'S10',
+(TimeFrame.Seconds, 15): 'S15',
+(TimeFrame.Seconds, 30): 'S30',
+(TimeFrame.Minutes, 1): 'M1',
+(TimeFrame.Minutes, 2): 'M3',
+(TimeFrame.Minutes, 3): 'M3',
+(TimeFrame.Minutes, 4): 'M4',
+(TimeFrame.Minutes, 5): 'M5',
+(TimeFrame.Minutes, 10): 'M10',
+(TimeFrame.Minutes, 15): 'M15',
+(TimeFrame.Minutes, 30): 'M30',
+(TimeFrame.Minutes, 60): 'H1',
+(TimeFrame.Minutes, 120): 'H2',
+(TimeFrame.Minutes, 180): 'H3',
+(TimeFrame.Minutes, 240): 'H4',
+(TimeFrame.Minutes, 360): 'H6',
+(TimeFrame.Minutes, 480): 'H8',
+(TimeFrame.Days, 1): 'D',
+(TimeFrame.Weeks, 1): 'W',
+(TimeFrame.Months, 1): 'M',
+
+```
+
+Any other combination will be rejected
+
+Lines:
+
+```
+* close
+
+* low
+
+* high
+
+* open
+
+* volume
+
+* openinterest
+
+* datetime
+
+```
+
+Params:
+
+```
+* dataname (None)
+
+* name ()
+
+* compression (1)
+
+* timeframe (5)
+
+* fromdate (None)
+
+* todate (None)
+
+* sessionstart (None)
+
+* sessionend (None)
+
+* filters ([])
+
+* tz (None)
+
+* tzinput (None)
+
+* qcheck (0.5)
+
+* calendar (None)
+
+* historical (False)
+
+* backfill_start (True)
+
+* backfill (True)
+
+* backfill_from (None)
+
+* bidask (True)
+
+* useask (False)
+
+* includeFirst (True)
+
+* reconnect (True)
+
+* reconnections (-1)
+
+* reconntimeout (5.0)
+
+```
+
+PandasData
+
+Uses a Pandas DataFrame as the feed source, using indices into column
+names (which can be “numeric”)
+
+This means that all parameters related to lines must have numeric
+values as indices into the tuples
+
+Params:
+
+nocase
+ (default 
+True
+) case insensitive match of column names
+
+Note:
+
+The 
+dataname
+ parameter is a Pandas DataFrame
+
+Values possible for datetime
+
+None: the index contains the datetime
+
+-1: no index, autodetect column
+
+= 0 or string: specific colum identifier
+
+For other lines parameters
+
+None: column not present
+
+-1: autodetect
+
+= 0 or string: specific colum identifier
+
+Lines:
+
+```
+* close
+
+* low
+
+* high
+
+* open
+
+* volume
+
+* openinterest
+
+* datetime
+
+```
+
+Params:
+
+```
+* dataname (None)
+
+* name ()
+
+* compression (1)
+
+* timeframe (5)
+
+* fromdate (None)
+
+* todate (None)
+
+* sessionstart (None)
+
+* sessionend (None)
+
+* filters ([])
+
+* tz (None)
+
+* tzinput (None)
+
+* qcheck (0.0)
+
+* calendar (None)
+
+* nocase (True)
+
+* datetime (None)
+
+* open (-1)
+
+* high (-1)
+
+* low (-1)
+
+* close (-1)
+
+* volume (-1)
+
+* openinterest (-1)
+
+```
+
+PandasDirectData
+
+Uses a Pandas DataFrame as the feed source, iterating directly over the
+tuples returned by “itertuples”.
+
+This means that all parameters related to lines must have numeric
+values as indices into the tuples
+
+Note:
+
+The 
+dataname
+ parameter is a Pandas DataFrame
+
+A negative value in any of the parameters for the Data lines
+    indicates it’s not present in the DataFrame
+    it is
+
+Lines:
+
+```
+* close
+
+* low
+
+* high
+
+* open
+
+* volume
+
+* openinterest
+
+* datetime
+
+```
+
+Params:
+
+```
+* dataname (None)
+
+* name ()
+
+* compression (1)
+
+* timeframe (5)
+
+* fromdate (None)
+
+* todate (None)
+
+* sessionstart (None)
+
+* sessionend (None)
+
+* filters ([])
+
+* tz (None)
+
+* tzinput (None)
+
+* qcheck (0.0)
+
+* calendar (None)
+
+* datetime (0)
+
+* open (1)
+
+* high (2)
+
+* low (3)
+
+* close (4)
+
+* volume (5)
+
+* openinterest (6)
+
+```
+
+Quandl
+
+Executes a direct download of data from Quandl servers for the given time
+range.
+
+Specific parameters (or specific meaning):
+
+dataname
+
+The ticker to download (‘YHOO’ for example)
+
+baseurl
+
+The server url. Someone might decide to open a Quandl compatible
+service in the future.
+
+proxies
+
+A dict indicating which proxy to go through for the download as in
+{‘http’: ‘
+http://myproxy.com
+’} or {‘http’: ‘
+http://127.0.0.1:8080
+’}
+
+buffered
+
+If True the entire socket connection wil be buffered locally before
+parsing starts.
+
+reverse
+
+Quandl returns the value in descending order (newest first). If this is
+
+True
+ (the default), the request will tell Quandl to return in
+ascending (oldest to newest) format
+
+adjclose
+
+Whether to use the dividend/split adjusted close and adjust all values
+according to it.
+
+apikey
+
+apikey identification in case it may be needed
+
+dataset
+
+string identifying the dataset to query. Defaults to 
+WIKI
+
+Lines:
+
+```
+* close
+
+* low
+
+* high
+
+* open
+
+* volume
+
+* openinterest
+
+* datetime
+
+```
+
+Params:
+
+```
+* dataname (None)
+
+* name ()
+
+* compression (1)
+
+* timeframe (5)
+
+* fromdate (None)
+
+* todate (None)
+
+* sessionstart (None)
+
+* sessionend (None)
+
+* filters ([])
+
+* tz (None)
+
+* tzinput (None)
+
+* qcheck (0.0)
+
+* calendar (None)
+
+* headers (True)
+
+* separator (,)
+
+* reverse (True)
+
+* adjclose (True)
+
+* round (False)
+
+* decimals (2)
+
+* baseurl ([https://www.quandl.com/api/v3/datasets](https://www.quandl.com/api/v3/datasets))
+
+* proxies ({})
+
+* buffered (True)
+
+* apikey (None)
+
+* dataset (WIKI)
+
+```
+
+QuandlCSV
+
+Parses pre-downloaded Quandl CSV Data Feeds (or locally generated if they
+comply to the Quandl format)
+
+Specific parameters:
+
+dataname
+: The filename to parse or a file-like object
+
+reverse
+ (default: 
+False
+)
+
+It is assumed that locally stored files have already been reversed
+during the download process
+
+adjclose
+ (default: 
+True
+)
+
+Whether to use the dividend/split adjusted close and adjust all
+values according to it.
+
+round
+ (default: 
+False
+)
+
+Whether to round the values to a specific number of decimals after
+having adjusted the close
+
+decimals
+ (default: 
+2
+)
+
+Number of decimals to round to
+
+Lines:
+
+```
+* close
+
+* low
+
+* high
+
+* open
+
+* volume
+
+* openinterest
+
+* datetime
+
+```
+
+Params:
+
+```
+* dataname (None)
+
+* name ()
+
+* compression (1)
+
+* timeframe (5)
+
+* fromdate (None)
+
+* todate (None)
+
+* sessionstart (None)
+
+* sessionend (None)
+
+* filters ([])
+
+* tz (None)
+
+* tzinput (None)
+
+* qcheck (0.0)
+
+* calendar (None)
+
+* headers (True)
+
+* separator (,)
+
+* reverse (False)
+
+* adjclose (True)
+
+* round (False)
+
+* decimals (2)
+
+```
+
+RollOver
+
+Class that rolls over to the next future when a condition is met
+
+Params:
+
+checkdate
+ (default: 
+None
+)
+
+This must be a 
+callable
+ with the following signature:
+
+```
+checkdate(dt, d):
+
+```
+
+Where:
+
+dt
+ is a 
+datetime.datetime
+ object
+
+d
+ is the current data feed for the active future
+
+Expected Return Values:
+
+True
+: as long as the callable returns this, a switchover can
+    happen to the next future
+
+If a commodity expires on the 3
+rd
+ Friday of March, 
+checkdate
+ could
+  return 
+True
+ for the entire week in which the expiration takes
+  place.
+
+```
+* `False`: the expiration cannot take place
+
+```
+
+checkcondition
+ (default: 
+None
+)
+
+Note
+: This will only be called if 
+checkdate
+ has returned
+
+True
+
+If 
+None
+ this will evaluate to 
+True
+ (execute roll over)
+internally
+
+Else this must be a 
+callable
+ with this signature:
+
+```
+checkcondition(d0, d1)
+
+```
+
+Where:
+
+d0
+ is the current data feed for the active future
+
+d1
+ is the data feed for the next expiration
+
+Expected Return Values:
+
+True
+: roll-over to the next future
+
+Following with the example from 
+checkdate
+, this could say that the
+  roll-over can only happend if the 
+volume
+ from 
+d0
+ is already less
+  than the volume from 
+d1
+
+```
+* `False`: the expiration cannot take place
+
+```
+
+Lines:
+
+```
+* close
+
+* low
+
+* high
+
+* open
+
+* volume
+
+* openinterest
+
+* datetime
+
+```
+
+Params:
+
+```
+* dataname (None)
+
+* name ()
+
+* compression (1)
+
+* timeframe (5)
+
+* fromdate (None)
+
+* todate (None)
+
+* sessionstart (None)
+
+* sessionend (None)
+
+* filters ([])
+
+* tz (None)
+
+* tzinput (None)
+
+* qcheck (0.0)
+
+* calendar (None)
+
+* checkdate (None)
+
+* checkcondition (None)
+
+```
+
+SierraChartCSVData
+
+Parses a 
+SierraChart
+ CSV exported file.
+
+Specific parameters (or specific meaning):
+
+dataname
+: The filename to parse or a file-like object
+
+Uses GenericCSVData and simply modifies the dateformat (dtformat) to
+
+Lines:
+
+```
+* close
+
+* low
+
+* high
+
+* open
+
+* volume
+
+* openinterest
+
+* datetime
+
+```
+
+Params:
+
+```
+* dataname (None)
+
+* name ()
+
+* compression (1)
+
+* timeframe (5)
+
+* fromdate (None)
+
+* todate (None)
+
+* sessionstart (None)
+
+* sessionend (None)
+
+* filters ([])
+
+* tz (None)
+
+* tzinput (None)
+
+* qcheck (0.0)
+
+* calendar (None)
+
+* headers (True)
+
+* separator (,)
+
+* nullvalue (nan)
+
+* dtformat (%Y/%m/%d)
+
+* tmformat (%H:%M:%S)
+
+* datetime (0)
+
+* time (-1)
+
+* open (1)
+
+* high (2)
+
+* low (3)
+
+* close (4)
+
+* volume (5)
+
+* openinterest (6)
+
+```
+
+VCData
+
+VisualChart Data Feed.
+
+Params:
+
+qcheck
+ (default: 
+0.5
+)
+    Default timeout for waking up to let a resampler/replayer that the
+    current bar can be check for due delivery
+
+The value is only used if a resampling/replaying filter has been
+inserted in the data
+
+historical
+ (default: 
+False
+)
+    If no 
+todate
+ parameter is supplied (defined in the base class),
+    this will force a historical only download if set to 
+True
+
+If 
+todate
+ is supplied the same effect is achieved
+
+milliseconds
+ (default: 
+True
+)
+    The bars constructed by 
+Visual Chart
+ have this aspect:
+    HH:MM:59.999000
+
+If this parameter is 
+True
+ a millisecond will be added to this time
+to make it look like: HH::MM + 1:00.000000
+
+tradename
+ (default: 
+None
+)
+    Continous futures cannot be traded but are ideal for data tracking. If
+    this parameter is supplied it will be the name of the current future
+    which will be the trading asset. Example:
+
+001ES -> ES-Mini continuous supplied as 
+dataname
+
+ESU16 -> ES-Mini 2016-09. If this is supplied in 
+tradename
+ it
+  will be the trading asset.
+
+usetimezones
+ (default: 
+True
+)
+    For most markets the time offset information provided by 
+Visual Chart
+
+    allows for datetime to be converted to market time (
+backtrader
+ choice
+    for representation)
+
+Some markets are special (
+096
+) and need special internal coverage
+and timezone support to display in the user expected market time.
+
+If this parameter is set to 
+True
+ importing 
+pytz
+ will be
+attempted to use timezones (default)
+
+Disabling it will remove timezone usage (may help if the load is
+excesive)
+
+Lines:
+
+```
+* close
+
+* low
+
+* high
+
+* open
+
+* volume
+
+* openinterest
+
+* datetime
+
+```
+
+Params:
+
+```
+* dataname (None)
+
+* name ()
+
+* compression (1)
+
+* timeframe (5)
+
+* fromdate (None)
+
+* todate (None)
+
+* sessionstart (None)
+
+* sessionend (None)
+
+* filters ([])
+
+* tz (None)
+
+* tzinput (None)
+
+* qcheck (0.5)
+
+* calendar (None)
+
+* historical (False)
+
+* millisecond (True)
+
+* tradename (None)
+
+* usetimezones (True)
+
+```
+
+VChartCSVData
+
+Parses a 
+VisualChart
+ CSV exported file.
+
+Specific parameters (or specific meaning):
+
+dataname
+: The filename to parse or a file-like object
+
+Lines:
+
+```
+* close
+
+* low
+
+* high
+
+* open
+
+* volume
+
+* openinterest
+
+* datetime
+
+```
+
+Params:
+
+```
+* dataname (None)
+
+* name ()
+
+* compression (1)
+
+* timeframe (5)
+
+* fromdate (None)
+
+* todate (None)
+
+* sessionstart (None)
+
+* sessionend (None)
+
+* filters ([])
+
+* tz (None)
+
+* tzinput (None)
+
+* qcheck (0.0)
+
+* calendar (None)
+
+* headers (True)
+
+* separator (,)
+
+```
+
+VChartData
+
+Support for 
+Visual Chart
+ binary on-disk files for
+both daily and intradaily formats.
+
+Note:
+
+dataname
+: to file or open file-like object
+
+If a file-like object is passed, the 
+timeframe
+ parameter will be
+used to determine which is the actual timeframe.
+
+Else the file extension (
+.fd
+ for daily and 
+.min
+ for intraday)
+will be used.
+
+Lines:
+
+```
+* close
+
+* low
+
+* high
+
+* open
+
+* volume
+
+* openinterest
+
+* datetime
+
+```
+
+Params:
+
+```
+* dataname (None)
+
+* name ()
+
+* compression (1)
+
+* timeframe (5)
+
+* fromdate (None)
+
+* todate (None)
+
+* sessionstart (None)
+
+* sessionend (None)
+
+* filters ([])
+
+* tz (None)
+
+* tzinput (None)
+
+* qcheck (0.0)
+
+* calendar (None)
+
+```
+
+VChartFile
+
+Support for 
+Visual Chart
+ binary on-disk files for
+both daily and intradaily formats.
+
+Note:
+
+dataname
+: Market code displayed by Visual Chart. Example: 015ES for
+    EuroStoxx 50 continuous future
+
+Lines:
+
+```
+* close
+
+* low
+
+* high
+
+* open
+
+* volume
+
+* openinterest
+
+* datetime
+
+```
+
+Params:
+
+```
+* dataname (None)
+
+* name ()
+
+* compression (1)
+
+* timeframe (5)
+
+* fromdate (None)
+
+* todate (None)
+
+* sessionstart (None)
+
+* sessionend (None)
+
+* filters ([])
+
+* tz (None)
+
+* tzinput (None)
+
+* qcheck (0.0)
+
+* calendar (None)
+
+```
+
+YahooFinanceCSVData
+
+Parses pre-downloaded Yahoo CSV Data Feeds (or locally generated if they
+comply to the Yahoo format)
+
+Specific parameters:
+
+dataname
+: The filename to parse or a file-like object
+
+reverse
+ (default: 
+False
+)
+
+It is assumed that locally stored files have already been reversed
+during the download process
+
+adjclose
+ (default: 
+True
+)
+
+Whether to use the dividend/split adjusted close and adjust all
+values according to it.
+
+adjvolume
+ (default: 
+True
+)
+
+Do also adjust 
+volume
+ if 
+adjclose
+ is also 
+True
+
+round
+ (default: 
+True
+)
+
+Whether to round the values to a specific number of decimals after
+having adjusted the close
+
+roundvolume
+ (default: 
+0
+)
+
+Round the resulting volume to the given number of decimals after having
+adjusted it
+
+decimals
+ (default: 
+2
+)
+
+Number of decimals to round to
+
+swapcloses
+ (default: 
+False
+)
+
+[2018-11-16] It would seem that the order of 
+close
+ and 
+adjusted
+close
+ is now fixed. The parameter is retained, in case the need to
+swap the columns again arose.
+
+Lines:
+
+```
+* close
+
+* low
+
+* high
+
+* open
+
+* volume
+
+* openinterest
+
+* datetime
+
+* adjclose
+
+```
+
+Params:
+
+```
+* dataname (None)
+
+* name ()
+
+* compression (1)
+
+* timeframe (5)
+
+* fromdate (None)
+
+* todate (None)
+
+* sessionstart (None)
+
+* sessionend (None)
+
+* filters ([])
+
+* tz (None)
+
+* tzinput (None)
+
+* qcheck (0.0)
+
+* calendar (None)
+
+* headers (True)
+
+* separator (,)
+
+* reverse (False)
+
+* adjclose (True)
+
+* adjvolume (True)
+
+* round (True)
+
+* decimals (2)
+
+* roundvolume (False)
+
+* swapcloses (False)
+
+```
+
+YahooFinanceData
+
+Executes a direct download of data from Yahoo servers for the given time
+range.
+
+Specific parameters (or specific meaning):
+
+dataname
+
+The ticker to download (‘YHOO’ for Yahoo own stock quotes)
+
+proxies
+
+A dict indicating which proxy to go through for the download as in
+{‘http’: ‘
+http://myproxy.com
+’} or {‘http’: ‘
+http://127.0.0.1:8080
+’}
+
+period
+
+The timeframe to download data in. Pass ‘w’ for weekly and ‘m’ for
+monthly.
+
+reverse
+
+[2018-11-16] The latest incarnation of Yahoo online downloads returns
+the data in the proper order. The default value of 
+reverse
+ for the
+online download is therefore set to 
+False
+
+adjclose
+
+Whether to use the dividend/split adjusted close and adjust all values
+according to it.
+
+urlhist
+
+The url of the historical quotes in Yahoo Finance used to gather a
+
+crumb
+ authorization cookie for the download
+
+urldown
+
+The url of the actual download server
+
+retries
+
+Number of times (each) to try to get a 
+crumb
+ cookie and download
+the data
+
+Lines:
+
+```
+* close
+
+* low
+
+* high
+
+* open
+
+* volume
+
+* openinterest
+
+* datetime
+
+* adjclose
+
+```
+
+Params:
+
+```
+* dataname (None)
+
+* name ()
+
+* compression (1)
+
+* timeframe (5)
+
+* fromdate (None)
+
+* todate (None)
+
+* sessionstart (None)
+
+* sessionend (None)
+
+* filters ([])
+
+* tz (None)
+
+* tzinput (None)
+
+* qcheck (0.0)
+
+* calendar (None)
+
+* headers (True)
+
+* separator (,)
+
+* reverse (False)
+
+* adjclose (True)
+
+* adjvolume (True)
+
+* round (True)
+
+* decimals (2)
+
+* roundvolume (False)
+
+* swapcloses (False)
+
+* proxies ({})
+
+* period (d)
+
+* urlhist ([https://finance.yahoo.com/quote](https://finance.yahoo.com/quote)/{}/history)
+
+* urldown ([https://query1.finance.yahoo.com/v7/finance/download](https://query1.finance.yahoo.com/v7/finance/download))
+
+* retries (3)
+
+```
+
+YahooLegacyCSV
+
+This is intended to load files which were downloaded before Yahoo
+discontinued the original service in May-2017
+
+Lines:
+
+```
+* close
+
+* low
+
+* high
+
+* open
+
+* volume
+
+* openinterest
+
+* datetime
+
+* adjclose
+
+```
+
+Params:
+
+```
+* dataname (None)
+
+* name ()
+
+* compression (1)
+
+* timeframe (5)
+
+* fromdate (None)
+
+* todate (None)
+
+* sessionstart (None)
+
+* sessionend (None)
+
+* filters ([])
+
+* tz (None)
+
+* tzinput (None)
+
+* qcheck (0.0)
+
+* calendar (None)
+
+* headers (True)
+
+* separator (,)
+
+* reverse (False)
+
+* adjclose (True)
+
+* adjvolume (True)
+
+* round (True)
+
+* decimals (2)
+
+* roundvolume (False)
+
+* swapcloses (False)
+
+* version ()
+
+```

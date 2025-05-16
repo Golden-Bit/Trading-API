@@ -1,0 +1,403 @@
+{
+    "name": "PandasData",
+    "module": "backtrader.feeds.pandafeed",
+    "doc": "Uses a Pandas DataFrame as the feed source, using indices into column\nnames (which can be \"numeric\")\n\nThis means that all parameters related to lines must have numeric\nvalues as indices into the tuples\n\nParams:\n\n  - ``nocase`` (default *True*) case insensitive match of column names\n\nNote:\n\n  - The ``dataname`` parameter is a Pandas DataFrame\n\n  - Values possible for datetime\n\n    - None: the index contains the datetime\n    - -1: no index, autodetect column\n    - >= 0 or string: specific colum identifier\n\n  - For other lines parameters\n\n    - None: column not present\n    - -1: autodetect\n    - >= 0 or string: specific colum identifier",
+    "constructor_signature": "(self)",
+    "methods": [
+        {
+            "name": "_add2stack",
+            "signature": "(self, bar, stash=False)",
+            "doc": "Saves given bar (list of values) to the stack for later retrieval"
+        },
+        {
+            "name": "_check",
+            "signature": "(self, forcedata=None)",
+            "doc": ""
+        },
+        {
+            "name": "_fromstack",
+            "signature": "(self, forward=False, stash=False)",
+            "doc": "Load a value from the stack onto the lines to form the new bar\n\nReturns True if values are present, False otherwise"
+        },
+        {
+            "name": "_getline",
+            "signature": "(self, line, minusall=False)",
+            "doc": ""
+        },
+        {
+            "name": "_getnexteos",
+            "signature": "(self)",
+            "doc": "Returns the next eos using a trading calendar if available"
+        },
+        {
+            "name": "_gettz",
+            "signature": "(self)",
+            "doc": "To be overriden by subclasses which may auto-calculate the\ntimezone"
+        },
+        {
+            "name": "_gettzinput",
+            "signature": "(self)",
+            "doc": "Can be overriden by classes to return a timezone for input"
+        },
+        {
+            "name": "_last",
+            "signature": "(self, datamaster=None)",
+            "doc": ""
+        },
+        {
+            "name": "_load",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_makeoperation",
+            "signature": "(self, other, operation, r=False, _ownerskip=None)",
+            "doc": ""
+        },
+        {
+            "name": "_makeoperationown",
+            "signature": "(self, operation, _ownerskip=None)",
+            "doc": ""
+        },
+        {
+            "name": "_operation",
+            "signature": "(self, other, operation, r=False, intify=False)",
+            "doc": ""
+        },
+        {
+            "name": "_operation_stage1",
+            "signature": "(self, other, operation, r=False, intify=False)",
+            "doc": "Two operands' operation. Scanning of other happens to understand\nif other must be directly an operand or rather a subitem thereof"
+        },
+        {
+            "name": "_operation_stage2",
+            "signature": "(self, other, operation, r=False)",
+            "doc": "Rich Comparison operators. Scans other and returns either an\noperation with other directly or a subitem from other"
+        },
+        {
+            "name": "_operationown",
+            "signature": "(self, operation)",
+            "doc": ""
+        },
+        {
+            "name": "_operationown_stage1",
+            "signature": "(self, operation)",
+            "doc": "Operation with single operand which is \"self\""
+        },
+        {
+            "name": "_operationown_stage2",
+            "signature": "(self, operation)",
+            "doc": ""
+        },
+        {
+            "name": "_plotlabel",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_roperation",
+            "signature": "(self, other, operation, intify=False)",
+            "doc": "Relies on self._operation to and passes \"r\" True to define a\nreverse operation"
+        },
+        {
+            "name": "_save2stack",
+            "signature": "(self, erase=False, force=False, stash=False)",
+            "doc": "Saves current bar to the bar stack for later retrieval\n\nParameter ``erase`` determines removal from the data stream"
+        },
+        {
+            "name": "_stage1",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_stage2",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_start",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_start_finish",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_tick_fill",
+            "signature": "(self, force=False)",
+            "doc": ""
+        },
+        {
+            "name": "_tick_nullify",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_timeoffset",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_updatebar",
+            "signature": "(self, bar, forward=False, ago=0)",
+            "doc": "Load a value from the stack onto the lines to form the new bar\n\nReturns True if values are present, False otherwise"
+        },
+        {
+            "name": "addfilter",
+            "signature": "(self, p, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "addfilter_simple",
+            "signature": "(self, f, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "addminperiod",
+            "signature": "(self, minperiod)",
+            "doc": "The passed minperiod is fed to the lines"
+        },
+        {
+            "name": "advance",
+            "signature": "(self, size=1, datamaster=None, ticks=True)",
+            "doc": ""
+        },
+        {
+            "name": "advance_peek",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "backwards",
+            "signature": "(self, size=1, force=False)",
+            "doc": ""
+        },
+        {
+            "name": "clone",
+            "signature": "(self, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "compensate",
+            "signature": "(self, other)",
+            "doc": "Call it to let the broker know that actions on this asset will\ncompensate open positions in another"
+        },
+        {
+            "name": "copyas",
+            "signature": "(self, _dataname, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "date2num",
+            "signature": "(self, dt)",
+            "doc": ""
+        },
+        {
+            "name": "do_qcheck",
+            "signature": "(self, onoff, qlapse)",
+            "doc": ""
+        },
+        {
+            "name": "extend",
+            "signature": "(self, value=nan, size=0)",
+            "doc": ""
+        },
+        {
+            "name": "forward",
+            "signature": "(self, value=nan, size=1)",
+            "doc": ""
+        },
+        {
+            "name": "get_notifications",
+            "signature": "(self)",
+            "doc": "Return the pending \"store\" notifications"
+        },
+        {
+            "name": "getenvironment",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "getfeed",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "getwriterheaders",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "getwriterinfo",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "getwritervalues",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "haslivedata",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "home",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "incminperiod",
+            "signature": "(self, minperiod)",
+            "doc": "The passed minperiod is fed to the lines"
+        },
+        {
+            "name": "islive",
+            "signature": "(self)",
+            "doc": "If this returns True, ``Cerebro`` will deactivate ``preload`` and\n``runonce`` because a live data source must be fetched tick by tick (or\nbar by bar)"
+        },
+        {
+            "name": "load",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "minbuffer",
+            "signature": "(self, size)",
+            "doc": "Receive notification of how large the buffer must at least be"
+        },
+        {
+            "name": "next",
+            "signature": "(self, datamaster=None, ticks=True)",
+            "doc": "Called to calculate values when the minperiod is over"
+        },
+        {
+            "name": "nextstart",
+            "signature": "(self)",
+            "doc": "It will be called when the minperiod phase is over for the 1st\npost-minperiod value. Only called once and defaults to automatically\ncalling next"
+        },
+        {
+            "name": "num2date",
+            "signature": "(self, dt=None, tz=None, naive=True)",
+            "doc": ""
+        },
+        {
+            "name": "once",
+            "signature": "(self, start, end)",
+            "doc": "Called to calculate values at \"once\" when the minperiod is over"
+        },
+        {
+            "name": "oncestart",
+            "signature": "(self, start, end)",
+            "doc": "It will be called when the minperiod phase is over for the 1st\npost-minperiod value\n\nOnly called once and defaults to automatically calling once"
+        },
+        {
+            "name": "plotlabel",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "preload",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "prenext",
+            "signature": "(self)",
+            "doc": "It will be called during the \"minperiod\" phase of an iteration."
+        },
+        {
+            "name": "preonce",
+            "signature": "(self, start, end)",
+            "doc": "It will be called during the \"minperiod\" phase of a \"once\" iteration"
+        },
+        {
+            "name": "put_notification",
+            "signature": "(self, status, *args, **kwargs)",
+            "doc": "Add arguments to notification queue"
+        },
+        {
+            "name": "qbuffer",
+            "signature": "(self, savemem=0, replaying=False)",
+            "doc": "Change the lines to implement a minimum size qbuffer scheme"
+        },
+        {
+            "name": "replay",
+            "signature": "(self, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "resample",
+            "signature": "(self, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "reset",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "rewind",
+            "signature": "(self, size=1)",
+            "doc": ""
+        },
+        {
+            "name": "setenvironment",
+            "signature": "(self, env)",
+            "doc": "Keep a reference to the environment"
+        },
+        {
+            "name": "setminperiod",
+            "signature": "(self, minperiod)",
+            "doc": "Direct minperiod manipulation. It could be used for example\nby a strategy\nto not wait for all indicators to produce a value"
+        },
+        {
+            "name": "start",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "stop",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "updateminperiod",
+            "signature": "(self, minperiod)",
+            "doc": "Update the minperiod if needed. The minperiod will have been\ncalculated elsewhere\nand has to take over if greater that self's"
+        }
+    ],
+    "attributes": {
+        "datafields": {
+            "value": "['datetime', 'open', 'high', 'low', 'close', 'volume', 'openinterest']",
+            "doc": "Built-in mutable sequence.\n\nIf no argument is given, the constructor creates a new empty list.\nThe argument must be an iterable if specified."
+        },
+        "alias": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "aliased": {
+            "value": "''",
+            "doc": "str(object='') -> str\nstr(bytes_or_buffer[, encoding[, errors]]) -> str\n\nCreate a new string object from the given object. If encoding or\nerrors is specified, then the object must expose a data buffer\nthat will be decoded using the given encoding and error handler.\nOtherwise, returns the result of object.__str__() (if defined)\nor repr(object).\nencoding defaults to sys.getdefaultencoding().\nerrors defaults to 'strict'."
+        },
+        "packages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "frompackages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        }
+    },
+    "input_schema": {},
+    "params_schema": {},
+    "output_schema": {
+        "lines": {
+            "model": "<class 'backtrader.lineseries.Lines_LineSeries_DataSeries_OHLC_OHLCDateTime_AbstractDataBase_DataBase_PandasData'>",
+            "doc": "Defines an \"array\" of lines which also has most of the interface of\na LineBuffer class (forward, rewind, advance...).\n\nThis interface operations are passed to the lines held by self\n\nThe class can autosubclass itself (_derive) to hold new lines keeping them\nin the defined order."
+        }
+    }
+}

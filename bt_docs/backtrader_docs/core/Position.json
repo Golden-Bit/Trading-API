@@ -1,0 +1,46 @@
+{
+    "name": "Position",
+    "module": "backtrader.position",
+    "doc": "Keeps and updates the size and price of a position. The object has no\nrelationship to any asset. It only keeps size and price.\n\nMember Attributes:\n  - size (int): current size of the position\n  - price (float): current price of the position\n\nThe Position instances can be tested using len(position) to see if size\nis not null",
+    "constructor_signature": "(self, size=0, price=0.0)",
+    "methods": [
+        {
+            "name": "clone",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "fix",
+            "signature": "(self, size, price)",
+            "doc": ""
+        },
+        {
+            "name": "pseudoupdate",
+            "signature": "(self, size, price)",
+            "doc": ""
+        },
+        {
+            "name": "set",
+            "signature": "(self, size, price)",
+            "doc": ""
+        },
+        {
+            "name": "update",
+            "signature": "(self, size, price, dt=None)",
+            "doc": "Updates the current position and returns the updated size, price and\nunits used to open/close a position\n\nArgs:\n    size (int): amount to update the position size\n        size < 0: A sell operation has taken place\n        size > 0: A buy operation has taken place\n\n    price (float):\n        Must always be positive to ensure consistency\n\nReturns:\n    A tuple (non-named) contaning\n       size - new position size\n           Simply the sum of the existing size plus the \"size\" argument\n       price - new position price\n           If a position is increased the new average price will be\n           returned\n           If a position is reduced the price of the remaining size\n           does not change\n           If a position is closed the price is nullified\n           If a position is reversed the price is the price given as\n           argument\n       opened - amount of contracts from argument \"size\" that were used\n           to open/increase a position.\n           A position can be opened from 0 or can be a reversal.\n           If a reversal is performed then opened is less than \"size\",\n           because part of \"size\" will have been used to close the\n           existing position\n       closed - amount of units from arguments \"size\" that were used to\n           close/reduce a position\n\n    Both opened and closed carry the same sign as the \"size\" argument\n    because they refer to a part of the \"size\" argument"
+        }
+    ],
+    "attributes": {},
+    "input_schema": {
+        "size": {
+            "default": 0,
+            "annotation": "Any"
+        },
+        "price": {
+            "default": 0.0,
+            "annotation": "Any"
+        }
+    },
+    "params_schema": {},
+    "output_schema": {}
+}

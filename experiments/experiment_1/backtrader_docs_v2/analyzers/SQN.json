@@ -1,0 +1,149 @@
+{
+    "name": "SQN",
+    "module": "backtrader.analyzers.sqn",
+    "doc": "SQN or SystemQualityNumber. Defined by Van K. Tharp to categorize trading\nsystems.\n\n  - 1.6 - 1.9 Below average\n  - 2.0 - 2.4 Average\n  - 2.5 - 2.9 Good\n  - 3.0 - 5.0 Excellent\n  - 5.1 - 6.9 Superb\n  - 7.0 -     Holy Grail?\n\nThe formula:\n\n  - SquareRoot(NumberTrades) * Average(TradesProfit) / StdDev(TradesProfit)\n\nThe sqn value should be deemed reliable when the number of trades >= 30\n\nMethods:\n\n  - get_analysis\n\n    Returns a dictionary with keys \"sqn\" and \"trades\" (number of\n    considered trades)",
+    "constructor_signature": "(self, /, *args, **kwargs)",
+    "methods": [
+        {
+            "name": "_next",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_nextstart",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_notify_cashvalue",
+            "signature": "(self, cash, value)",
+            "doc": ""
+        },
+        {
+            "name": "_notify_fund",
+            "signature": "(self, cash, value, fundvalue, shares)",
+            "doc": ""
+        },
+        {
+            "name": "_notify_order",
+            "signature": "(self, order)",
+            "doc": ""
+        },
+        {
+            "name": "_notify_trade",
+            "signature": "(self, trade)",
+            "doc": ""
+        },
+        {
+            "name": "_prenext",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_register",
+            "signature": "(self, child)",
+            "doc": ""
+        },
+        {
+            "name": "_start",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_stop",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "create_analysis",
+            "signature": "(self)",
+            "doc": "Replace default implementation to instantiate an AutoOrdereDict\nrather than an OrderedDict"
+        },
+        {
+            "name": "get_analysis",
+            "signature": "(self)",
+            "doc": "Returns a *dict-like* object with the results of the analysis\n\nThe keys and format of analysis results in the dictionary is\nimplementation dependent.\n\nIt is not even enforced that the result is a *dict-like object*, just\nthe convention\n\nThe default implementation returns the default OrderedDict ``rets``\ncreated by the default ``create_analysis`` method"
+        },
+        {
+            "name": "next",
+            "signature": "(self)",
+            "doc": "Invoked for each next invocation of the strategy, once the minum\npreiod of the strategy has been reached"
+        },
+        {
+            "name": "nextstart",
+            "signature": "(self)",
+            "doc": "Invoked exactly once for the nextstart invocation of the strategy,\nwhen the minimum period has been first reached"
+        },
+        {
+            "name": "notify_cashvalue",
+            "signature": "(self, cash, value)",
+            "doc": "Receives the cash/value notification before each next cycle"
+        },
+        {
+            "name": "notify_fund",
+            "signature": "(self, cash, value, fundvalue, shares)",
+            "doc": "Receives the current cash, value, fundvalue and fund shares"
+        },
+        {
+            "name": "notify_order",
+            "signature": "(self, order)",
+            "doc": "Receives order notifications before each next cycle"
+        },
+        {
+            "name": "notify_trade",
+            "signature": "(self, trade)",
+            "doc": "Receives trade notifications before each next cycle"
+        },
+        {
+            "name": "pprint",
+            "signature": "(self, *args, **kwargs)",
+            "doc": "Prints the results returned by ``get_analysis`` using the pretty\nprint Python module (*pprint*)"
+        },
+        {
+            "name": "prenext",
+            "signature": "(self)",
+            "doc": "Invoked for each prenext invocation of the strategy, until the minimum\nperiod of the strategy has been reached\n\nThe default behavior for an analyzer is to invoke ``next``"
+        },
+        {
+            "name": "print",
+            "signature": "(self, *args, **kwargs)",
+            "doc": "Prints the results returned by ``get_analysis`` via a standard\n``Writerfile`` object, which defaults to writing things to standard\noutput"
+        },
+        {
+            "name": "start",
+            "signature": "(self)",
+            "doc": "Invoked to indicate the start of operations, giving the analyzer\ntime to setup up needed things"
+        },
+        {
+            "name": "stop",
+            "signature": "(self)",
+            "doc": "Invoked to indicate the end of operations, giving the analyzer\ntime to shut down needed things"
+        }
+    ],
+    "attributes": {
+        "alias": {
+            "value": "('SystemQualityNumber',)",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "packages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "frompackages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        }
+    },
+    "input_schema": {
+        "args": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "kwargs": {
+            "default": null,
+            "annotation": "Any"
+        }
+    },
+    "params_schema": {},
+    "output_schema": {}
+}

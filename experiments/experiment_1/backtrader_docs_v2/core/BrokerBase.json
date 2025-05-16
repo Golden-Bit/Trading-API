@@ -1,0 +1,138 @@
+{
+    "name": "BrokerBase",
+    "module": "backtrader.broker",
+    "doc": "",
+    "constructor_signature": "(self)",
+    "methods": [
+        {
+            "name": "BrokerBase",
+            "signature": "(self, datas=None)",
+            "doc": ""
+        },
+        {
+            "name": "add_order_history",
+            "signature": "(self, orders, notify=False)",
+            "doc": "Add order history. See cerebro for details"
+        },
+        {
+            "name": "addcommissioninfo",
+            "signature": "(self, comminfo, name=None)",
+            "doc": "Adds a ``CommissionInfo`` object that will be the default for all assets if\n``name`` is ``None``"
+        },
+        {
+            "name": "buy",
+            "signature": "(self, owner, data, size, price=None, plimit=None, exectype=None, valid=None, tradeid=0, oco=None, trailamount=None, trailpercent=None, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "cancel",
+            "signature": "(self, order)",
+            "doc": ""
+        },
+        {
+            "name": "get_fundmode",
+            "signature": "(self)",
+            "doc": "Returns the actual fundmode (True or False)"
+        },
+        {
+            "name": "get_fundshares",
+            "signature": "(self)",
+            "doc": "Returns the current number of shares in the fund-like mode"
+        },
+        {
+            "name": "get_fundvalue",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "getcash",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "getcommissioninfo",
+            "signature": "(self, data)",
+            "doc": "Retrieves the ``CommissionInfo`` scheme associated with the given\n``data``"
+        },
+        {
+            "name": "getposition",
+            "signature": "(self, data)",
+            "doc": ""
+        },
+        {
+            "name": "getvalue",
+            "signature": "(self, datas=None)",
+            "doc": ""
+        },
+        {
+            "name": "init",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "next",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "sell",
+            "signature": "(self, owner, data, size, price=None, plimit=None, exectype=None, valid=None, tradeid=0, oco=None, trailamount=None, trailpercent=None, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "set_fund_history",
+            "signature": "(self, fund)",
+            "doc": "Add fund history. See cerebro for details"
+        },
+        {
+            "name": "set_fundmode",
+            "signature": "(self, fundmode, fundstartval=None)",
+            "doc": "Set the actual fundmode (True or False)\n\nIf the argument fundstartval is not ``None``, it will used"
+        },
+        {
+            "name": "setcommission",
+            "signature": "(self, commission=0.0, margin=None, mult=1.0, commtype=None, percabs=True, stocklike=False, interest=0.0, interest_long=False, leverage=1.0, automargin=False, name=None)",
+            "doc": "This method sets a `` CommissionInfo`` object for assets managed in\nthe broker with the parameters. Consult the reference for\n``CommInfoBase``\n\nIf name is ``None``, this will be the default for assets for which no\nother ``CommissionInfo`` scheme can be found"
+        },
+        {
+            "name": "start",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "stop",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "submit",
+            "signature": "(self, order)",
+            "doc": ""
+        }
+    ],
+    "attributes": {
+        "fundshares": {
+            "value": "<property object at 0x0000025615AD9490>",
+            "doc": "Returns the current number of shares in the fund-like mode"
+        },
+        "fundvalue": {
+            "value": "<property object at 0x0000025617548F40>",
+            "doc": ""
+        },
+        "fundmode": {
+            "value": "<property object at 0x0000025617548F90>",
+            "doc": "Returns the actual fundmode (True or False)"
+        },
+        "packages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "frompackages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        }
+    },
+    "input_schema": {},
+    "params_schema": {},
+    "output_schema": {}
+}

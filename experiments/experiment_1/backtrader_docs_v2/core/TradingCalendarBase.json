@@ -1,0 +1,65 @@
+{
+    "name": "TradingCalendarBase",
+    "module": "backtrader.tradingcal",
+    "doc": "",
+    "constructor_signature": "(self, /, *args, **kwargs)",
+    "methods": [
+        {
+            "name": "_nextday",
+            "signature": "(self, day)",
+            "doc": "Returns the next trading day (datetime/date instance) after ``day``\n(datetime/date instance) and the isocalendar components\n\nThe return value is a tuple with 2 components: (nextday, (y, w, d))"
+        },
+        {
+            "name": "last_monthday",
+            "signature": "(self, day)",
+            "doc": "Returns ``True`` if the given ``day`` (datetime/date) instance is the\nlast trading day of this month"
+        },
+        {
+            "name": "last_weekday",
+            "signature": "(self, day)",
+            "doc": "Returns ``True`` if the given ``day`` (datetime/date) instance is the\nlast trading day of this week"
+        },
+        {
+            "name": "last_yearday",
+            "signature": "(self, day)",
+            "doc": "Returns ``True`` if the given ``day`` (datetime/date) instance is the\nlast trading day of this month"
+        },
+        {
+            "name": "nextday",
+            "signature": "(self, day)",
+            "doc": "Returns the next trading day (datetime/date instance) after ``day``\n(datetime/date instance)"
+        },
+        {
+            "name": "nextday_week",
+            "signature": "(self, day)",
+            "doc": "Returns the iso week number of the next trading day, given a ``day``\n(datetime/date) instance"
+        },
+        {
+            "name": "schedule",
+            "signature": "(self, day)",
+            "doc": "Returns a tuple with the opening and closing times (``datetime.time``)\nfor the given ``date`` (``datetime/date`` instance)"
+        }
+    ],
+    "attributes": {
+        "packages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "frompackages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        }
+    },
+    "input_schema": {
+        "args": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "kwargs": {
+            "default": null,
+            "annotation": "Any"
+        }
+    },
+    "params_schema": {},
+    "output_schema": {}
+}

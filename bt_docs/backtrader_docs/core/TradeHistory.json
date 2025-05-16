@@ -1,0 +1,78 @@
+{
+    "name": "TradeHistory",
+    "module": "backtrader.trade",
+    "doc": "Represents the status and update event for each update a Trade has\n\nThis object is a dictionary which allows '.' notation\n\nAttributes:\n  - ``status`` (``dict`` with '.' notation): Holds the resulting status of\n    an update event and has the following sub-attributes\n\n    - ``status`` (``int``): Trade status\n    - ``dt`` (``float``): float coded datetime\n    - ``barlen`` (``int``): number of bars the trade has been active\n    - ``size`` (``int``): current size of the Trade\n    - ``price`` (``float``): current price of the Trade\n    - ``value`` (``float``): current monetary value of the Trade\n    - ``pnl`` (``float``): current profit and loss of the Trade\n    - ``pnlcomm`` (``float``): current profit and loss minus commission\n\n  - ``event`` (``dict`` with '.' notation): Holds the event update\n    - parameters\n\n    - ``order`` (``object``): the order which initiated the``update``\n    - ``size`` (``int``): size of the update\n    - ``price`` (``float``):price of the update\n    - ``commission`` (``float``): price of the update",
+    "constructor_signature": "(self, status, dt, barlen, size, price, value, pnl, pnlcomm, tz, event=None)",
+    "methods": [
+        {
+            "name": "_close",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_open",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "datetime",
+            "signature": "(self, tz=None, naive=True)",
+            "doc": "Returns a datetime for the time the update event happened"
+        },
+        {
+            "name": "doupdate",
+            "signature": "(self, order, size, price, commission)",
+            "doc": "Used to fill the ``update`` part of the history entry"
+        },
+        {
+            "name": "lvalues",
+            "signature": "(self)",
+            "doc": ""
+        }
+    ],
+    "attributes": {},
+    "input_schema": {
+        "status": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "dt": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "barlen": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "size": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "price": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "value": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "pnl": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "pnlcomm": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "tz": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "event": {
+            "default": null,
+            "annotation": "Any"
+        }
+    },
+    "params_schema": {},
+    "output_schema": {}
+}

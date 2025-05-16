@@ -1,0 +1,348 @@
+{
+    "name": "BackBroker",
+    "module": "backtrader.brokers.bbroker",
+    "doc": "Broker Simulator\n\nThe simulation supports different order types, checking a submitted order\ncash requirements against current cash, keeping track of cash and value\nfor each iteration of ``cerebro`` and keeping the current position on\ndifferent datas.\n\n*cash* is adjusted on each iteration for instruments like ``futures`` for\n which a price change implies in real brokers the addition/substracion of\n cash.\n\nSupported order types:\n\n  - ``Market``: to be executed with the 1st tick of the next bar (namely\n    the ``open`` price)\n\n  - ``Close``: meant for intraday in which the order is executed with the\n    closing price of the last bar of the session\n\n  - ``Limit``: executes if the given limit price is seen during the\n    session\n\n  - ``Stop``: executes a ``Market`` order if the given stop price is seen\n\n  - ``StopLimit``: sets a ``Limit`` order in motion if the given stop\n    price is seen\n\nBecause the broker is instantiated by ``Cerebro`` and there should be\n(mostly) no reason to replace the broker, the params are not controlled\nby the user for the instance.  To change this there are two options:\n\n  1. Manually create an instance of this class with the desired params\n     and use ``cerebro.broker = instance`` to set the instance as the\n     broker for the ``run`` execution\n\n  2. Use the ``set_xxx`` to set the value using\n     ``cerebro.broker.set_xxx`` where ```xxx`` stands for the name of the\n     parameter to set\n\n  .. note::\n\n     ``cerebro.broker`` is a *property* supported by the ``getbroker``\n     and ``setbroker`` methods of ``Cerebro``\n\nParams:\n\n  - ``cash`` (default: ``10000``): starting cash\n\n  - ``commission`` (default: ``CommInfoBase(percabs=True)``)\n    base commission scheme which applies to all assets\n\n  - ``checksubmit`` (default: ``True``)\n    check margin/cash before accepting an order into the system\n\n  - ``eosbar`` (default: ``False``):\n    With intraday bars consider a bar with the same ``time`` as the end\n    of session to be the end of the session. This is not usually the\n    case, because some bars (final auction) are produced by many\n    exchanges for many products for a couple of minutes after the end of\n    the session\n\n  - ``filler`` (default: ``None``)\n\n    A callable with signature: ``callable(order, price, ago)``\n\n      - ``order``: obviously the order in execution. This provides access\n        to the *data* (and with it the *ohlc* and *volume* values), the\n        *execution type*, remaining size (``order.executed.remsize``) and\n        others.\n\n        Please check the ``Order`` documentation and reference for things\n        available inside an ``Order`` instance\n\n      - ``price`` the price at which the order is going to be executed in\n        the ``ago`` bar\n\n      - ``ago``: index meant to be used with ``order.data`` for the\n        extraction of the *ohlc* and *volume* prices. In most cases this\n        will be ``0`` but on a corner case for ``Close`` orders, this\n        will be ``-1``.\n\n        In order to get the bar volume (for example) do: ``volume =\n        order.data.voluume[ago]``\n\n    The callable must return the *executed size* (a value >= 0)\n\n    The callable may of course be an object with ``__call__`` matching\n    the aforementioned signature\n\n    With the default ``None`` orders will be completely executed in a\n    single shot\n\n  - ``slip_perc`` (default: ``0.0``) Percentage in absolute termns (and\n    positive) that should be used to slip prices up/down for buy/sell\n    orders\n\n    Note:\n\n      - ``0.01`` is ``1%``\n\n      - ``0.001`` is ``0.1%``\n\n  - ``slip_fixed`` (default: ``0.0``) Percentage in units (and positive)\n    that should be used to slip prices up/down for buy/sell orders\n\n    Note: if ``slip_perc`` is non zero, it takes precendence over this.\n\n  - ``slip_open`` (default: ``False``) whether to slip prices for order\n    execution which would specifically used the *opening* price of the\n    next bar. An example would be ``Market`` order which is executed with\n    the next available tick, i.e: the opening price of the bar.\n\n    This also applies to some of the other executions, because the logic\n    tries to detect if the *opening* price would match the requested\n    price/execution type when moving to a new bar.\n\n  - ``slip_match`` (default: ``True``)\n\n    If ``True`` the broker will offer a match by capping slippage at\n    ``high/low`` prices in case they would be exceeded.\n\n    If ``False`` the broker will not match the order with the current\n    prices and will try execution during the next iteration\n\n  - ``slip_limit`` (default: ``True``)\n\n    ``Limit`` orders, given the exact match price requested, will be\n    matched even if ``slip_match`` is ``False``.\n\n    This option controls that behavior.\n\n    If ``True``, then ``Limit`` orders will be matched by capping prices\n    to the ``limit`` / ``high/low`` prices\n\n    If ``False`` and slippage exceeds the cap, then there will be no\n    match\n\n  - ``slip_out`` (default: ``False``)\n\n    Provide *slippage* even if the price falls outside the ``high`` -\n    ``low`` range.\n\n  - ``coc`` (default: ``False``)\n\n    *Cheat-On-Close* Setting this to ``True`` with ``set_coc`` enables\n     matching a ``Market`` order to the closing price of the bar in which\n     the order was issued. This is actually *cheating*, because the bar\n     is *closed* and any order should first be matched against the prices\n     in the next bar\n\n  - ``coo`` (default: ``False``)\n\n    *Cheat-On-Open* Setting this to ``True`` with ``set_coo`` enables\n     matching a ``Market`` order to the opening price, by for example\n     using a timer with ``cheat`` set to ``True``, because such a timer\n     gets executed before the broker has evaluated\n\n  - ``int2pnl`` (default: ``True``)\n\n    Assign generated interest (if any) to the profit and loss of\n    operation that reduces a position (be it long or short). There may be\n    cases in which this is undesired, because different strategies are\n    competing and the interest would be assigned on a non-deterministic\n    basis to any of them.\n\n  - ``shortcash`` (default: ``True``)\n\n    If True then cash will be increased when a stocklike asset is shorted\n    and the calculated value for the asset will be negative.\n\n    If ``False`` then the cash will be deducted as operation cost and the\n    calculated value will be positive to end up with the same amount\n\n  - ``fundstartval`` (default: ``100.0``)\n\n    This parameter controls the start value for measuring the performance\n    in a fund-like way, i.e.: cash can be added and deducted increasing\n    the amount of shares. Performance is not measured using the net\n    asset value of the porftoflio but using the value of the fund\n\n  - ``fundmode`` (default: ``False``)\n\n    If this is set to ``True`` analyzers like ``TimeReturn`` can\n    automatically calculate returns based on the fund value and not on\n    the total net asset value",
+    "constructor_signature": "(self)",
+    "methods": [
+        {
+            "name": "BrokerBase",
+            "signature": "(self, datas=None)",
+            "doc": ""
+        },
+        {
+            "name": "_bracketize",
+            "signature": "(self, order, cancel=False)",
+            "doc": ""
+        },
+        {
+            "name": "_execute",
+            "signature": "(self, order, ago=None, price=None, cash=None, position=None, dtcoc=None)",
+            "doc": ""
+        },
+        {
+            "name": "_get_value",
+            "signature": "(self, datas=None, lever=False)",
+            "doc": ""
+        },
+        {
+            "name": "_ococheck",
+            "signature": "(self, order)",
+            "doc": ""
+        },
+        {
+            "name": "_ocoize",
+            "signature": "(self, order, oco)",
+            "doc": ""
+        },
+        {
+            "name": "_process_fund_history",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_process_order_history",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "_slip_down",
+            "signature": "(self, pmin, price, doslip=True, lim=False)",
+            "doc": ""
+        },
+        {
+            "name": "_slip_up",
+            "signature": "(self, pmax, price, doslip=True, lim=False)",
+            "doc": ""
+        },
+        {
+            "name": "_take_children",
+            "signature": "(self, order)",
+            "doc": ""
+        },
+        {
+            "name": "_try_exec",
+            "signature": "(self, order)",
+            "doc": ""
+        },
+        {
+            "name": "_try_exec_close",
+            "signature": "(self, order, pclose)",
+            "doc": ""
+        },
+        {
+            "name": "_try_exec_historical",
+            "signature": "(self, order)",
+            "doc": ""
+        },
+        {
+            "name": "_try_exec_limit",
+            "signature": "(self, order, popen, phigh, plow, plimit)",
+            "doc": ""
+        },
+        {
+            "name": "_try_exec_market",
+            "signature": "(self, order, popen, phigh, plow)",
+            "doc": ""
+        },
+        {
+            "name": "_try_exec_stop",
+            "signature": "(self, order, popen, phigh, plow, pcreated, pclose)",
+            "doc": ""
+        },
+        {
+            "name": "_try_exec_stoplimit",
+            "signature": "(self, order, popen, phigh, plow, pclose, pcreated, plimit)",
+            "doc": ""
+        },
+        {
+            "name": "add_cash",
+            "signature": "(self, cash)",
+            "doc": "Add/Remove cash to the system (use a negative value to remove)"
+        },
+        {
+            "name": "add_order_history",
+            "signature": "(self, orders, notify=True)",
+            "doc": "Add order history. See cerebro for details"
+        },
+        {
+            "name": "addcommissioninfo",
+            "signature": "(self, comminfo, name=None)",
+            "doc": "Adds a ``CommissionInfo`` object that will be the default for all assets if\n``name`` is ``None``"
+        },
+        {
+            "name": "buy",
+            "signature": "(self, owner, data, size, price=None, plimit=None, exectype=None, valid=None, tradeid=0, oco=None, trailamount=None, trailpercent=None, parent=None, transmit=True, histnotify=False, _checksubmit=True, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "cancel",
+            "signature": "(self, order, bracket=False)",
+            "doc": ""
+        },
+        {
+            "name": "check_submitted",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "get_cash",
+            "signature": "(self)",
+            "doc": "Returns the current cash (alias: ``getcash``)"
+        },
+        {
+            "name": "get_fundmode",
+            "signature": "(self)",
+            "doc": "Returns the actual fundmode (True or False)"
+        },
+        {
+            "name": "get_fundshares",
+            "signature": "(self)",
+            "doc": "Returns the current number of shares in the fund-like mode"
+        },
+        {
+            "name": "get_fundvalue",
+            "signature": "(self)",
+            "doc": "Returns the Fund-like share value"
+        },
+        {
+            "name": "get_leverage",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "get_notification",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "get_orders_open",
+            "signature": "(self, safe=False)",
+            "doc": "Returns an iterable with the orders which are still open (either not\nexecuted or partially executed\n\nThe orders returned must not be touched.\n\nIf order manipulation is needed, set the parameter ``safe`` to True"
+        },
+        {
+            "name": "get_value",
+            "signature": "(self, datas=None, mkt=False, lever=False)",
+            "doc": "Returns the portfolio value of the given datas (if datas is ``None``, then\nthe total portfolio value will be returned (alias: ``getvalue``)"
+        },
+        {
+            "name": "get_value_lever",
+            "signature": "(self, datas=None, mkt=False)",
+            "doc": ""
+        },
+        {
+            "name": "getcash",
+            "signature": "(self)",
+            "doc": "Returns the current cash (alias: ``getcash``)"
+        },
+        {
+            "name": "getcommissioninfo",
+            "signature": "(self, data)",
+            "doc": "Retrieves the ``CommissionInfo`` scheme associated with the given\n``data``"
+        },
+        {
+            "name": "getposition",
+            "signature": "(self, data)",
+            "doc": "Returns the current position status (a ``Position`` instance) for\nthe given ``data``"
+        },
+        {
+            "name": "getvalue",
+            "signature": "(self, datas=None, mkt=False, lever=False)",
+            "doc": "Returns the portfolio value of the given datas (if datas is ``None``, then\nthe total portfolio value will be returned (alias: ``getvalue``)"
+        },
+        {
+            "name": "init",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "next",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "notify",
+            "signature": "(self, order)",
+            "doc": ""
+        },
+        {
+            "name": "orderstatus",
+            "signature": "(self, order)",
+            "doc": ""
+        },
+        {
+            "name": "sell",
+            "signature": "(self, owner, data, size, price=None, plimit=None, exectype=None, valid=None, tradeid=0, oco=None, trailamount=None, trailpercent=None, parent=None, transmit=True, histnotify=False, _checksubmit=True, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "set_cash",
+            "signature": "(self, cash)",
+            "doc": "Sets the cash parameter (alias: ``setcash``)"
+        },
+        {
+            "name": "set_checksubmit",
+            "signature": "(self, checksubmit)",
+            "doc": "Sets the checksubmit parameter"
+        },
+        {
+            "name": "set_coc",
+            "signature": "(self, coc)",
+            "doc": "Configure the Cheat-On-Close method to buy the close on order bar"
+        },
+        {
+            "name": "set_coo",
+            "signature": "(self, coo)",
+            "doc": "Configure the Cheat-On-Open method to buy the close on order bar"
+        },
+        {
+            "name": "set_eosbar",
+            "signature": "(self, eosbar)",
+            "doc": "Sets the eosbar parameter (alias: ``seteosbar``"
+        },
+        {
+            "name": "set_filler",
+            "signature": "(self, filler)",
+            "doc": "Sets a volume filler for volume filling execution"
+        },
+        {
+            "name": "set_fund_history",
+            "signature": "(self, fund)",
+            "doc": "Add fund history. See cerebro for details"
+        },
+        {
+            "name": "set_fundmode",
+            "signature": "(self, fundmode, fundstartval=None)",
+            "doc": "Set the actual fundmode (True or False)\n\nIf the argument fundstartval is not ``None``, it will used"
+        },
+        {
+            "name": "set_fundstartval",
+            "signature": "(self, fundstartval)",
+            "doc": "Set the starting value of the fund-like performance tracker"
+        },
+        {
+            "name": "set_int2pnl",
+            "signature": "(self, int2pnl)",
+            "doc": "Configure assignment of interest to profit and loss"
+        },
+        {
+            "name": "set_shortcash",
+            "signature": "(self, shortcash)",
+            "doc": "Configure the shortcash parameters"
+        },
+        {
+            "name": "set_slippage_fixed",
+            "signature": "(self, fixed, slip_open=True, slip_limit=True, slip_match=True, slip_out=False)",
+            "doc": "Configure slippage to be fixed points based"
+        },
+        {
+            "name": "set_slippage_perc",
+            "signature": "(self, perc, slip_open=True, slip_limit=True, slip_match=True, slip_out=False)",
+            "doc": "Configure slippage to be percentage based"
+        },
+        {
+            "name": "setcash",
+            "signature": "(self, cash)",
+            "doc": "Sets the cash parameter (alias: ``setcash``)"
+        },
+        {
+            "name": "setcommission",
+            "signature": "(self, commission=0.0, margin=None, mult=1.0, commtype=None, percabs=True, stocklike=False, interest=0.0, interest_long=False, leverage=1.0, automargin=False, name=None)",
+            "doc": "This method sets a `` CommissionInfo`` object for assets managed in\nthe broker with the parameters. Consult the reference for\n``CommInfoBase``\n\nIf name is ``None``, this will be the default for assets for which no\nother ``CommissionInfo`` scheme can be found"
+        },
+        {
+            "name": "seteosbar",
+            "signature": "(self, eosbar)",
+            "doc": "Sets the eosbar parameter (alias: ``seteosbar``"
+        },
+        {
+            "name": "start",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "stop",
+            "signature": "(self)",
+            "doc": ""
+        },
+        {
+            "name": "submit",
+            "signature": "(self, order, check=True)",
+            "doc": ""
+        },
+        {
+            "name": "submit_accept",
+            "signature": "(self, order)",
+            "doc": ""
+        },
+        {
+            "name": "transmit",
+            "signature": "(self, order, check=True)",
+            "doc": ""
+        }
+    ],
+    "attributes": {
+        "fundmode": {
+            "value": "<property object at 0x00000238E4E596C0>",
+            "doc": "Returns the actual fundmode (True or False)"
+        },
+        "fundshares": {
+            "value": "<property object at 0x00000238E4E5B6F0>",
+            "doc": "Returns the current number of shares in the fund-like mode"
+        },
+        "fundvalue": {
+            "value": "<property object at 0x00000238E4E5B740>",
+            "doc": "Returns the Fund-like share value"
+        },
+        "packages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        },
+        "frompackages": {
+            "value": "()",
+            "doc": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object."
+        }
+    },
+    "input_schema": {},
+    "params_schema": {},
+    "output_schema": {}
+}

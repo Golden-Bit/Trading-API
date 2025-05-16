@@ -1,0 +1,79 @@
+{
+    "name": "MetaIndicator",
+    "module": "backtrader.indicator",
+    "doc": "Dirty job manager for a LineSeries\n\n  - During __new__ (class creation), it reads \"lines\", \"plotinfo\",\n    \"plotlines\" class variable definitions and turns them into\n    Classes of type Lines or AutoClassInfo (plotinfo/plotlines)\n\n  - During \"new\" (instance creation) the lines/plotinfo/plotlines\n    classes are substituted in the instance with instances of the\n    aforementioned classes and aliases are added for the \"lines\" held\n    in the \"lines\" instance\n\n    Additionally and for remaining kwargs, these are matched against\n    args in plotinfo and if existent are set there and removed from kwargs\n\n    Remember that this Metaclass has a MetaParams (from metabase)\n    as root class and therefore \"params\" defined for the class have been\n    removed from kwargs at an earlier state",
+    "constructor_signature": "(cls, name, bases, dct)",
+    "methods": [
+        {
+            "name": "doinit",
+            "signature": "(cls, _obj, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "donew",
+            "signature": "(cls, *args, **kwargs)",
+            "doc": "Intercept instance creation, take over lines/plotinfo/plotlines\nclass attributes by creating corresponding instance variables and add\naliases for \"lines\" and the \"lines\" held within it"
+        },
+        {
+            "name": "dopostinit",
+            "signature": "(cls, _obj, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "dopreinit",
+            "signature": "(cls, _obj, *args, **kwargs)",
+            "doc": ""
+        },
+        {
+            "name": "doprenew",
+            "signature": "(cls, *args, **kwargs)",
+            "doc": ""
+        }
+    ],
+    "attributes": {
+        "_refname": {
+            "value": "'_indcol'",
+            "doc": "str(object='') -> str\nstr(bytes_or_buffer[, encoding[, errors]]) -> str\n\nCreate a new string object from the given object. If encoding or\nerrors is specified, then the object must expose a data buffer\nthat will be decoded using the given encoding and error handler.\nOtherwise, returns the result of object.__str__() (if defined)\nor repr(object).\nencoding defaults to sys.getdefaultencoding().\nerrors defaults to 'strict'."
+        },
+        "_indcol": {
+            "value": "{'LinePlotterIndicator': <class 'backtrader.indicator.LinePlotterIndicator'>, 'Signal': <class 'backtrader.signal.Signal'>, 'PeriodN': <class 'backtrader.indicators.basicops.PeriodN'>, 'OperationN': <class 'backtrader.indicators.basicops.OperationN'>, 'BaseApplyN': <class 'backtrader.indicators.basicops.BaseApplyN'>, 'ApplyN': <class 'backtrader.indicators.basicops.ApplyN'>, 'Highest': <class 'backtrader.indicators.basicops.Highest'>, 'Lowest': <class 'backtrader.indicators.basicops.Lowest'>, 'ReduceN': <class 'backtrader.indicators.basicops.ReduceN'>, 'SumN': <class 'backtrader.indicators.basicops.SumN'>, 'AnyN': <class 'backtrader.indicators.basicops.AnyN'>, 'AllN': <class 'backtrader.indicators.basicops.AllN'>, 'FindFirstIndex': <class 'backtrader.indicators.basicops.FindFirstIndex'>, 'FindFirstIndexHighest': <class 'backtrader.indicators.basicops.FindFirstIndexHighest'>, 'FindFirstIndexLowest': <class 'backtrader.indicators.basicops.FindFirstIndexLowest'>, 'FindLastIndex': <class 'backtrader.indicators.basicops.FindLastIndex'>, 'FindLastIndexHighest': <class 'backtrader.indicators.basicops.FindLastIndexHighest'>, 'FindLastIndexLowest': <class 'backtrader.indicators.basicops.FindLastIndexLowest'>, 'Accum': <class 'backtrader.indicators.basicops.Accum'>, 'Average': <class 'backtrader.indicators.basicops.Average'>, 'ExponentialSmoothing': <class 'backtrader.indicators.basicops.ExponentialSmoothing'>, 'ExponentialSmoothingDynamic': <class 'backtrader.indicators.basicops.ExponentialSmoothingDynamic'>, 'WeightedAverage': <class 'backtrader.indicators.basicops.WeightedAverage'>, 'MovingAverageBase': <class 'backtrader.indicators.mabase.MovingAverageBase'>, 'MovingAverageSimple': <class 'backtrader.indicators.sma.MovingAverageSimple'>, 'ExponentialMovingAverage': <class 'backtrader.indicators.ema.ExponentialMovingAverage'>, 'SmoothedMovingAverage': <class 'backtrader.indicators.smma.SmoothedMovingAverage'>, 'WeightedMovingAverage': <class 'backtrader.indicators.wma.WeightedMovingAverage'>, 'DoubleExponentialMovingAverage': <class 'backtrader.indicators.dema.DoubleExponentialMovingAverage'>, 'TripleExponentialMovingAverage': <class 'backtrader.indicators.dema.TripleExponentialMovingAverage'>, 'AdaptiveMovingAverage': <class 'backtrader.indicators.kama.AdaptiveMovingAverage'>, 'ZeroLagExponentialMovingAverage': <class 'backtrader.indicators.zlema.ZeroLagExponentialMovingAverage'>, 'HullMovingAverage': <class 'backtrader.indicators.hma.HullMovingAverage'>, 'ZeroLagIndicator': <class 'backtrader.indicators.zlind.ZeroLagIndicator'>, 'DicksonMovingAverage': <class 'backtrader.indicators.dma.DicksonMovingAverage'>, 'StandardDeviation': <class 'backtrader.indicators.deviation.StandardDeviation'>, 'MeanDeviation': <class 'backtrader.indicators.deviation.MeanDeviation'>, 'TrueHigh': <class 'backtrader.indicators.atr.TrueHigh'>, 'TrueLow': <class 'backtrader.indicators.atr.TrueLow'>, 'TrueRange': <class 'backtrader.indicators.atr.TrueRange'>, 'AverageTrueRange': <class 'backtrader.indicators.atr.AverageTrueRange'>, 'AroonUp': <class 'backtrader.indicators.aroon.AroonUp'>, 'AroonDown': <class 'backtrader.indicators.aroon.AroonDown'>, 'AroonUpDown': <class 'backtrader.indicators.aroon.AroonUpDown'>, 'AroonOscillator': <class 'backtrader.indicators.aroon.AroonOscillator'>, 'AroonUpDownOscillator': <class 'backtrader.indicators.aroon.AroonUpDownOscillator'>, 'BollingerBands': <class 'backtrader.indicators.bollinger.BollingerBands'>, 'BollingerBandsPct': <class 'backtrader.indicators.bollinger.BollingerBandsPct'>, 'CommodityChannelIndex': <class 'backtrader.indicators.cci.CommodityChannelIndex'>, 'NonZeroDifference': <class 'backtrader.indicators.crossover.NonZeroDifference'>, 'CrossUp': <class 'backtrader.indicators.crossover.CrossUp'>, 'CrossDown': <class 'backtrader.indicators.crossover.CrossDown'>, 'CrossOver': <class 'backtrader.indicators.crossover.CrossOver'>, 'DetrendedPriceOscillator': <class 'backtrader.indicators.dpo.DetrendedPriceOscillator'>, 'UpMove': <class 'backtrader.indicators.directionalmove.UpMove'>, 'DownMove': <class 'backtrader.indicators.directionalmove.DownMove'>, 'DirectionalIndicator': <class 'backtrader.indicators.directionalmove.DirectionalIndicator'>, 'PlusDirectionalIndicator': <class 'backtrader.indicators.directionalmove.PlusDirectionalIndicator'>, 'MinusDirectionalIndicator': <class 'backtrader.indicators.directionalmove.MinusDirectionalIndicator'>, 'AverageDirectionalMovementIndex': <class 'backtrader.indicators.directionalmove.AverageDirectionalMovementIndex'>, 'AverageDirectionalMovementIndexRating': <class 'backtrader.indicators.directionalmove.AverageDirectionalMovementIndexRating'>, 'DirectionalMovementIndex': <class 'backtrader.indicators.directionalmove.DirectionalMovementIndex'>, 'DirectionalMovement': <class 'backtrader.indicators.directionalmove.DirectionalMovement'>, 'Envelope': <class 'backtrader.indicators.envelope.Envelope'>, 'MovingAverageSimpleEnvelope': <class 'backtrader.indicators.envelope.MovingAverageSimpleEnvelope'>, 'ExponentialMovingAverageEnvelope': <class 'backtrader.indicators.envelope.ExponentialMovingAverageEnvelope'>, 'SmoothedMovingAverageEnvelope': <class 'backtrader.indicators.envelope.SmoothedMovingAverageEnvelope'>, 'WeightedMovingAverageEnvelope': <class 'backtrader.indicators.envelope.WeightedMovingAverageEnvelope'>, 'DoubleExponentialMovingAverageEnvelope': <class 'backtrader.indicators.envelope.DoubleExponentialMovingAverageEnvelope'>, 'TripleExponentialMovingAverageEnvelope': <class 'backtrader.indicators.envelope.TripleExponentialMovingAverageEnvelope'>, 'AdaptiveMovingAverageEnvelope': <class 'backtrader.indicators.envelope.AdaptiveMovingAverageEnvelope'>, 'ZeroLagExponentialMovingAverageEnvelope': <class 'backtrader.indicators.envelope.ZeroLagExponentialMovingAverageEnvelope'>, 'HullMovingAverageEnvelope': <class 'backtrader.indicators.envelope.HullMovingAverageEnvelope'>, 'ZeroLagIndicatorEnvelope': <class 'backtrader.indicators.envelope.ZeroLagIndicatorEnvelope'>, 'DicksonMovingAverageEnvelope': <class 'backtrader.indicators.envelope.DicksonMovingAverageEnvelope'>, 'HeikinAshi': <class 'backtrader.indicators.heikinashi.HeikinAshi'>, 'LaguerreRSI': <class 'backtrader.indicators.lrsi.LaguerreRSI'>, 'LaguerreFilter': <class 'backtrader.indicators.lrsi.LaguerreFilter'>, 'MACD': <class 'backtrader.indicators.macd.MACD'>, 'MACDHisto': <class 'backtrader.indicators.macd.MACDHisto'>, 'Momentum': <class 'backtrader.indicators.momentum.Momentum'>, 'MomentumOscillator': <class 'backtrader.indicators.momentum.MomentumOscillator'>, 'RateOfChange': <class 'backtrader.indicators.momentum.RateOfChange'>, 'RateOfChange100': <class 'backtrader.indicators.momentum.RateOfChange100'>, 'OscillatorMixIn': <class 'backtrader.indicators.oscillator.OscillatorMixIn'>, 'Oscillator': <class 'backtrader.indicators.oscillator.Oscillator'>, 'MovingAverageSimpleOscillator': <class 'backtrader.indicators.oscillator.MovingAverageSimpleOscillator'>, 'ExponentialMovingAverageOscillator': <class 'backtrader.indicators.oscillator.ExponentialMovingAverageOscillator'>, 'SmoothedMovingAverageOscillator': <class 'backtrader.indicators.oscillator.SmoothedMovingAverageOscillator'>, 'WeightedMovingAverageOscillator': <class 'backtrader.indicators.oscillator.WeightedMovingAverageOscillator'>, 'DoubleExponentialMovingAverageOscillator': <class 'backtrader.indicators.oscillator.DoubleExponentialMovingAverageOscillator'>, 'TripleExponentialMovingAverageOscillator': <class 'backtrader.indicators.oscillator.TripleExponentialMovingAverageOscillator'>, 'AdaptiveMovingAverageOscillator': <class 'backtrader.indicators.oscillator.AdaptiveMovingAverageOscillator'>, 'ZeroLagExponentialMovingAverageOscillator': <class 'backtrader.indicators.oscillator.ZeroLagExponentialMovingAverageOscillator'>, 'HullMovingAverageOscillator': <class 'backtrader.indicators.oscillator.HullMovingAverageOscillator'>, 'ZeroLagIndicatorOscillator': <class 'backtrader.indicators.oscillator.ZeroLagIndicatorOscillator'>, 'DicksonMovingAverageOscillator': <class 'backtrader.indicators.oscillator.DicksonMovingAverageOscillator'>, 'PercentChange': <class 'backtrader.indicators.percentchange.PercentChange'>, 'PercentRank': <class 'backtrader.indicators.percentrank.PercentRank'>, 'PivotPoint': <class 'backtrader.indicators.pivotpoint.PivotPoint'>, 'FibonacciPivotPoint': <class 'backtrader.indicators.pivotpoint.FibonacciPivotPoint'>, 'DemarkPivotPoint': <class 'backtrader.indicators.pivotpoint.DemarkPivotPoint'>, 'PrettyGoodOscillator': <class 'backtrader.indicators.prettygoodoscillator.PrettyGoodOscillator'>, 'PriceOscillator': <class 'backtrader.indicators.priceoscillator.PriceOscillator'>, 'PercentagePriceOscillator': <class 'backtrader.indicators.priceoscillator.PercentagePriceOscillator'>, 'PercentagePriceOscillatorShort': <class 'backtrader.indicators.priceoscillator.PercentagePriceOscillatorShort'>, 'ParabolicSAR': <class 'backtrader.indicators.psar.ParabolicSAR'>, 'UpDay': <class 'backtrader.indicators.rsi.UpDay'>, 'DownDay': <class 'backtrader.indicators.rsi.DownDay'>, 'UpDayBool': <class 'backtrader.indicators.rsi.UpDayBool'>, 'DownDayBool': <class 'backtrader.indicators.rsi.DownDayBool'>, 'RelativeStrengthIndex': <class 'backtrader.indicators.rsi.RelativeStrengthIndex'>, 'RSI_Safe': <class 'backtrader.indicators.rsi.RSI_Safe'>, 'RSI_SMA': <class 'backtrader.indicators.rsi.RSI_SMA'>, 'RSI_EMA': <class 'backtrader.indicators.rsi.RSI_EMA'>, 'StochasticFast': <class 'backtrader.indicators.stochastic.StochasticFast'>, 'Stochastic': <class 'backtrader.indicators.stochastic.Stochastic'>, 'StochasticFull': <class 'backtrader.indicators.stochastic.StochasticFull'>, 'Trix': <class 'backtrader.indicators.trix.Trix'>, 'TrixSignal': <class 'backtrader.indicators.trix.TrixSignal'>, 'TrueStrengthIndicator': <class 'backtrader.indicators.tsi.TrueStrengthIndicator'>, 'UltimateOscillator': <class 'backtrader.indicators.ultimateoscillator.UltimateOscillator'>, 'WilliamsR': <class 'backtrader.indicators.williams.WilliamsR'>, 'WilliamsAD': <class 'backtrader.indicators.williams.WilliamsAD'>, 'RelativeMomentumIndex': <class 'backtrader.indicators.rmi.RelativeMomentumIndex'>, 'AwesomeOscillator': <class 'backtrader.indicators.awesomeoscillator.AwesomeOscillator'>, 'AccelerationDecelerationOscillator': <class 'backtrader.indicators.accdecoscillator.AccelerationDecelerationOscillator'>, 'DV2': <class 'backtrader.indicators.dv2.DV2'>, 'KnowSureThing': <class 'backtrader.indicators.kst.KnowSureThing'>, 'Ichimoku': <class 'backtrader.indicators.ichimoku.Ichimoku'>, 'HurstExponent': <class 'backtrader.indicators.hurst.HurstExponent'>, 'OLS_Slope_InterceptN': <class 'backtrader.indicators.ols.OLS_Slope_InterceptN'>, 'OLS_TransformationN': <class 'backtrader.indicators.ols.OLS_TransformationN'>, 'OLS_BetaN': <class 'backtrader.indicators.ols.OLS_BetaN'>, 'CointN': <class 'backtrader.indicators.ols.CointN'>, 'haDelta': <class 'backtrader.indicators.hadelta.haDelta'>, 'Vortex': <class 'backtrader.indicators.contrib.vortex.Vortex'>, 'Fractal': <class 'backtrader.studies.contrib.fractal.Fractal'>}",
+            "doc": "dict() -> new empty dictionary\ndict(mapping) -> new dictionary initialized from a mapping object's\n    (key, value) pairs\ndict(iterable) -> new dictionary initialized as if via:\n    d = {}\n    for k, v in iterable:\n        d[k] = v\ndict(**kwargs) -> new dictionary initialized with the name=value pairs\n    in the keyword argument list.  For example:  dict(one=1, two=2)"
+        },
+        "_icache": {
+            "value": "{}",
+            "doc": "dict() -> new empty dictionary\ndict(mapping) -> new dictionary initialized from a mapping object's\n    (key, value) pairs\ndict(iterable) -> new dictionary initialized as if via:\n    d = {}\n    for k, v in iterable:\n        d[k] = v\ndict(**kwargs) -> new dictionary initialized with the name=value pairs\n    in the keyword argument list.  For example:  dict(one=1, two=2)"
+        },
+        "_icacheuse": {
+            "value": "False",
+            "doc": "bool(x) -> bool\n\nReturns True when the argument x is true, False otherwise.\nThe builtins True and False are the only two instances of the class bool.\nThe class bool is a subclass of the class int, and cannot be subclassed."
+        },
+        "cleancache": {
+            "value": "<classmethod(<function MetaIndicator.cleancache at 0x00000238E498A170>)>",
+            "doc": ""
+        },
+        "usecache": {
+            "value": "<classmethod(<function MetaIndicator.usecache at 0x00000238E498A200>)>",
+            "doc": ""
+        }
+    },
+    "input_schema": {
+        "cls": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "name": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "bases": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "dct": {
+            "default": null,
+            "annotation": "Any"
+        }
+    },
+    "params_schema": {},
+    "output_schema": {}
+}

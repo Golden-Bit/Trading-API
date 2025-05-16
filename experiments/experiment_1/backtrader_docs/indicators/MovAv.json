@@ -1,0 +1,20 @@
+{
+    "name": "MovAv",
+    "module": "backtrader.indicators.mabase",
+    "doc": "MovingAverage (alias MovAv)\n\nA placeholder to gather all Moving Average Types in a single place.\n\nInstantiating a SimpleMovingAverage can be achieved as follows::\n\n  sma = MovingAverage.Simple(self.data, period)\n\nOr using the shorter aliases::\n\n  sma = MovAv.SMA(self.data, period)\n\nor with the full (forwards and backwards) names:\n\n  sma = MovAv.SimpleMovingAverage(self.data, period)\n\n  sma = MovAv.MovingAverageSimple(self.data, period)",
+    "constructor_signature": "(self, /, *args, **kwargs)",
+    "methods": [],
+    "attributes": {},
+    "input_schema": {
+        "args": {
+            "default": null,
+            "annotation": "Any"
+        },
+        "kwargs": {
+            "default": null,
+            "annotation": "Any"
+        }
+    },
+    "params_schema": {},
+    "output_schema": {}
+}
